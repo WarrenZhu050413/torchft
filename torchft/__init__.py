@@ -7,6 +7,7 @@
 from torchft.data import DistributedSampler
 from torchft.ddp import DistributedDataParallel
 from torchft.manager import Manager
+from torchft.manager_retry import RetryManager
 from torchft.optim import OptimizerWrapper as Optimizer
 from torchft.process_group import ProcessGroupBabyNCCL, ProcessGroupGloo
 
@@ -14,6 +15,7 @@ __all__ = (
     "DistributedDataParallel",
     "DistributedSampler",
     "Manager",
+    "RetryManager",
     "Optimizer",
     "ProcessGroupBabyNCCL",
     "ProcessGroupGloo",
