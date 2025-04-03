@@ -14,6 +14,7 @@ __all__ = (
     "DistributedDataParallel",
     "DistributedSampler",
     "Manager",
+    "RetryManager",
     "Optimizer",
     "ProcessGroupBabyNCCL",
     "ProcessGroupGloo",
