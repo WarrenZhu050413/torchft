@@ -95,7 +95,7 @@ impl ManagerServer {
         py.allow_threads(move || {
             let runtime = tokio::runtime::Builder::new_multi_thread()
                 .worker_threads(num_threads())
-                .thread_name("torchft-manager")
+                .thread_name("torchft-manager_server")
                 .enable_all()
                 .build()?;
             let manager = runtime
@@ -140,10 +140,12 @@ impl ManagerServer {
 /// It is used by the trainer to communicate with the ManagerServer.
 ///
 /// Args:
+///     group_rank (int): The group rank of the ManagerClient.
 ///     addr (str): The HTTP address of the manager server.
 ///     connect_timeout (timedelta): The timeout for connecting to the manager server.
 #[pyclass]
 struct ManagerClient {
+    group_rank: i64,
     runtime: Runtime,
     client: ManagerServiceClient<Channel>,
 }
@@ -151,22 +153,68 @@ struct ManagerClient {
 #[pymethods]
 impl ManagerClient {
     #[new]
-    fn new(py: Python<'_>, addr: String, connect_timeout: Duration) -> PyResult<Self> {
+    fn new(
+        py: Python<'_>,
+        group_rank: i64,
+        manager_addr: String,
+        connect_timeout: Duration,
+    ) -> PyResult<Self> {
         py.allow_threads(move || {
             let runtime = tokio::runtime::Builder::new_multi_thread()
                 .worker_threads(num_threads())
-                .thread_name("torchft-mgrclnt")
+                .thread_name("torchft-manager_client")
                 .enable_all()
                 .build()?;
             let client = runtime
-                .block_on(manager::manager_client_new(addr, connect_timeout))
+                .block_on(manager::manager_client_new(
+                    manager_addr,
+                    connect_timeout,
+                ))
                 .map_err(|e| PyRuntimeError::new_err(e.to_string()))?;
 
             Ok(Self {
+                group_rank: group_rank,
                 runtime: runtime,
                 client: client,
             })
         })
+    }
+
+    /// Start an async task that ticks every `interval` and sends a
+    /// `ManagerHeartbeatRequest(group_id)` to our ManagerServer.
+    ///
+    /// This never returns – it spawns inside the internal Tokio runtime.
+    ///
+    /// Args:
+    ///     group_id (str):  Identifier you want the server to log.
+    ///     interval (timedelta):  How often to ping, e.g. `timedelta(seconds=5)`.
+    fn run_heartbeat(
+        &self,
+        py: Python<'_>,
+        group_id: String,
+        interval: Duration,
+    ) {
+        // Release the GIL while we touch Tokio.
+        py.allow_threads(move || {
+            let mut client = self.client.clone();
+            // Clone the string once; Arc avoids moves into loop.
+            let group = Arc::new(group_id);
+            self.runtime.spawn(async move {
+                let mut ticker = tokio::time::interval(interval);
+                loop {
+                    ticker.tick().await;
+                    let req = tonic::Request::new(
+                        torchftpb::ManagerHeartbeatRequest {
+                            group_id: group.as_str().to_owned(),
+                        },
+                    );
+                    if let Err(e) = client.heartbeat(req).await {
+                        // Don’t crash – just log; reconnect logic can go here.
+                        log::warn!("manager heartbeat failed: {}", e);
+                    }
+                }
+            });
+        });
     }
 
     fn _quorum(

@@ -234,7 +234,12 @@ class Manager:
             self._store.set(REPLICA_ID_KEY, replica_id)
 
         addr = self._store.get(MANAGER_ADDR_KEY).decode("utf-8")
-        self._client = ManagerClient(addr, connect_timeout=connect_timeout)
+        self._client = ManagerClient(
+            group_rank=self._group_rank,
+            manager_addr=addr,
+            connect_timeout=connect_timeout,
+        )
+        self._client.run_heartbeat(group_id="trainer-0", interval=timedelta(seconds=5))
 
         replica_id = self._store.get(REPLICA_ID_KEY).decode("utf-8")
         self._logger = _ManagerLogger(
@@ -560,7 +565,8 @@ class Manager:
                             f"healing required, fetching checkpoint metadata from {recover_src_manager_address=} {max_step=}"
                         )
                         primary_client = ManagerClient(
-                            recover_src_manager_address,
+                            group_rank=self._group_rank,
+                            manager_addr=recover_src_manager_address,
                             connect_timeout=self._connect_timeout,
                         )
                         checkpoint_metadata = primary_client._checkpoint_metadata(

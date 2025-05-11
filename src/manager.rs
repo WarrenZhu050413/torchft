@@ -27,8 +27,8 @@ use crate::torchftpb::manager_service_client::ManagerServiceClient;
 use crate::torchftpb::{
     manager_service_server::{ManagerService, ManagerServiceServer},
     CheckpointMetadataRequest, CheckpointMetadataResponse, KillRequest, KillResponse,
-    LighthouseHeartbeatRequest, LighthouseQuorumRequest, ManagerQuorumRequest,
-    ManagerQuorumResponse, Quorum, QuorumMember, ShouldCommitRequest, ShouldCommitResponse,
+    LighthouseHeartbeatRequest, LighthouseQuorumRequest, ManagerHeartbeatRequest, ManagerHeartbeatResponse,
+    ManagerQuorumRequest, ManagerQuorumResponse, Quorum, QuorumMember, ShouldCommitRequest, ShouldCommitResponse,
 };
 
 #[cfg(not(test))]
@@ -373,6 +373,22 @@ impl ManagerService for Arc<Manager> {
             should_commit: should_commit,
         };
         Ok(Response::new(reply))
+    }
+
+    async fn heartbeat(
+        &self,
+        request: Request<ManagerHeartbeatRequest>,
+    ) -> Result<Response<ManagerHeartbeatResponse>, Status> {
+        let req = request.into_inner();
+        // Use your info_with_replica! macro or similar for logging
+        // For example, if replica_id is relevant or can be derived:
+        // info_with_replica!(self.replica_id, "Received manager heartbeat for group_id: {}", req.group_id);
+        log::info!("[Manager {}] Received heartbeat for group_id: {}", self.replica_id, req.group_id);
+        
+        // TODO: Implement any state updates or logic needed when a heartbeat is received.
+        // For now, it just acknowledges the heartbeat.
+
+        Ok(Response::new(ManagerHeartbeatResponse {}))
     }
 
     async fn kill(&self, request: Request<KillRequest>) -> Result<Response<KillResponse>, Status> {
