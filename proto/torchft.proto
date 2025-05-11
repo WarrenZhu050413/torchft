@@ -120,13 +120,11 @@ message KillRequest {
 }
 message KillResponse {}
 
-// NEW: Heartbeat Request!
 message ManagerHeartbeatRequest {
-    string group_id = 1;
+    string group_rank = 1;
 }
 
 message ManagerHeartbeatResponse {}
-// NEW: End
 
 service ManagerService {
     rpc Quorum (ManagerQuorumRequest) returns (ManagerQuorumResponse);
