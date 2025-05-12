@@ -21,6 +21,7 @@ use std::thread::available_parallelism;
 use structopt::StructOpt;
 use tokio::runtime::Runtime;
 use tokio::task::JoinHandle;
+use tokio::time::sleep;
 use tonic::transport::Channel;
 use tonic::Status;
 
@@ -146,12 +147,13 @@ impl ManagerServer {
 struct ManagerClient {
     runtime: Runtime,
     client: ManagerServiceClient<Channel>,
+    device_id: String,
 }
 
 #[pymethods]
 impl ManagerClient {
     #[new]
-    fn new(py: Python<'_>, addr: String, connect_timeout: Duration) -> PyResult<Self> {
+    fn new(py: Python<'_>, addr: String, connect_timeout: Duration, device_id: String) -> PyResult<Self> {
         py.allow_threads(move || {
             let runtime = tokio::runtime::Builder::new_multi_thread()
                 .worker_threads(num_threads())
@@ -165,8 +167,34 @@ impl ManagerClient {
             Ok(Self {
                 runtime: runtime,
                 client: client,
+                device_id: device_id,
             })
         })
+    }
+
+    / Start a heartbeat task that sends a `ManagerHeartbeatRequest(device_id)`
+    / to our ManagerServer every `heartbeat_interval`.
+    fn run_heartbeat(
+        &self,
+        py: Python<'_>,
+        heartbeat_interval: Duration,
+    ) {
+        // Release the GIL while we touch Tokio.
+        py.allow_threads(move || {
+            let mut client = self.client.clone();
+            let device_id = Arc::new(self.device_id.clone());
+            self.runtime.spawn(async move {
+                loop {
+                    let request = tonic::Request::new(
+                        torchftpb::ManagerHeartbeatRequest {
+                            device_id: device_id.as_str().to_owned(),
+                        },
+                    );
+                    let _response = client.heartbeat(request).await;
+                    sleep(heartbeat_interval).await;
+                }
+            });
+        });
     }
 
     fn _quorum(

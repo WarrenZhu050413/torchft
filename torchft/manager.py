@@ -44,6 +44,8 @@ from torchft._torchft import ManagerClient, ManagerServer
 from torchft.checkpointing import CheckpointTransport, HTTPTransport
 from torchft.futures import future_timeout
 
+from pynvml import nvmlInit, nvmlDeviceGetHandleByIndex, nvmlDeviceGetUUID
+
 if TYPE_CHECKING:
     from torchft.process_group import ProcessGroup
 
@@ -78,6 +80,19 @@ class ExceptionWithTraceback(Exception):
         self.stack_trace: str = traceback.format_exc()
         super().__init__(f"{e}\n{self.stack_trace}")
 
+def get_device_id():
+
+    # Initialize NVML
+    nvmlInit()
+
+    handle = nvmlDeviceGetHandleByIndex(torch.cuda.current_device())
+    print("GPU device:", torch.cuda.current_device())
+    print("GPU handle:", handle)
+
+    # Query its UUID
+    gpu_uuid = nvmlDeviceGetUUID(handle)
+    print("GPU 0 UUID:", gpu_uuid)
+    return gpu_uuid
 
 class Manager:
     """
@@ -233,8 +248,11 @@ class Manager:
             self._store.set(MANAGER_ADDR_KEY, self._manager.address())
             self._store.set(REPLICA_ID_KEY, replica_id)
 
+        self._device_id = get_device_id()
+
         addr = self._store.get(MANAGER_ADDR_KEY).decode("utf-8")
-        self._client = ManagerClient(addr, connect_timeout=connect_timeout)
+        self._client = ManagerClient(addr=addr, connect_timeout=connect_timeout, device_id=self._device_id)
+        # self._client.run_heartbeat(heartbeat_interval)
 
         replica_id = self._store.get(REPLICA_ID_KEY).decode("utf-8")
         self._logger = _ManagerLogger(

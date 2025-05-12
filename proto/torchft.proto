@@ -120,9 +120,16 @@ message KillRequest {
 }
 message KillResponse {}
 
+message ManagerHeartbeatRequest {
+    string device_id = 1;
+}
+
+message ManagerHeartbeatResponse {}
+
 service ManagerService {
     rpc Quorum (ManagerQuorumRequest) returns (ManagerQuorumResponse);
     rpc CheckpointMetadata(CheckpointMetadataRequest) returns (CheckpointMetadataResponse);
     rpc ShouldCommit(ShouldCommitRequest) returns (ShouldCommitResponse);
     rpc Kill(KillRequest) returns (KillResponse);
+    rpc Heartbeat (ManagerHeartbeatRequest) returns (ManagerHeartbeatResponse);
 }
