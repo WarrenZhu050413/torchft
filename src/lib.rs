@@ -21,6 +21,7 @@ use std::thread::available_parallelism;
 use structopt::StructOpt;
 use tokio::runtime::Runtime;
 use tokio::task::JoinHandle;
+use tokio::time::sleep;
 use tonic::transport::Channel;
 use tonic::Status;
 
@@ -148,17 +149,13 @@ struct ManagerClient {
     group_rank: i64,
     runtime: Runtime,
     client: ManagerServiceClient<Channel>,
+    device_id: String,
 }
 
 #[pymethods]
 impl ManagerClient {
     #[new]
-    fn new(
-        py: Python<'_>,
-        group_rank: i64,
-        manager_addr: String,
-        connect_timeout: Duration,
-    ) -> PyResult<Self> {
+    fn new(py: Python<'_>, addr: String, connect_timeout: Duration, device_id: String) -> PyResult<Self> {
         py.allow_threads(move || {
             let runtime = tokio::runtime::Builder::new_multi_thread()
                 .worker_threads(num_threads())
@@ -176,42 +173,31 @@ impl ManagerClient {
                 group_rank: group_rank,
                 runtime: runtime,
                 client: client,
+                device_id: device_id,
             })
         })
     }
 
-    /// Start an async task that ticks every `interval` and sends a
-    /// `ManagerHeartbeatRequest(group_id)` to our ManagerServer.
-    ///
-    /// This never returns – it spawns inside the internal Tokio runtime.
-    ///
-    /// Args:
-    ///     group_id (str):  Identifier you want the server to log.
-    ///     interval (timedelta):  How often to ping, e.g. `timedelta(seconds=5)`.
+    / Start a heartbeat task that sends a `ManagerHeartbeatRequest(device_id)`
+    / to our ManagerServer every `heartbeat_interval`.
     fn run_heartbeat(
         &self,
         py: Python<'_>,
-        group_id: String,
-        interval: Duration,
+        heartbeat_interval: Duration,
     ) {
         // Release the GIL while we touch Tokio.
         py.allow_threads(move || {
             let mut client = self.client.clone();
-            // Clone the string once; Arc avoids moves into loop.
-            let group = Arc::new(group_id);
+            let device_id = Arc::new(self.device_id.clone());
             self.runtime.spawn(async move {
-                let mut ticker = tokio::time::interval(interval);
                 loop {
-                    ticker.tick().await;
-                    let req = tonic::Request::new(
+                    let request = tonic::Request::new(
                         torchftpb::ManagerHeartbeatRequest {
-                            group_id: group.as_str().to_owned(),
+                            device_id: device_id.as_str().to_owned(),
                         },
                     );
-                    if let Err(e) = client.heartbeat(req).await {
-                        // Don’t crash – just log; reconnect logic can go here.
-                        log::warn!("manager heartbeat failed: {}", e);
-                    }
+                    let _response = client.heartbeat(request).await;
+                    sleep(heartbeat_interval).await;
                 }
             });
         });

@@ -121,7 +121,7 @@ message KillRequest {
 message KillResponse {}
 
 message ManagerHeartbeatRequest {
-    int64 group_rank = 1;
+    string device_id = 1;
 }
 
 message ManagerHeartbeatResponse {}

@@ -9,6 +9,7 @@ use std::collections::HashMap;
 use std::collections::HashSet;
 use std::sync::Arc;
 use std::time::Duration;
+use std::time::Instant;
 
 use anyhow::Result;
 use tokio::sync::broadcast;
@@ -60,6 +61,10 @@ struct ManagerState {
     should_commit_channel: broadcast::Sender<bool>,
     should_commit_failures: HashSet<i64>,
     should_commit_count: HashSet<i64>,
+
+    // heartbeat information
+    // device_id -> last heartbeat timestamp
+    heartbeats: HashMap<String, Instant>,
 }
 
 pub struct Manager {
@@ -132,6 +137,8 @@ impl Manager {
                 should_commit_channel: should_commit_tx,
                 should_commit_count: HashSet::new(),
                 should_commit_failures: HashSet::new(),
+
+                heartbeats: HashMap::new(),
             }),
             local_addr: local_addr,
             listener: Mutex::new(Some(listener)),
@@ -379,16 +386,15 @@ impl ManagerService for Arc<Manager> {
         &self,
         request: Request<ManagerHeartbeatRequest>,
     ) -> Result<Response<ManagerHeartbeatResponse>, Status> {
-        let req = request.into_inner();
-        // Use your info_with_replica! macro or similar for logging
-        // For example, if replica_id is relevant or can be derived:
-        // info_with_replica!(self.replica_id, "Received manager heartbeat for group_id: {}", req.group_id);
-        log::info!("[Manager {}] Received heartbeat for group_id: {}", self.replica_id, req.group_id);
-        
-        // TODO: Implement any state updates or logic needed when a heartbeat is received.
-        // For now, it just acknowledges the heartbeat.
+        let device_id = request.into_inner().device_id;
 
-        Ok(Response::new(ManagerHeartbeatResponse {}))
+        {
+            let mut state = self.state.lock().await;
+            state.heartbeats.insert(device_id, Instant::now());
+        }
+
+        let reply = ManagerHeartbeatResponse {};
+        Ok(Response::new(reply))
     }
 
     async fn kill(&self, request: Request<KillRequest>) -> Result<Response<KillResponse>, Status> {

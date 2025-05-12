@@ -53,7 +53,7 @@ struct State {
     quorum_id: i64,
 
     // heartbeat information
-    // replica_id -> last heartbeat
+    // replica_id -> last heartbeat timestamp
     heartbeats: HashMap<String, Instant>,
 }
 

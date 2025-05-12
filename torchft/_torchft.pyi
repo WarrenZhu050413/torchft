@@ -3,7 +3,8 @@ from datetime import timedelta
 from typing import Hashable, List, Optional
 
 class ManagerClient:
-    def __init__(self, addr: str, connect_timeout: timedelta) -> None: ...
+    def __init__(self, addr: str, connect_timeout: timedelta, device_id: str) -> None: ...
+    def run_heartbeat(self, heartbeat_interval: timedelta) -> None: ...
     def _quorum(
         self,
         group_rank: int,
@@ -73,6 +74,7 @@ class QuorumMember:
     world_size: int
     shrink_only: bool
     data: Optional[dict[Hashable, object]] = None
+    commit_failures: int = 0
 
 @dataclass
 class Timestamp:
@@ -100,6 +102,7 @@ class LighthouseClient:
         world_size: Optional[int] = None,
         shrink_only: Optional[bool] = None,
         data: Optional[dict[Hashable, object]] = None,
+        commit_failures: int = 0,
     ) -> Quorum: ...
     def heartbeat(
         self,
