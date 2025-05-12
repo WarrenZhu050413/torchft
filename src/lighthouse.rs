@@ -37,7 +37,7 @@ use crate::manager::manager_client_new;
 use crate::torchftpb::{
     lighthouse_service_server::{LighthouseService, LighthouseServiceServer},
     KillRequest, LighthouseHeartbeatRequest, LighthouseHeartbeatResponse, LighthouseQuorumRequest,
-    LighthouseQuorumResponse, Quorum, QuorumMember,
+    LighthouseQuorumResponse, Quorum, QuorumMember, DrEnterRequest, DrEnterResponse,
 };
 
 #[derive(Clone)]
@@ -55,6 +55,9 @@ struct State {
     // heartbeat information
     // replica_id -> last heartbeat
     heartbeats: HashMap<String, Instant>,
+
+    // device uuid to replica id
+    drmap: HashMap<String, String>,
 }
 
 pub struct Lighthouse {
@@ -273,6 +276,7 @@ impl Lighthouse {
                 prev_quorum: None,
                 quorum_id: 0,
                 heartbeats: HashMap::new(),
+                drmap: HashMap::new(),
             }),
             opt: opt,
             local_addr: listener.local_addr()?,
@@ -556,6 +560,23 @@ impl LighthouseService for Arc<Lighthouse> {
         let reply = LighthouseHeartbeatResponse {};
         Ok(Response::new(reply))
     }
+
+    async fn dr_enter(
+        &self,
+        request: Request<DrEnterRequest>,
+    ) -> Result<Response<DrEnterResponse>, Status> {
+        let request_inner = request.into_inner();
+        let device_uuid = request_inner.device_uuid;
+        let replica_id = request_inner.replica_id;
+
+        {
+            let mut state = self.state.lock().await;
+            state.drmap.insert(device_uuid, replica_id);
+        }
+
+        let reply = DrEnterResponse {};
+        Ok(Response::new(reply))
+    }
 }
 
 #[derive(Template)]
@@ -632,6 +653,7 @@ mod tests {
             prev_quorum: None,
             quorum_id: 0,
             heartbeats: HashMap::new(),
+            drmap: HashMap::new(),
         };
 
         let now = Instant::now();
@@ -711,6 +733,7 @@ mod tests {
             prev_quorum: None,
             quorum_id: 0,
             heartbeats: HashMap::new(),
+            drmap: HashMap::new(),
         };
 
         let now = Instant::now();
@@ -797,6 +820,7 @@ mod tests {
             prev_quorum: None,
             quorum_id: 0,
             heartbeats: HashMap::new(),
+            drmap: HashMap::new(),
         };
 
         let now = Instant::now();
@@ -887,6 +911,7 @@ mod tests {
             prev_quorum: None,
             quorum_id: 0,
             heartbeats: HashMap::new(),
+            drmap: HashMap::new(),
         };
 
         let now = Instant::now();
@@ -1028,6 +1053,7 @@ mod tests {
             prev_quorum: None,
             quorum_id: 0,
             heartbeats: HashMap::new(),
+            drmap: HashMap::new(),
         };
 
         let now = Instant::now();

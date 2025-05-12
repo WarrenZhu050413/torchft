@@ -67,9 +67,18 @@ message LighthouseHeartbeatRequest {
 
 message LighthouseHeartbeatResponse {}
 
+message DREnterRequest {
+    string replica_id = 1;
+    string device_uuid = 2;
+}
+
+message DREnterResponse {}
+
 service LighthouseService {
     rpc Quorum (LighthouseQuorumRequest) returns (LighthouseQuorumResponse);
     rpc Heartbeat (LighthouseHeartbeatRequest) returns (LighthouseHeartbeatResponse);
+
+    rpc DREnter(DREnterRequest) returns (DREnterResponse);
 }
 
 message ManagerQuorumRequest {
