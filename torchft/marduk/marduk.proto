@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+message RegisterDevice       { string device_uuid = 1; string replica_id = 2; }
+message DrainEvent           { string device_uuid = 1; }
+message ReplicaFailEvent     { int32  replica_rank = 1; }
+message MonitoredFailEvent   { string  device_uuid = 1; }
+message ChangeBatchSizeEvent { int32  new_batch_sz = 1; }
+
+message EventEnvelope {
+  uint64  seq      = 1;
+  uint64  ts_nanos = 2;
+  oneof body {
+    RegisterDevice       register_device   = 9;
+    DrainEvent           drain             = 10;
+    ReplicaFailEvent     replica_fail      = 11;
+    MonitoredFailEvent   monitored_fail    = 12;
+    ChangeBatchSizeEvent change_batch_sz   = 13;
+  }
+}
+
+message DeviceReplicaMapEntry {
+  string device_uuid = 1;
+  int32  replica_id   = 2;
+}

@@ -26,17 +26,20 @@ and Hybrid FSDP.
 """
 
 import concurrent.futures
+import asyncio
 import logging
 import os
 import socket
 import traceback
 import uuid
+
 from concurrent.futures import ThreadPoolExecutor
 from contextlib import nullcontext
 from datetime import timedelta
 from enum import Enum
 from typing import TYPE_CHECKING, Callable, Dict, List, Optional, TypeVar, cast
 
+import nats
 import torch
 from torch.distributed import ReduceOp, TCPStore
 
@@ -46,6 +49,10 @@ from torchft.futures import future_timeout
 
 if TYPE_CHECKING:
     from torchft.process_group import ProcessGroup
+
+from torchft.marduk.marduk_pb2 import EventEnvelope, RegisterDevice, DeviceReplicaMapEntry
+from torchft.marduk.utils import get_device_uuid
+from torchft.marduk.constants import MardukConstants
 
 MANAGER_ADDR_KEY: str = "manager_addr"
 MANAGER_PORT_ENV: str = "TORCHFT_MANAGER_PORT"
@@ -116,6 +123,7 @@ class Manager:
         checkpoint_transport: Optional[CheckpointTransport[Dict[str, T]]] = None,
         init_sync: bool = True,
         max_retries: Optional[int] = None,
+        marduk_addr: str = MardukConstants.DEFAULT_ADDR,
     ) -> None:
         """
         Args:
@@ -251,6 +259,31 @@ class Manager:
         # first step is 1
         self._participating_replica_rank: Optional[int] = None
         self._participating_replica_world_size: int = 0
+
+        # Start marduk
+        self._replica_id = replica_id
+        self._marduk_addr = marduk_addr or os.environ["MARDUK_ADDR"]
+        self.marduk_start()
+
+    def marduk_start(self):
+        self._loop = asyncio.get_event_loop()
+        self._nc, self._js = self._loop.run_until_complete(
+            self.marduk_connect()
+        )
+        self._loop.run_until_complete(self.publish_DRmap_info())
+
+    async def marduk_connect(self):
+        nc = await nats.connect(self._marduk_addr)
+        js = nc.jetstream()
+        return nc, js
+
+    async def publish_DRmap_info(self):
+        device_uuid = get_device_uuid()
+        
+        DRenvelope = EventEnvelope()
+        DRenvelope.register_device.device_uuid = device_uuid
+        DRenvelope.register_device.replica_id = self._replica_id
+        await self._js.publish(MardukConstants.subjects.DR_SUBJECT, DRenvelope.SerializeToString())
 
     def set_state_dict_fns(
         self, load_state_dict: Callable[[T], None], state_dict: Callable[[], T]

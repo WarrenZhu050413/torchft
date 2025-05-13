@@ -15,11 +15,29 @@ os.environ["NCCL_HOSTID"] = str(REPLICA_GROUP_ID)
 
 import torch
 import torch.nn.functional as F
-import torchvision
-import torchvision.transforms as transforms
 from torch import nn, optim
 from torch.distributed.elastic.multiprocessing.errors import record
 from torchdata.stateful_dataloader import StatefulDataLoader
+
+import random
+from torch.utils.data import Dataset
+
+class SyntheticDataset(Dataset):
+    def __init__(self, length=50000, channels=3, height=32, width=32, num_classes=10, transform=None):
+        self.length = length
+        self.channels = channels
+        self.height = height
+        self.width = width
+        self.num_classes = num_classes
+        self.transform = transform
+
+    def __len__(self):
+        return self.length
+
+    def __getitem__(self, idx):
+        img = torch.randn(self.channels, self.height, self.width)
+        label = random.randint(0, self.num_classes - 1)
+        return img, label
 
 from torchft import (
     DistributedDataParallel,
@@ -39,11 +57,12 @@ def main() -> None:
     REPLICA_GROUP_ID = int(os.environ.get("REPLICA_GROUP_ID", 0))
     NUM_REPLICA_GROUPS = int(os.environ.get("NUM_REPLICA_GROUPS", 2))
 
-    transform = transforms.Compose(
-        [transforms.ToTensor(), transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))]
-    )
-    trainset = torchvision.datasets.CIFAR10(
-        root="./cifar", train=True, download=True, transform=transform
+    trainset = SyntheticDataset(
+        length=50000,
+        channels=3,
+        height=32,
+        width=32,
+        num_classes=10,
     )
 
     # This shards the training set across all ranks and replica groups. We manage
@@ -51,7 +70,7 @@ def main() -> None:
     # majority of groups will be available so few batches will be dropped.
     sampler = DistributedSampler(
         trainset,
-        replica_group=REPLICA_GROUP_ID,
+        replica_rank=REPLICA_GROUP_ID,
         num_replica_groups=NUM_REPLICA_GROUPS,
         group_rank=0,
         # for DDP we can use replica groups of size 1, FSDP/PP/CP would need more.
@@ -196,7 +215,7 @@ def main() -> None:
             # they're shared across all groups and will load from existing replicas as
             # long as not every worker goes down.
 
-            if manager.current_step() >= 10000:
+            if manager.current_step() >= 10:
                 # complete training
                 prof.stop()
                 exit()

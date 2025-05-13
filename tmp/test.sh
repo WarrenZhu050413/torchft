@@ -1,0 +1,1 @@
+torchx run -- --replicas 1
