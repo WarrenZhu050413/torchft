@@ -108,7 +108,7 @@ class Controller():
         assert self._nc is not None # This should always be true because we check it in maybe_log_and_raise_exception
 
         env: EventEnvelope = EventEnvelope()
-        env.replica_fail.replica_group_id = replica_id
+        env.replica_fail.replica_id = replica_id
         await self._nc.publish(MardukConstants.subjects.REPLICA_FAIL, env.SerializeToString())
 
     def get_replicas_for_device(self, device_uuid: str) -> Set[str]:

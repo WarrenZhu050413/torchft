@@ -2,16 +2,10 @@
 
 1. Set up all the torchFT environments according to their README.md
 
-2. Set up the torchFT environment
+2. Set up the torchFT environment and compiles protobuf
 ```sh
 cd /srv/apps/warren/torchft
 source /srv/apps/warren/torchft/tmp/setup.sh
-```
-
-3. Compile the protobufs
-
-```sh
-protoc --python_out=. torchft/marduk/marduk.proto
 ```
 
 Start nats server

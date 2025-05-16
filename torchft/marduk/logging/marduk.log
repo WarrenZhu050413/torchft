@@ -225,3 +225,124 @@ Traceback (most recent call last):
     env.replica_fail.replica_group_id = replica_id
     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 AttributeError: Protocol message ReplicaFailEvent has no "replica_group_id" field.
+Marduk constants module loaded
+Starting Marduk Controller
+Controller initialized with NATS address: nats://0.0.0.0:4222
+Connected to NATS server at nats://0.0.0.0:4222
+Subscribing to marduk.DRentry on stream CONTROLLER-STREAM with consumer controller-consumer
+Subscribed to marduk.monitored.failure
+Controller initialized and subscribed to all subjects
+Started listening on marduk.DRentry
+Started listening on marduk.monitored.failure
+Marduk constants module loaded
+Using NATS server at nats://localhost:4222
+Starting Marduk CLI
+Marduk CLI initialized
+Executing test command with input: 1
+Simulating failed GPU with uuid: 1
+Connected to NATS server at nats://localhost:4222
+Published device failure event for device 1
+Received message on marduk.monitored.failure
+Received message: monitored_fail {
+  device_uuid: "1"
+}
+
+[GPU FAILURE] Device 1 not found in device-to-replicas map
+Executing test command with input: 3
+Simulating failed GPU with uuid: 3
+Connected to NATS server at nats://localhost:4222
+Published device failure event for device 3
+Received message on marduk.monitored.failure
+Received message: monitored_fail {
+  device_uuid: "3"
+}
+
+[GPU FAILURE] Device 3 not found in device-to-replicas map
+Marduk constants module loaded
+Retrieved GPU UUID: GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 for device index 0
+Received 1 messages on marduk.DRentry
+Received message: register_device {
+  device_uuid: "GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28"
+  replica_id: "train_ddp_1:a7001149-1f57-4dec-9006-79c62e8dcd55"
+}
+
+Received register_device event for device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 and replica train_ddp_1:a7001149-1f57-4dec-9006-79c62e8dcd55
+New Mapping: Device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 is now associated with replicas: {'train_ddp_1:a7001149-1f57-4dec-9006-79c62e8dcd55'}
+New Mapping: Replica train_ddp_1:a7001149-1f57-4dec-9006-79c62e8dcd55 is now associated with devices: {'GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28'}
+Executing test command with input: GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28
+Simulating failed GPU with uuid: GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28
+Connected to NATS server at nats://localhost:4222
+Published device failure event for device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28
+Received message on marduk.monitored.failure
+Received message: monitored_fail {
+  device_uuid: "GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28"
+}
+
+[GPU FAILURE] Associated Replica IDs: {'train_ddp_1:a7001149-1f57-4dec-9006-79c62e8dcd55'}
+[GPU FAILURE] Replica train_ddp_1:a7001149-1f57-4dec-9006-79c62e8dcd55 not found in replica-to-devices map
+Error handling GPU failure message: [GPU FAILURE] Replica train_ddp_1:a7001149-1f57-4dec-9006-79c62e8dcd55 not found in replica-to-devices map
+Traceback (most recent call last):
+  File "/srv/apps/warren/torchft/torchft/marduk/controller.py", line 100, in message_handler_handle_gpu_failure
+    log_and_raise_exception(logger, failure_message)
+  File "/srv/apps/warren/torchft/torchft/marduk/logging/log_utils.py", line 6, in log_and_raise_exception
+    raise Exception(msg)
+Exception: [GPU FAILURE] Replica train_ddp_1:a7001149-1f57-4dec-9006-79c62e8dcd55 not found in replica-to-devices map
+Stopping Controller
+All subscriptions cleared
+NATS connection closed
+Marduk constants module loaded
+Retrieved GPU UUID: GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 for device index 0
+Marduk constants module loaded
+Starting Marduk Controller
+Controller initialized with NATS address: nats://0.0.0.0:4222
+Connected to NATS server at nats://0.0.0.0:4222
+Subscribing to marduk.DRentry on stream CONTROLLER-STREAM with consumer controller-consumer
+Subscribed to marduk.monitored.failure
+Controller initialized and subscribed to all subjects
+Started listening on marduk.DRentry
+Started listening on marduk.monitored.failure
+Received 1 messages on marduk.DRentry
+Received message: register_device {
+  device_uuid: "GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28"
+  replica_id: "train_ddp_1:48896630-edb5-424d-86ce-2308a2a3db19"
+}
+
+Received register_device event for device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 and replica train_ddp_1:48896630-edb5-424d-86ce-2308a2a3db19
+New Mapping: Device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 is now associated with replicas: {'train_ddp_1:48896630-edb5-424d-86ce-2308a2a3db19'}
+New Mapping: Replica train_ddp_1:48896630-edb5-424d-86ce-2308a2a3db19 is now associated with devices: {'GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28'}
+Executing test command with input: 1
+Simulating failed GPU with uuid: 1
+Connected to NATS server at nats://localhost:4222
+Published device failure event for device 1
+Marduk constants module loaded
+Using NATS server at nats://localhost:4222
+Starting Marduk CLI
+Marduk CLI initialized
+Executing test command with input: 1
+Simulating failed GPU with uuid: 1
+Connected to NATS server at nats://localhost:4222
+Published device failure event for device 1
+Received message on marduk.monitored.failure
+Received message: monitored_fail {
+  device_uuid: "1"
+}
+
+[GPU FAILURE] Device 1 not found in device-to-replicas map
+Executing test command with input: GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28
+Simulating failed GPU with uuid: GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28
+Connected to NATS server at nats://localhost:4222
+Published device failure event for device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28
+Received message on marduk.monitored.failure
+Received message: monitored_fail {
+  device_uuid: "GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28"
+}
+
+[GPU FAILURE] Associated Replica IDs: {'train_ddp_1:48896630-edb5-424d-86ce-2308a2a3db19'}
+[GPU FAILURE] Replica train_ddp_1:48896630-edb5-424d-86ce-2308a2a3db19 not found in replica-to-devices map
+Error handling GPU failure message: [GPU FAILURE] Replica train_ddp_1:48896630-edb5-424d-86ce-2308a2a3db19 not found in replica-to-devices map
+Traceback (most recent call last):
+  File "/srv/apps/warren/torchft/torchft/marduk/controller.py", line 100, in message_handler_handle_gpu_failure
+    log_and_raise_exception(logger, failure_message)
+  File "/srv/apps/warren/torchft/torchft/marduk/logging/log_utils.py", line 6, in log_and_raise_exception
+    raise Exception(msg)
+Exception: [GPU FAILURE] Replica train_ddp_1:48896630-edb5-424d-86ce-2308a2a3db19 not found in replica-to-devices map

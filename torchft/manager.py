@@ -290,7 +290,11 @@ class Manager:
             print(f"Failed to connect to NATS server: {e}")
 
     async def message_handler(self, msg: Msg):
-        self._logger.info(f"Received message on {msg.subject}: {msg.data}")
+        logging_message = f"Received message on {msg.subject}: {msg.data}"
+        self._logger.info(logging_message)
+        print(logging_message)
+        with open("test.log", "a") as log_file:
+            log_file.write(f"{logging_message}\n")
 
     async def subscribe_nc(self, subject: str, message_handler: Callable[[Msg], Awaitable[None]]) -> None:
         assert self._nc is not None # This should always be true because we connect to NATS in marduk_start in Manager constructor
