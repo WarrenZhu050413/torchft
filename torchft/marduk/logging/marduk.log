@@ -1,0 +1,227 @@
+2025-05-16 20:47:18 - torchft.marduk.logging.logger - INFO - Marduk constants module loaded
+2025-05-16 20:47:18 - torchft.marduk.logging.logger - INFO - Using NATS server at nats://localhost:4222
+2025-05-16 20:47:18 - torchft.marduk.logging.logger - INFO - Starting Marduk CLI
+2025-05-16 20:47:18 - torchft.marduk.logging.logger - INFO - Marduk CLI initialized
+2025-05-16 20:47:37 - torchft.marduk.logging.logger - INFO - Executing test command with input: 1
+2025-05-16 20:47:37 - torchft.marduk.logging.logger - INFO - Simulating failed GPU with uuid: 1
+2025-05-16 20:48:02 - torchft.marduk.logging.logger - INFO - Marduk constants module loaded
+2025-05-16 20:48:02 - torchft.marduk.logging.logger - INFO - Using NATS server at nats://localhost:4222
+2025-05-16 20:48:02 - torchft.marduk.logging.logger - INFO - Starting Marduk CLI
+2025-05-16 20:48:02 - torchft.marduk.logging.logger - INFO - Marduk CLI initialized
+2025-05-16 20:48:05 - torchft.marduk.logging.logger - INFO - Executing test command with input: 1
+2025-05-16 20:48:05 - torchft.marduk.logging.logger - INFO - Simulating failed GPU with uuid: 1
+2025-05-16 20:48:05 - torchft.marduk.logging.logger - DEBUG - Connected to NATS server at nats://localhost:4222
+2025-05-16 20:48:05 - torchft.marduk.logging.logger - INFO - Published device failure event for device 1
+2025-05-16 20:48:49 - torchft.marduk.logging.logger - INFO - Marduk constants module loaded
+2025-05-16 20:48:49 - torchft.marduk.logging.logger - INFO - Starting Marduk Controller
+2025-05-16 20:48:49 - torchft.marduk.logging.logger - INFO - Controller initialized with NATS address: nats://0.0.0.0:4222
+2025-05-16 20:48:49 - torchft.marduk.logging.logger - ERROR - Unexpected error in controller: This event loop is already running
+Traceback (most recent call last):
+  File "/srv/apps/warren/torchft/torchft/marduk/controller.py", line 197, in main
+    controller = Controller()
+                 ^^^^^^^^^^^^
+  File "/srv/apps/warren/torchft/torchft/marduk/controller.py", line 37, in __init__
+    self._nc: Client = self._loop.run_until_complete(nats.connect(self._marduk_addr))
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/srv/apps/danny/miniconda3/envs/warren/torchtitan/lib/python3.11/asyncio/base_events.py", line 630, in run_until_complete
+    self._check_running()
+  File "/srv/apps/danny/miniconda3/envs/warren/torchtitan/lib/python3.11/asyncio/base_events.py", line 589, in _check_running
+    raise RuntimeError('This event loop is already running')
+RuntimeError: This event loop is already running
+2025-05-16 21:19:20 - torchft.marduk.logging.logger - INFO - Marduk constants module loaded
+2025-05-16 21:19:20 - torchft.marduk.logging.logger - INFO - Starting Marduk Controller
+2025-05-16 21:19:20 - torchft.marduk.logging.logger - INFO - Controller initialized with NATS address: nats://0.0.0.0:4222
+2025-05-16 21:19:20 - torchft.marduk.logging.logger - INFO - Connected to NATS server at nats://0.0.0.0:4222
+2025-05-16 21:19:20 - torchft.marduk.logging.logger - INFO - Connected to NATS server at nats://0.0.0.0:4222
+2025-05-16 21:19:20 - torchft.marduk.logging.logger - INFO - Subscribing to marduk.DRentry on stream CONTROLLER-STREAM with consumer controller-consumer
+2025-05-16 21:19:20 - torchft.marduk.logging.logger - INFO - Subscribed to marduk.monitored.failure
+2025-05-16 21:19:20 - torchft.marduk.logging.logger - INFO - Controller initialized and subscribed to all subjects
+2025-05-16 21:19:20 - torchft.marduk.logging.logger - INFO - Started listening on marduk.DRentry
+2025-05-16 21:19:20 - torchft.marduk.logging.logger - INFO - Started listening on marduk.monitored.failure
+2025-05-16 21:19:39 - torchft.marduk.logging.logger - INFO - Stopping Controller
+2025-05-16 21:19:39 - torchft.marduk.logging.logger - INFO - All subscriptions cleared
+2025-05-16 21:19:39 - torchft.marduk.logging.logger - INFO - NATS connection closed
+2025-05-16 21:19:41 - torchft.marduk.logging.logger - INFO - Marduk constants module loaded
+2025-05-16 21:19:41 - torchft.marduk.logging.logger - INFO - Starting Marduk Controller
+2025-05-16 21:19:41 - torchft.marduk.logging.logger - INFO - Controller initialized with NATS address: nats://0.0.0.0:4222
+2025-05-16 21:19:41 - torchft.marduk.logging.logger - INFO - Connected to NATS server at nats://0.0.0.0:4222
+2025-05-16 21:19:41 - torchft.marduk.logging.logger - INFO - Subscribing to marduk.DRentry on stream CONTROLLER-STREAM with consumer controller-consumer
+2025-05-16 21:19:41 - torchft.marduk.logging.logger - INFO - Subscribed to marduk.monitored.failure
+2025-05-16 21:19:41 - torchft.marduk.logging.logger - INFO - Controller initialized and subscribed to all subjects
+2025-05-16 21:19:41 - torchft.marduk.logging.logger - INFO - Started listening on marduk.DRentry
+2025-05-16 21:19:41 - torchft.marduk.logging.logger - INFO - Started listening on marduk.monitored.failure
+2025-05-16 21:22:06 - torchft.marduk.logging.logger - INFO - Stopping Controller
+2025-05-16 21:22:06 - torchft.marduk.logging.logger - INFO - All subscriptions cleared
+2025-05-16 21:22:06 - torchft.marduk.logging.logger - INFO - NATS connection closed
+Marduk constants module loaded
+Starting Marduk Controller
+Controller initialized with NATS address: nats://0.0.0.0:4222
+Connected to NATS server at nats://0.0.0.0:4222
+Subscribing to marduk.DRentry on stream CONTROLLER-STREAM with consumer controller-consumer
+Subscribed to marduk.monitored.failure
+Controller initialized and subscribed to all subjects
+Started listening on marduk.DRentry
+Started listening on marduk.monitored.failure
+Marduk constants module loaded
+Marduk constants module loaded
+Starting Marduk Controller
+Controller initialized with NATS address: nats://0.0.0.0:4222
+Connected to NATS server at nats://0.0.0.0:4222
+Subscribing to marduk.DRentry on stream CONTROLLER-STREAM with consumer controller-consumer
+Subscribed to marduk.monitored.failure
+Controller initialized and subscribed to all subjects
+Started listening on marduk.DRentry
+Started listening on marduk.monitored.failure
+Marduk constants module loaded
+Marduk constants module loaded
+Marduk constants module loaded
+Marduk constants module loaded
+Marduk constants module loaded
+Retrieved GPU UUID: GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 for device index 0
+Received 1 messages on marduk.DRentry
+Received message: register_device {
+  device_uuid: "GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28"
+  replica_id: "train_ddp_1:19d663f8-0a5c-4021-9393-18bc1e6ea60b"
+}
+
+New Mapping: Device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 is now associated with replicas: {'train_ddp_1:19d663f8-0a5c-4021-9393-18bc1e6ea60b'}
+New Mapping: Replica train_ddp_1:19d663f8-0a5c-4021-9393-18bc1e6ea60b is now associated with devices: {'GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28'}
+Marduk constants module loaded
+Retrieved GPU UUID: GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 for device index 0
+Received 1 messages on marduk.DRentry
+Received message: register_device {
+  device_uuid: "GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28"
+  replica_id: "train_ddp_1:91a40ddd-b85c-4aae-84f0-e581d6d10517"
+}
+
+New Mapping: Device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 is now associated with replicas: {'train_ddp_1:91a40ddd-b85c-4aae-84f0-e581d6d10517'}
+New Mapping: Replica train_ddp_1:91a40ddd-b85c-4aae-84f0-e581d6d10517 is now associated with devices: {'GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28'}
+Marduk constants module loaded
+Retrieved GPU UUID: GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 for device index 0
+Received 1 messages on marduk.DRentry
+Received message: register_device {
+  device_uuid: "GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28"
+  replica_id: "train_ddp_1:0ca0b7ba-61fb-4548-9dc7-8b3ecb44794a"
+}
+
+New Mapping: Device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 is now associated with replicas: {'train_ddp_1:19d663f8-0a5c-4021-9393-18bc1e6ea60b', 'train_ddp_1:0ca0b7ba-61fb-4548-9dc7-8b3ecb44794a'}
+New Mapping: Replica train_ddp_1:0ca0b7ba-61fb-4548-9dc7-8b3ecb44794a is now associated with devices: {'GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28'}
+Marduk constants module loaded
+Using NATS server at nats://localhost:4222
+Starting Marduk CLI
+Marduk CLI initialized
+Executing test command with input: GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28
+Simulating failed GPU with uuid: GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28
+Connected to NATS server at nats://localhost:4222
+Published device failure event for device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28
+Received message on marduk.monitored.failure
+Received message on marduk.monitored.failure
+Received message: monitored_fail {
+  device_uuid: "GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28"
+}
+
+Received message: monitored_fail {
+  device_uuid: "GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28"
+}
+
+[GPU FAILURE] Associated Replica IDs: {'train_ddp_1:91a40ddd-b85c-4aae-84f0-e581d6d10517'}
+[GPU FAILURE] Associated Device IDs for replica train_ddp_1:91a40ddd-b85c-4aae-84f0-e581d6d10517: {'GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28'}
+[GPU FAILURE] Associated Replica IDs: {'train_ddp_1:19d663f8-0a5c-4021-9393-18bc1e6ea60b', 'train_ddp_1:0ca0b7ba-61fb-4548-9dc7-8b3ecb44794a'}
+[GPU FAILURE] Associated Device IDs for replica train_ddp_1:19d663f8-0a5c-4021-9393-18bc1e6ea60b: {'GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28'}
+Error handling GPU failure message: Protocol message ReplicaFailEvent has no "replica_group_id" field.
+Traceback (most recent call last):
+  File "/srv/apps/warren/torchft/torchft/marduk/controller.py", line 99, in message_handler_handle_gpu_failure
+    logger.info(f"[GPU FAILURE] Associated Device IDs for replica {replica_id}: {devices}")
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/srv/apps/warren/torchft/torchft/marduk/controller.py", line 113, in send_replica_fail_event
+AttributeError: Protocol message ReplicaFailEvent has no "replica_group_id" field.
+Error handling GPU failure message: Protocol message ReplicaFailEvent has no "replica_group_id" field.
+Traceback (most recent call last):
+  File "/srv/apps/warren/torchft/torchft/marduk/controller.py", line 97, in message_handler_handle_gpu_failure
+    if replica_id in self.replica_to_devices:
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/srv/apps/warren/torchft/torchft/marduk/controller.py", line 109, in send_replica_fail_event
+AttributeError: Protocol message ReplicaFailEvent has no "replica_group_id" field.
+Stopping Controller
+All subscriptions cleared
+NATS connection closed
+Marduk constants module loaded
+Starting Marduk Controller
+Controller initialized with NATS address: nats://0.0.0.0:4222
+Connected to NATS server at nats://0.0.0.0:4222
+Subscribing to marduk.DRentry on stream CONTROLLER-STREAM with consumer controller-consumer
+Subscribed to marduk.monitored.failure
+Controller initialized and subscribed to all subjects
+Started listening on marduk.DRentry
+Started listening on marduk.monitored.failure
+Executing test command with input: GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28
+Simulating failed GPU with uuid: GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28
+Connected to NATS server at nats://localhost:4222
+Published device failure event for device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28
+Stopping Controller
+All subscriptions cleared
+Marduk constants module loaded
+Starting Marduk Controller
+Controller initialized with NATS address: nats://0.0.0.0:4222
+Connected to NATS server at nats://0.0.0.0:4222
+Subscribing to marduk.DRentry on stream CONTROLLER-STREAM with consumer controller-consumer
+Subscribed to marduk.monitored.failure
+Controller initialized and subscribed to all subjects
+Started listening on marduk.DRentry
+Started listening on marduk.monitored.failure
+Marduk constants module loaded
+Using NATS server at nats://localhost:4222
+Starting Marduk CLI
+Marduk CLI initialized
+Executing test command with input: 1
+Simulating failed GPU with uuid: 1
+Connected to NATS server at nats://localhost:4222
+Published device failure event for device 1
+Received message on marduk.monitored.failure
+Received message: monitored_fail {
+  device_uuid: "1"
+}
+
+[GPU FAILURE] Device 1 not found in device-to-replicas map
+Received message on marduk.monitored.failure
+Received message: monitored_fail {
+  device_uuid: "1"
+}
+
+[GPU FAILURE] Device 1 not found in device-to-replicas map
+Marduk constants module loaded
+Retrieved GPU UUID: GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 for device index 0
+Received 1 messages on marduk.DRentry
+Received message: register_device {
+  device_uuid: "GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28"
+  replica_id: "train_ddp_1:be9463f2-be0f-4f22-87e2-308d76426260"
+}
+
+Received register_device event for device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 and replica train_ddp_1:be9463f2-be0f-4f22-87e2-308d76426260
+New Mapping: Device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 is now associated with replicas: {'train_ddp_1:be9463f2-be0f-4f22-87e2-308d76426260'}
+New Mapping: Replica train_ddp_1:be9463f2-be0f-4f22-87e2-308d76426260 is now associated with devices: {'GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28'}
+Executing test command with input: GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28
+Simulating failed GPU with uuid: GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28
+Connected to NATS server at nats://localhost:4222
+Published device failure event for device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28
+Received message on marduk.monitored.failure
+Received message: monitored_fail {
+  device_uuid: "GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28"
+}
+
+Received message on marduk.monitored.failure
+[GPU FAILURE] Associated Replica IDs: {'train_ddp_1:be9463f2-be0f-4f22-87e2-308d76426260'}
+Received message: monitored_fail {
+  device_uuid: "GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28"
+}
+
+[GPU FAILURE] Associated Replica IDs: {'train_ddp_1:19d663f8-0a5c-4021-9393-18bc1e6ea60b', 'train_ddp_1:0ca0b7ba-61fb-4548-9dc7-8b3ecb44794a'}
+[GPU FAILURE] Associated Device IDs for replica train_ddp_1:19d663f8-0a5c-4021-9393-18bc1e6ea60b: {'GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28'}
+Error handling GPU failure message: Protocol message ReplicaFailEvent has no "replica_group_id" field.
+Traceback (most recent call last):
+  File "/srv/apps/warren/torchft/torchft/marduk/controller.py", line 97, in message_handler_handle_gpu_failure
+    await self.send_replica_fail_event(replica_id)
+  File "/srv/apps/warren/torchft/torchft/marduk/controller.py", line 111, in send_replica_fail_event
+    env.replica_fail.replica_group_id = replica_id
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: Protocol message ReplicaFailEvent has no "replica_group_id" field.

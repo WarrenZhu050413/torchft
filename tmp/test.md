@@ -68,7 +68,3 @@ Received message
 [GPU FAILURE] Device: 50
 [GPU FAILURE] Device not found in device replica map
 ```
-
-
-# TODO
-1. Persist the dr_map. Put it in an object store.

@@ -2,7 +2,7 @@ syntax = "proto3";
 
 message RegisterDevice       { string device_uuid = 1; string replica_id = 2; }
 message DrainEvent           { string device_uuid = 1; }
-message ReplicaFailEvent     { int32  replica_rank = 1; }
+message ReplicaFailEvent     { string  replica_group_id = 1; }
 message MonitoredFailEvent   { string  device_uuid = 1; }
 message ChangeBatchSizeEvent { int32  new_batch_sz = 1; }
 

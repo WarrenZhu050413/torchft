@@ -18,6 +18,15 @@ The need for this comes from two parts:
 
 DRMap is a crucial part of the design. It is the way for the controller to translate from the langauge of the monitoring system (device_uuid) to the language of the training manager (replica_id).
 
+Currently it is implemented as two separate maps:
+
+1. device_to_replicas
+2. replica_to_devices
+
+The invariant is the following:
+
+If we have replicas that correspond to a device_uuid, then the replica_id should be in replica_to_devices map (though other replica_ids may also map to the same device_uuid).
+
 Upon manager initialization, it will register itself with the controller.
 
 DRMap is designed to be as general as possible. It is a many to many mapping. Each device_uuid can map to many replica_ids and each replica_id can map to many device_uuids.

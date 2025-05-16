@@ -37,9 +37,11 @@ from concurrent.futures import ThreadPoolExecutor
 from contextlib import nullcontext
 from datetime import timedelta
 from enum import Enum
-from typing import TYPE_CHECKING, Callable, Dict, List, Optional, TypeVar, cast
+from typing import TYPE_CHECKING, Callable, Dict, List, Optional, TypeVar, cast, Awaitable
 
 import nats
+from nats.aio.client import Client
+from nats.js.client import JetStreamContext
 import torch
 from torch.distributed import ReduceOp, TCPStore
 
@@ -50,9 +52,13 @@ from torchft.futures import future_timeout
 if TYPE_CHECKING:
     from torchft.process_group import ProcessGroup
 
-from torchft.marduk.marduk_pb2 import EventEnvelope, RegisterDevice, DeviceReplicaMapEntry
+from nats.aio.msg import Msg
+
+from torchft.marduk.marduk_pb2 import EventEnvelope
 from torchft.marduk.utils import get_device_uuid
 from torchft.marduk.constants import MardukConstants
+from torchft.marduk.utils import cancel_subscriptions
+from torchft.marduk.config import Config
 
 MANAGER_ADDR_KEY: str = "manager_addr"
 MANAGER_PORT_ENV: str = "TORCHFT_MANAGER_PORT"
@@ -261,25 +267,54 @@ class Manager:
         self._participating_replica_world_size: int = 0
 
         # Start marduk
+        self._subscriptions = {}
         self._replica_id = replica_id
         self._marduk_addr = marduk_addr or os.environ["MARDUK_ADDR"]
         self._loop = asyncio.get_event_loop()
         self._loop.run_until_complete(self.marduk_start())
+        self._stop_nats = asyncio.Event()
+        self._nc_timeout = Config.NC_TIMEOUT
+        self._exception_sleep = Config.EXCEPTION_SLEEP
 
     async def marduk_start(self):
         await self.marduk_connect()
-        await self.publish_DRmap_info()
+        await self.subscribe_nc(MardukConstants.subjects.REPLICA_FAIL, self.message_handler)
+        await self.publish_DRmapping_info()
 
     async def marduk_connect(self):
         try:
-            self._nc = await nats.connect(self._marduk_addr)
-            self._js = self._nc.jetstream()
+            self._nc: Client = await nats.connect(self._marduk_addr)
+            self._js: JetStreamContext = self._nc.jetstream()
             print("Connected to NATS server")
         except Exception as e:
             print(f"Failed to connect to NATS server: {e}")
-            raise
 
-    async def publish_DRmap_info(self):
+    async def message_handler(self, msg: Msg):
+        self._logger.info(f"Received message on {msg.subject}: {msg.data}")
+
+    async def subscribe_nc(self, subject: str, message_handler: Callable[[Msg], Awaitable[None]]) -> None:
+        assert self._nc is not None # This should always be true because we connect to NATS in marduk_start in Manager constructor
+
+        sub = await self._nc.subscribe(subject)
+        self._logger.info(f"Subscribed to {subject}")
+        
+        async def listen_to_nc_subscription():
+            self._logger.info(f"Started listening on {subject}")
+            while self._stop_nats.is_set() is False:
+                try:
+                    msg = await sub.next_msg(timeout=self._nc_timeout)
+                    self._logger.info(f"Received message on {subject}")
+                    await message_handler(msg)
+                except TimeoutError:
+                    continue
+                except Exception as e:
+                    self._logger.exception(f"Error in subscription loop for {subject}: {str(e)}")
+                    await asyncio.sleep(self._exception_sleep)
+        
+        task = asyncio.create_task(listen_to_nc_subscription())
+        self._subscriptions[subject] = (sub, task)
+
+    async def publish_DRmapping_info(self):
         device_uuid = get_device_uuid()
         
         DRenvelope = EventEnvelope()
@@ -301,6 +336,11 @@ class Manager:
         if self._manager is not None:
             self._manager.shutdown()
         self._executor.shutdown(wait=wait)
+
+        # cancel all the tasks
+        self._loop.run_until_complete(cancel_subscriptions(self._subscriptions))
+        self._stop_nats.set()
+        self._subscriptions.clear()
 
     def allreduce(self, tensor: torch.Tensor) -> torch.futures.Future[torch.Tensor]:
         """
