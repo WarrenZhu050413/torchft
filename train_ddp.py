@@ -8,6 +8,7 @@ import logging
 import os
 import sys
 from datetime import timedelta
+import time
 
 REPLICA_GROUP_ID = int(os.environ.get("REPLICA_GROUP_ID", 0))
 os.environ["CUDA_VISIBLE_DEVICES"] = str(REPLICA_GROUP_ID % 4)
@@ -215,7 +216,9 @@ def main() -> None:
             # they're shared across all groups and will load from existing replicas as
             # long as not every worker goes down.
 
-            if manager.current_step() >= 10:
+            time.sleep(1)
+
+            if manager.current_step() >= 10000:
                 # complete training
                 prof.stop()
                 exit()

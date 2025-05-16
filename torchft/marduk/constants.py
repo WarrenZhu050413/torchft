@@ -8,19 +8,27 @@ class MardukSubjects:
 class ControllerSubjects:
     DR_SUBJECT: str = MardukSubjects.DR_SUBJECT
 
-class ControllerStream:
+class StreamSpec:
+    STREAM = None
+    CONSUMER = None
+    subjects = None
+
+class ControllerStream(StreamSpec):
     STREAM: str = "CONTROLLER-STREAM"
-    CONTROLLER_CONSUMER: str = "controller-consumer"
+    CONSUMER: str = "controller-consumer"
     subjects = ControllerSubjects()
 
 class MonitorSubjects:
     EXTERNAL: str = MardukSubjects.EXTERNAL
     CONTROLLER_EVENTS: str = MardukSubjects.CONTROLLER_EVENTS
 
-class MonitorStream:
+class MonitorStream(StreamSpec):
     STREAM: str = "MONITOR-STREAM"
     CONSUMER: str = "monitor-consumer"
     subjects = MonitorSubjects()
+
+class NcSpec:
+    subjects = None
 
 @dataclass
 class MardukConstants:

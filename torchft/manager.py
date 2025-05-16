@@ -263,19 +263,21 @@ class Manager:
         # Start marduk
         self._replica_id = replica_id
         self._marduk_addr = marduk_addr or os.environ["MARDUK_ADDR"]
-        self.marduk_start()
-
-    def marduk_start(self):
         self._loop = asyncio.get_event_loop()
-        self._nc, self._js = self._loop.run_until_complete(
-            self.marduk_connect()
-        )
-        self._loop.run_until_complete(self.publish_DRmap_info())
+        self._loop.run_until_complete(self.marduk_start())
+
+    async def marduk_start(self):
+        await self.marduk_connect()
+        await self.publish_DRmap_info()
 
     async def marduk_connect(self):
-        nc = await nats.connect(self._marduk_addr)
-        js = nc.jetstream()
-        return nc, js
+        try:
+            self._nc = await nats.connect(self._marduk_addr)
+            self._js = self._nc.jetstream()
+            print("Connected to NATS server")
+        except Exception as e:
+            print(f"Failed to connect to NATS server: {e}")
+            raise
 
     async def publish_DRmap_info(self):
         device_uuid = get_device_uuid()
@@ -283,7 +285,7 @@ class Manager:
         DRenvelope = EventEnvelope()
         DRenvelope.register_device.device_uuid = device_uuid
         DRenvelope.register_device.replica_id = self._replica_id
-        await self._js.publish(MardukConstants.subjects.DR_SUBJECT, DRenvelope.SerializeToString())
+        await self._js.publish(MardukConstants.controller_stream.subjects.DR_SUBJECT, DRenvelope.SerializeToString())
 
     def set_state_dict_fns(
         self, load_state_dict: Callable[[T], None], state_dict: Callable[[], T]
