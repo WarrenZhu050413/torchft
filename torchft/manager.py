@@ -271,19 +271,36 @@ class Manager:
         # Start marduk
         self._subscriptions = {}
         self._replica_id = replica_id
-        self._marduk_addr = marduk_addr or os.environ["MARDUK_ADDR"]
+        self._marduk_addr = marduk_addr or os.environ.get("MARDUK_ADDR", MardukConstants.DEFAULT_ADDR)
         self._stop_nats = asyncio.Event()
         self._nc_timeout = Config.NC_TIMEOUT
         self._exception_sleep = Config.EXCEPTION_SLEEP
-        self._loop = asyncio.get_event_loop()
+        
+        # Set up the event loop and ensure it keeps running
+        if asyncio.get_event_loop().is_closed():
+            self._loop: asyncio.AbstractEventLoop = asyncio.new_event_loop()
+            asyncio.set_event_loop(self._loop)
+        else:
+            self._loop = asyncio.get_event_loop()
+        
+        # Start the NATS connection
         self._loop.run_until_complete(self.marduk_start())
+        
+        # Set up background task to keep the event loop running
+        self._loop_thread = ThreadPoolExecutor(max_workers=1, thread_name_prefix="asyncio_loop")
+        self._loop_thread.submit(self._run_event_loop_in_background)
+        
+        debug_manager_logger.info("Asyncio event loop set up in background thread")
 
     async def marduk_start(self):   
         debug_manager_logger.info(f"In marduk_start")
-        await self.marduk_connect()
-        await self.subscribe_nc(MardukConstants.subjects.REPLICA_FAIL, self.message_handler)
-
-        await self.publish_DRmapping_info()
+        try:
+            await self.marduk_connect()
+            await self.subscribe_nc(MardukConstants.subjects.REPLICA_FAIL, self.message_handler)
+            await self.publish_DRmapping_info()
+            debug_manager_logger.info(f"Marduk initialization completed successfully")
+        except Exception as e:
+            debug_manager_logger.exception(f"Error during marduk_start: {e}")
 
     async def marduk_connect(self):
         try:
@@ -294,9 +311,24 @@ class Manager:
             debug_manager_logger.error(f"Failed to connect to NATS server: {e}")
 
     async def message_handler(self, msg: Msg):
-        logging_message = f"Received message on {msg.subject}: {msg.data}"
-        self._logger.info(logging_message)
-        debug_manager_logger.info(logging_message)
+        try:
+            env = EventEnvelope()
+            env.ParseFromString(msg.data)
+            
+            debug_manager_logger.info(f"Received message on {msg.subject}: {msg.data}")
+
+            if env.HasField("replica_fail"):
+                replica_id = env.replica_fail.replica_id
+                debug_manager_logger.info(f"Received replica fail event for replica: {replica_id}")
+                # Check if this is our replica
+                if replica_id == self._replica_id:
+                    debug_manager_logger.info(f"This replica ({self._replica_id}) has been marked as failed, initiating recovery")
+                    # Report an error to trigger recovery
+                    debug_manager_logger.info(f"MOCK IMPLEMENTATION: Reporting error to trigger recovery")
+            else:
+                debug_manager_logger.warning(f"Received unsupported message: {env}")
+        except Exception as e:
+            debug_manager_logger.exception(f"Error handling message: {e}")
 
     async def subscribe_nc(self, subject: str, message_handler: Callable[[Msg], Awaitable[None]]) -> None:
         assert self._nc is not None # This should always be true because we connect to NATS in marduk_start in Manager constructor
@@ -311,11 +343,11 @@ class Manager:
                 debug_manager_logger.info(f"self._stop_nats.is_set(): {self._stop_nats.is_set()}")
                 while self._stop_nats.is_set() is False:
                     try:
+                        debug_manager_logger.info(f"Waiting for message on {subject}")
                         msg = await sub.next_msg(timeout=self._nc_timeout)
-                        debug_manager_logger.info(f"Received message on {subject}")
+                        debug_manager_logger.info(f"Received message on {subject}: {msg.data}")
                         await message_handler(msg)
-                    except TimeoutError:
-                        debug_manager_logger.info(f"Timeout waiting for message on {subject}")
+                    except asyncio.TimeoutError:
                         continue
                     except Exception as e:
                         debug_manager_logger.exception(f"Error in subscription loop for {subject}: {str(e)}")
@@ -352,10 +384,22 @@ class Manager:
             self._manager.shutdown()
         self._executor.shutdown(wait=wait)
 
-        # cancel all the tasks
-        self._loop.run_until_complete(cancel_subscriptions(self._subscriptions))
+        # Stop the NATS connections and tasks
         self._stop_nats.set()
+        self._loop.run_until_complete(cancel_subscriptions(self._subscriptions))
         self._subscriptions.clear()
+        
+        # Close NATS connection
+        self._loop.run_until_complete(self._nc.close())
+        debug_manager_logger.info("NATS connection closed")
+        
+        # Stop the event loop
+        self._loop.call_soon_threadsafe(self._loop.stop)
+        debug_manager_logger.info("Event loop stopped")
+        
+        # Shut down the loop thread
+        self._loop_thread.shutdown(wait=wait)
+        debug_manager_logger.info("Background loop thread shutdown")
 
     def allreduce(self, tensor: torch.Tensor) -> torch.futures.Future[torch.Tensor]:
         """
@@ -894,6 +938,17 @@ class Manager:
             assert self._use_async_quorum
             return False
         return True
+
+    def _run_event_loop_in_background(self):
+        """Run the event loop in a background thread to process NATS messages."""
+        try:
+            if not self._loop.is_running():
+                debug_manager_logger.info("Starting asyncio event loop in background")
+                self._loop.run_forever()
+            else:
+                debug_manager_logger.info("Event loop is already running")
+        except Exception as e:
+            debug_manager_logger.exception(f"Error in background event loop: {e}")
 
 
 class _ManagerLogger:

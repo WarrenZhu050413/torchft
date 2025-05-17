@@ -108,6 +108,7 @@ class Controller():
         env: EventEnvelope = EventEnvelope()
         env.replica_fail.replica_id = replica_id
         await self._nc.publish(MardukConstants.subjects.REPLICA_FAIL, env.SerializeToString())
+        logger.info(f"Published replica fail event for replica {replica_id}")
 
     def get_replicas_for_device(self, device_uuid: str) -> Set[str]:
         return self.device_to_replicas.get(device_uuid, set())
@@ -122,6 +123,8 @@ class Controller():
         logger.info(f"Subscribing to {subject} on stream {stream} with consumer {consumer}")
 
         psub = await self._js.pull_subscribe(subject, durable=consumer, stream=stream)
+        
+        logger.info(f"Pull subscription created for {subject} on stream {stream} with consumer {consumer}")
 
         async def listen_to_js_subscription():
             logger.info(f"Started listening on {subject}")
@@ -155,6 +158,7 @@ class Controller():
         self.maybe_log_and_raise_exception(NC)
         assert self._nc is not None # This should always be true because we check it in maybe_log_and_raise_exception
 
+        logger.info(f"Subscribing to {subject}")
         sub = await self._nc.subscribe(subject)
         logger.info(f"Subscribed to {subject}")
         
@@ -203,17 +207,23 @@ async def main():
         logger.info("Starting Marduk Controller")
         controller = Controller()
         await controller.initialize()
+        logger.info("Controller initialized")
 
-        await controller.subscribe_js(
-            MardukConstants.controller_stream.STREAM,
-            MardukConstants.controller_stream.subjects.DR_SUBJECT,
-            MardukConstants.controller_stream.CONSUMER,
-            controller.message_handler
-        )
-        await controller.subscribe_nc(subject=MardukConstants.monitor_stream.subjects.EXTERNAL, 
-                                     message_handler=controller.message_handler)
+        async with asyncio.TaskGroup() as tg:
+            tg.create_task(controller.subscribe_js(
+                MardukConstants.controller_stream.STREAM,
+                MardukConstants.controller_stream.subjects.DR_SUBJECT,
+                MardukConstants.controller_stream.CONSUMER,
+                controller.message_handler
+            ))
+            tg.create_task(controller.subscribe_nc(
+                subject=MardukConstants.monitor_stream.subjects.EXTERNAL, 
+                message_handler=controller.message_handler
+            ))
+            logger.info("Started subscribing to all subjects")
 
-        logger.info("Controller initialized and subscribed to all subjects")
+        logger.info("Subscribed to all subjects")
+
         while True:
             await asyncio.sleep(1)
     except KeyboardInterrupt:
