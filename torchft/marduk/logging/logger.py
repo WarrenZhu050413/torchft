@@ -1,7 +1,7 @@
 import logging
 from torchft.marduk.config import Config
 
-def setup_logger(name: str = __name__, log_file: str = Config.LOG_FILE) -> logging.Logger:
+def setup_logger(name: str = __name__, log_file: str = Config.LOG_FILE, format_log: bool = Config.FORMAT_LOG) -> logging.Logger:
     """
     Setup a logger that logs to a file and the console.
     """
@@ -22,8 +22,8 @@ def setup_logger(name: str = __name__, log_file: str = Config.LOG_FILE) -> loggi
     # Create a file handler
     file_handler = logging.FileHandler(log_file)
     file_handler.setLevel(logging.DEBUG)  # The file records all levels
-    
-    if Config.FORMAT_LOG:
+
+    if format_log:
         console_handler.setFormatter(formatter)
         file_handler.setFormatter(formatter)
     
@@ -37,5 +37,6 @@ def setup_logger(name: str = __name__, log_file: str = Config.LOG_FILE) -> loggi
     
     return logger
 
-
 logger = setup_logger()
+
+debug_manager_logger = setup_logger(name="manager", log_file="/srv/apps/warren/torchft/torchft/marduk/logging/manager.log", format_log=True)

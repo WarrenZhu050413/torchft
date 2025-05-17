@@ -59,6 +59,7 @@ from torchft.marduk.utils import get_device_uuid
 from torchft.marduk.constants import MardukConstants
 from torchft.marduk.utils import cancel_subscriptions
 from torchft.marduk.config import Config
+from torchft.marduk.logging.logger import debug_manager_logger
 
 MANAGER_ADDR_KEY: str = "manager_addr"
 MANAGER_PORT_ENV: str = "TORCHFT_MANAGER_PORT"
@@ -255,6 +256,7 @@ class Manager:
             manager=self, replica_id=replica_id or "", group_rank=group_rank
         )
 
+
         self._step = 0
         self._quorum_id = -1
         self._errored: Optional[ExceptionWithTraceback] = None
@@ -270,53 +272,62 @@ class Manager:
         self._subscriptions = {}
         self._replica_id = replica_id
         self._marduk_addr = marduk_addr or os.environ["MARDUK_ADDR"]
-        self._loop = asyncio.get_event_loop()
-        self._loop.run_until_complete(self.marduk_start())
         self._stop_nats = asyncio.Event()
         self._nc_timeout = Config.NC_TIMEOUT
         self._exception_sleep = Config.EXCEPTION_SLEEP
+        self._loop = asyncio.get_event_loop()
+        self._loop.run_until_complete(self.marduk_start())
 
-    async def marduk_start(self):
+    async def marduk_start(self):   
+        debug_manager_logger.info(f"In marduk_start")
         await self.marduk_connect()
         await self.subscribe_nc(MardukConstants.subjects.REPLICA_FAIL, self.message_handler)
+
         await self.publish_DRmapping_info()
 
     async def marduk_connect(self):
         try:
             self._nc: Client = await nats.connect(self._marduk_addr)
             self._js: JetStreamContext = self._nc.jetstream()
-            print("Connected to NATS server")
+            debug_manager_logger.info("Connected to NATS server")
         except Exception as e:
-            print(f"Failed to connect to NATS server: {e}")
+            debug_manager_logger.error(f"Failed to connect to NATS server: {e}")
 
     async def message_handler(self, msg: Msg):
         logging_message = f"Received message on {msg.subject}: {msg.data}"
         self._logger.info(logging_message)
-        print(logging_message)
-        with open("test.log", "a") as log_file:
-            log_file.write(f"{logging_message}\n")
+        debug_manager_logger.info(logging_message)
 
     async def subscribe_nc(self, subject: str, message_handler: Callable[[Msg], Awaitable[None]]) -> None:
         assert self._nc is not None # This should always be true because we connect to NATS in marduk_start in Manager constructor
 
         sub = await self._nc.subscribe(subject)
-        self._logger.info(f"Subscribed to {subject}")
+        debug_manager_logger.info(f"Subscribed to {subject}")
         
         async def listen_to_nc_subscription():
-            self._logger.info(f"Started listening on {subject}")
-            while self._stop_nats.is_set() is False:
-                try:
-                    msg = await sub.next_msg(timeout=self._nc_timeout)
-                    self._logger.info(f"Received message on {subject}")
-                    await message_handler(msg)
-                except TimeoutError:
-                    continue
-                except Exception as e:
-                    self._logger.exception(f"Error in subscription loop for {subject}: {str(e)}")
-                    await asyncio.sleep(self._exception_sleep)
+            debug_manager_logger.info(f"Started listening on {subject}")
+            try:
+                debug_manager_logger.info(f"self._nc_timeout: {self._nc_timeout}")
+                debug_manager_logger.info(f"self._stop_nats.is_set(): {self._stop_nats.is_set()}")
+                while self._stop_nats.is_set() is False:
+                    try:
+                        msg = await sub.next_msg(timeout=self._nc_timeout)
+                        debug_manager_logger.info(f"Received message on {subject}")
+                        await message_handler(msg)
+                    except TimeoutError:
+                        debug_manager_logger.info(f"Timeout waiting for message on {subject}")
+                        continue
+                    except Exception as e:
+                        debug_manager_logger.exception(f"Error in subscription loop for {subject}: {str(e)}")
+                        await asyncio.sleep(self._exception_sleep)
+            except Exception as e:
+                debug_manager_logger.exception(f"Error in listener task: {str(e)}")
         
         task = asyncio.create_task(listen_to_nc_subscription())
         self._subscriptions[subject] = (sub, task)
+        
+        # Give the task a moment to start
+        await asyncio.sleep(0)
 
     async def publish_DRmapping_info(self):
         device_uuid = get_device_uuid()

@@ -346,3 +346,615 @@ Traceback (most recent call last):
   File "/srv/apps/warren/torchft/torchft/marduk/logging/log_utils.py", line 6, in log_and_raise_exception
     raise Exception(msg)
 Exception: [GPU FAILURE] Replica train_ddp_1:48896630-edb5-424d-86ce-2308a2a3db19 not found in replica-to-devices map
+Unknown command: EOF
+Unknown command: EOF
+Unknown command: EOF
+Unknown command: EOF
+Unknown command: EOF
+Marduk constants module loaded
+Starting Marduk Controller
+Controller initialized with NATS address: nats://0.0.0.0:4222
+Connected to NATS server at nats://0.0.0.0:4222
+Subscribing to marduk.DRentry on stream CONTROLLER-STREAM with consumer controller-consumer
+Subscribed to marduk.monitored.failure
+Controller initialized and subscribed to all subjects
+Started listening on marduk.DRentry
+Started listening on marduk.monitored.failure
+Stopping Controller
+All subscriptions cleared
+NATS connection closed
+Marduk constants module loaded
+Starting Marduk Controller
+Controller initialized with NATS address: nats://0.0.0.0:4222
+Connected to NATS server at nats://0.0.0.0:4222
+Subscribing to marduk.DRentry on stream CONTROLLER-STREAM with consumer controller-consumer
+Subscribed to marduk.monitored.failure
+Controller initialized and subscribed to all subjects
+Started listening on marduk.DRentry
+Started listening on marduk.monitored.failure
+Marduk constants module loaded
+Marduk constants module loaded
+Retrieved GPU UUID: GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 for device index 0
+Received 1 messages on marduk.DRentry
+Received message: register_device {
+  device_uuid: "GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28"
+  replica_id: "train_ddp_1:33b8b0e4-d86f-45c9-b6e0-f585b17c92de"
+}
+
+Received register_device event for device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 and replica train_ddp_1:33b8b0e4-d86f-45c9-b6e0-f585b17c92de
+New Mapping: Device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 is now associated with replicas: {'train_ddp_1:33b8b0e4-d86f-45c9-b6e0-f585b17c92de'}
+New Mapping: Replica train_ddp_1:33b8b0e4-d86f-45c9-b6e0-f585b17c92de is now associated with devices: {'GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28'}
+Marduk constants module loaded
+Retrieved GPU UUID: GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 for device index 0
+Received 1 messages on marduk.DRentry
+Received message: register_device {
+  device_uuid: "GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28"
+  replica_id: "train_ddp_0:d1e6770a-260c-4fcc-bc25-09c8b784cd29"
+}
+
+Received register_device event for device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 and replica train_ddp_0:d1e6770a-260c-4fcc-bc25-09c8b784cd29
+New Mapping: Device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 is now associated with replicas: {'train_ddp_0:d1e6770a-260c-4fcc-bc25-09c8b784cd29', 'train_ddp_1:33b8b0e4-d86f-45c9-b6e0-f585b17c92de'}
+New Mapping: Replica train_ddp_0:d1e6770a-260c-4fcc-bc25-09c8b784cd29 is now associated with devices: {'GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28'}
+Marduk constants module loaded
+Using NATS server at nats://localhost:4222
+Starting Marduk CLI
+Marduk CLI initialized
+Executing test command with input: GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28
+Simulating failed GPU with uuid: GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28
+Connected to NATS server at nats://localhost:4222
+Published device failure event for device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28
+Received message on marduk.monitored.failure
+Received message: monitored_fail {
+  device_uuid: "GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28"
+}
+
+[GPU FAILURE] Associated Replica IDs: {'train_ddp_0:d1e6770a-260c-4fcc-bc25-09c8b784cd29', 'train_ddp_1:33b8b0e4-d86f-45c9-b6e0-f585b17c92de'}
+[GPU FAILURE] Replica train_ddp_1:33b8b0e4-d86f-45c9-b6e0-f585b17c92de not found in replica-to-devices map
+Error handling GPU failure message: [GPU FAILURE] Replica train_ddp_1:33b8b0e4-d86f-45c9-b6e0-f585b17c92de not found in replica-to-devices map
+Traceback (most recent call last):
+  File "/srv/apps/warren/torchft/torchft/marduk/controller.py", line 100, in message_handler_handle_gpu_failure
+    log_and_raise_exception(logger, failure_message)
+  File "/srv/apps/warren/torchft/torchft/marduk/logging/log_utils.py", line 6, in log_and_raise_exception
+    raise Exception(msg)
+Exception: [GPU FAILURE] Replica train_ddp_1:33b8b0e4-d86f-45c9-b6e0-f585b17c92de not found in replica-to-devices map
+Stopping Controller
+All subscriptions cleared
+NATS connection closed
+Marduk constants module loaded
+Starting Marduk Controller
+Controller initialized with NATS address: nats://0.0.0.0:4222
+Connected to NATS server at nats://0.0.0.0:4222
+Subscribing to marduk.DRentry on stream CONTROLLER-STREAM with consumer controller-consumer
+Subscribed to marduk.monitored.failure
+Controller initialized and subscribed to all subjects
+Started listening on marduk.DRentry
+Started listening on marduk.monitored.failure
+Executing test command with input: 1
+Simulating failed GPU with uuid: 1
+Connected to NATS server at nats://localhost:4222
+Published device failure event for device 1
+Received message on marduk.monitored.failure
+Received message: monitored_fail {
+  device_uuid: "1"
+}
+
+[GPU FAILURE] Device 1 not found in device-to-replicas map
+Executing test command with input: GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28
+Simulating failed GPU with uuid: GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28
+Connected to NATS server at nats://localhost:4222
+Published device failure event for device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28
+Received message on marduk.monitored.failure
+Received message: monitored_fail {
+  device_uuid: "GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28"
+}
+
+[GPU FAILURE] Device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 not found in device-to-replicas map
+Marduk constants module loaded
+Retrieved GPU UUID: GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 for device index 0
+Received 1 messages on marduk.DRentry
+Received message: register_device {
+  device_uuid: "GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28"
+  replica_id: "train_ddp_1:b584d120-6037-4a33-aeb6-54fcbcbee9bf"
+}
+
+Received register_device event for device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 and replica train_ddp_1:b584d120-6037-4a33-aeb6-54fcbcbee9bf
+New Mapping: Device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 is now associated with replicas: {'train_ddp_1:b584d120-6037-4a33-aeb6-54fcbcbee9bf'}
+New Mapping: Replica train_ddp_1:b584d120-6037-4a33-aeb6-54fcbcbee9bf is now associated with devices: {'GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28'}
+Executing test command with input: GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28
+Simulating failed GPU with uuid: GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28
+Connected to NATS server at nats://localhost:4222
+Published device failure event for device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28
+Received message on marduk.monitored.failure
+Received message: monitored_fail {
+  device_uuid: "GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28"
+}
+
+[GPU FAILURE] Associated Replica IDs: {'train_ddp_1:b584d120-6037-4a33-aeb6-54fcbcbee9bf'}
+Executing test command with input: 50
+Simulating failed GPU with uuid: 50
+Connected to NATS server at nats://localhost:4222
+Published device failure event for device 50
+Received message on marduk.monitored.failure
+Received message: monitored_fail {
+  device_uuid: "50"
+}
+
+[GPU FAILURE] Device 50 not found in device-to-replicas map
+Stopping Controller
+All subscriptions cleared
+NATS connection closed
+Marduk constants module loaded
+Starting Marduk Controller
+Controller initialized with NATS address: nats://0.0.0.0:4222
+Connected to NATS server at nats://0.0.0.0:4222
+Subscribing to marduk.DRentry on stream CONTROLLER-STREAM with consumer controller-consumer
+Subscribed to marduk.monitored.failure
+Controller initialized and subscribed to all subjects
+Started listening on marduk.DRentry
+Started listening on marduk.monitored.failure
+Marduk constants module loaded
+Retrieved GPU UUID: GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 for device index 0
+Received 1 messages on marduk.DRentry
+Received message: register_device {
+  device_uuid: "GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28"
+  replica_id: "train_ddp_1:281c959d-d5e0-46d6-8a30-d6a7f6d1f458"
+}
+
+Received register_device event for device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 and replica train_ddp_1:281c959d-d5e0-46d6-8a30-d6a7f6d1f458
+New Mapping: Device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 is now associated with replicas: {'train_ddp_1:281c959d-d5e0-46d6-8a30-d6a7f6d1f458'}
+New Mapping: Replica train_ddp_1:281c959d-d5e0-46d6-8a30-d6a7f6d1f458 is now associated with devices: {'GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28'}
+Marduk constants module loaded
+Retrieved GPU UUID: GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 for device index 0
+Received 1 messages on marduk.DRentry
+Received message: register_device {
+  device_uuid: "GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28"
+  replica_id: "train_ddp_0:5c0c014d-da7d-462e-b3b2-2e431e5c88d7"
+}
+
+Received register_device event for device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 and replica train_ddp_0:5c0c014d-da7d-462e-b3b2-2e431e5c88d7
+New Mapping: Device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 is now associated with replicas: {'train_ddp_1:281c959d-d5e0-46d6-8a30-d6a7f6d1f458', 'train_ddp_0:5c0c014d-da7d-462e-b3b2-2e431e5c88d7'}
+New Mapping: Replica train_ddp_0:5c0c014d-da7d-462e-b3b2-2e431e5c88d7 is now associated with devices: {'GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28'}
+Stopping Controller
+All subscriptions cleared
+NATS connection closed
+Marduk constants module loaded
+Starting Marduk Controller
+Controller initialized with NATS address: nats://0.0.0.0:4222
+Connected to NATS server at nats://0.0.0.0:4222
+Subscribing to marduk.DRentry on stream CONTROLLER-STREAM with consumer controller-consumer
+Subscribed to marduk.monitored.failure
+Controller initialized and subscribed to all subjects
+Started listening on marduk.DRentry
+Started listening on marduk.monitored.failure
+Marduk constants module loaded
+Retrieved GPU UUID: GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 for device index 0
+Received 1 messages on marduk.DRentry
+Received message: register_device {
+  device_uuid: "GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28"
+  replica_id: "train_ddp_1:898b33d4-4735-4f30-a601-a8f1ba2ea82f"
+}
+
+
+Received register_device event for device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 and replica train_ddp_1:898b33d4-4735-4f30-a601-a8f1ba2ea82f
+New Mapping: Device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 is now associated with replicas: {'train_ddp_1:898b33d4-4735-4f30-a601-a8f1ba2ea82f'}
+New Mapping: Replica train_ddp_1:898b33d4-4735-4f30-a601-a8f1ba2ea82f is now associated with devices: {'GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28'}
+Marduk constants module loaded
+Retrieved GPU UUID: GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 for device index 0
+Received 1 messages on marduk.DRentry
+Received message: register_device {
+  device_uuid: "GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28"
+  replica_id: "train_ddp_0:9bd483b4-be39-4f9a-99ad-bc553a5c021a"
+}
+
+
+Received register_device event for device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 and replica train_ddp_0:9bd483b4-be39-4f9a-99ad-bc553a5c021a
+New Mapping: Device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 is now associated with replicas: {'train_ddp_0:9bd483b4-be39-4f9a-99ad-bc553a5c021a', 'train_ddp_1:898b33d4-4735-4f30-a601-a8f1ba2ea82f'}
+New Mapping: Replica train_ddp_0:9bd483b4-be39-4f9a-99ad-bc553a5c021a is now associated with devices: {'GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28'}
+Stopping Controller
+All subscriptions cleared
+NATS connection closed
+Marduk constants module loaded
+Starting Marduk Controller
+Controller initialized with NATS address: nats://0.0.0.0:4222
+Connected to NATS server at nats://0.0.0.0:4222
+Subscribing to marduk.DRentry on stream CONTROLLER-STREAM with consumer controller-consumer
+Subscribed to marduk.monitored.failure
+Controller initialized and subscribed to all subjects
+Started listening on marduk.DRentry
+Started listening on marduk.monitored.failure
+Marduk constants module loaded
+Retrieved GPU UUID: GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 for device index 0
+Received 1 messages on marduk.DRentry
+Received message: register_device {
+  device_uuid: "GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28"
+  replica_id: "train_ddp_1:fe7a317e-6474-4d9d-8c8a-2a74b321af17"
+}
+
+
+----------------------------------------------------------------------------------------------------
+Received register_device event for device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 and replica train_ddp_1:fe7a317e-6474-4d9d-8c8a-2a74b321af17
+New Mapping: Device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 is now associated with replicas: {'train_ddp_1:fe7a317e-6474-4d9d-8c8a-2a74b321af17'}
+New Mapping: Replica train_ddp_1:fe7a317e-6474-4d9d-8c8a-2a74b321af17 is now associated with devices: {'GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28'}
+Marduk constants module loaded
+Retrieved GPU UUID: GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 for device index 0
+Received 1 messages on marduk.DRentry
+Received message: register_device {
+  device_uuid: "GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28"
+  replica_id: "train_ddp_0:e0d9df8d-8b61-4f2d-a769-5acc59b9ef9d"
+}
+
+
+----------------------------------------------------------------------------------------------------
+Received register_device event for device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 and replica train_ddp_0:e0d9df8d-8b61-4f2d-a769-5acc59b9ef9d
+New Mapping: Device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 is now associated with replicas: {'train_ddp_0:e0d9df8d-8b61-4f2d-a769-5acc59b9ef9d', 'train_ddp_1:fe7a317e-6474-4d9d-8c8a-2a74b321af17'}
+New Mapping: Replica train_ddp_0:e0d9df8d-8b61-4f2d-a769-5acc59b9ef9d is now associated with devices: {'GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28'}
+Executing test command with input: GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28
+Simulating failed GPU with uuid: GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28
+Connected to NATS server at nats://localhost:4222
+Published device failure event for device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28
+Executing test command with input: 1
+Simulating failed GPU with uuid: 1
+Connected to NATS server at nats://localhost:4222
+Published device failure event for device 1
+Executing test command with input: 5
+Simulating failed GPU with uuid: 5
+Connected to NATS server at nats://localhost:4222
+Published device failure event for device 5
+Executing test command with input: 100
+Simulating failed GPU with uuid: 100
+Connected to NATS server at nats://localhost:4222
+Published device failure event for device 100
+Marduk constants module loaded
+Using NATS server at nats://localhost:4222
+Starting Marduk CLI
+Marduk CLI initialized
+Executing test command with input: 1
+Simulating failed GPU with uuid: 1
+Connected to NATS server at nats://localhost:4222
+Published device failure event for device 1
+Received message on marduk.monitored.failure
+Received message: monitored_fail {
+  device_uuid: "1"
+}
+
+[GPU FAILURE] Device 1 not found in device-to-replicas map
+Marduk constants module loaded
+Retrieved GPU UUID: GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 for device index 0
+Received 1 messages on marduk.DRentry
+Received message: register_device {
+  device_uuid: "GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28"
+  replica_id: "train_ddp_1:6ad962f4-d8ed-4ceb-9f98-617c9ec34dbe"
+}
+
+
+----------------------------------------------------------------------------------------------------
+Received register_device event for device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 and replica train_ddp_1:6ad962f4-d8ed-4ceb-9f98-617c9ec34dbe
+New Mapping: Device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 is now associated with replicas: {'train_ddp_0:e0d9df8d-8b61-4f2d-a769-5acc59b9ef9d', 'train_ddp_1:fe7a317e-6474-4d9d-8c8a-2a74b321af17', 'train_ddp_1:6ad962f4-d8ed-4ceb-9f98-617c9ec34dbe'}
+New Mapping: Replica train_ddp_1:6ad962f4-d8ed-4ceb-9f98-617c9ec34dbe is now associated with devices: {'GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28'}
+Marduk constants module loaded
+Retrieved GPU UUID: GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 for device index 0
+Received 1 messages on marduk.DRentry
+Received message: register_device {
+  device_uuid: "GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28"
+  replica_id: "train_ddp_0:dadd1c51-3aaa-4520-b075-81cb3c852c35"
+}
+
+
+----------------------------------------------------------------------------------------------------
+Received register_device event for device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 and replica train_ddp_0:dadd1c51-3aaa-4520-b075-81cb3c852c35
+New Mapping: Device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 is now associated with replicas: {'train_ddp_0:e0d9df8d-8b61-4f2d-a769-5acc59b9ef9d', 'train_ddp_0:dadd1c51-3aaa-4520-b075-81cb3c852c35', 'train_ddp_1:fe7a317e-6474-4d9d-8c8a-2a74b321af17', 'train_ddp_1:6ad962f4-d8ed-4ceb-9f98-617c9ec34dbe'}
+New Mapping: Replica train_ddp_0:dadd1c51-3aaa-4520-b075-81cb3c852c35 is now associated with devices: {'GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28'}
+Unknown command: GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28
+Executing test command with input: GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28
+Simulating failed GPU with uuid: GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28
+Connected to NATS server at nats://localhost:4222
+Published device failure event for device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28
+Received message on marduk.monitored.failure
+Received message: monitored_fail {
+  device_uuid: "GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28"
+}
+
+[GPU FAILURE] Associated Replica IDs: {'train_ddp_0:e0d9df8d-8b61-4f2d-a769-5acc59b9ef9d', 'train_ddp_0:dadd1c51-3aaa-4520-b075-81cb3c852c35', 'train_ddp_1:fe7a317e-6474-4d9d-8c8a-2a74b321af17', 'train_ddp_1:6ad962f4-d8ed-4ceb-9f98-617c9ec34dbe'}
+Executing test command with input: 1
+Simulating failed GPU with uuid: 1
+Connected to NATS server at nats://localhost:4222
+Published device failure event for device 1
+Received message on marduk.monitored.failure
+Received message: monitored_fail {
+  device_uuid: "1"
+}
+
+[GPU FAILURE] Device 1 not found in device-to-replicas map
+Executing test command with input: GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28
+Simulating failed GPU with uuid: GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28
+Connected to NATS server at nats://localhost:4222
+Published device failure event for device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28
+Received message on marduk.monitored.failure
+Received message: monitored_fail {
+  device_uuid: "GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28"
+}
+
+[GPU FAILURE] Associated Replica IDs: {'train_ddp_0:e0d9df8d-8b61-4f2d-a769-5acc59b9ef9d', 'train_ddp_0:dadd1c51-3aaa-4520-b075-81cb3c852c35', 'train_ddp_1:fe7a317e-6474-4d9d-8c8a-2a74b321af17', 'train_ddp_1:6ad962f4-d8ed-4ceb-9f98-617c9ec34dbe'}
+Marduk constants module loaded
+Retrieved GPU UUID: GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 for device index 0
+Received 1 messages on marduk.DRentry
+Received message: register_device {
+  device_uuid: "GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28"
+  replica_id: "train_ddp_1:fb11d769-8180-4740-b51c-ac3ce43bfa07"
+}
+
+
+----------------------------------------------------------------------------------------------------
+Received register_device event for device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 and replica train_ddp_1:fb11d769-8180-4740-b51c-ac3ce43bfa07
+New Mapping: Device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 is now associated with replicas: {'train_ddp_0:e0d9df8d-8b61-4f2d-a769-5acc59b9ef9d', 'train_ddp_0:dadd1c51-3aaa-4520-b075-81cb3c852c35', 'train_ddp_1:6ad962f4-d8ed-4ceb-9f98-617c9ec34dbe', 'train_ddp_1:fb11d769-8180-4740-b51c-ac3ce43bfa07', 'train_ddp_1:fe7a317e-6474-4d9d-8c8a-2a74b321af17'}
+New Mapping: Replica train_ddp_1:fb11d769-8180-4740-b51c-ac3ce43bfa07 is now associated with devices: {'GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28'}
+Marduk constants module loaded
+Retrieved GPU UUID: GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 for device index 0
+Received 1 messages on marduk.DRentry
+Received message: register_device {
+  device_uuid: "GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28"
+  replica_id: "train_ddp_1:d9a230c1-8720-4508-8ed3-64dcb01fb226"
+}
+
+
+----------------------------------------------------------------------------------------------------
+Received register_device event for device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 and replica train_ddp_1:d9a230c1-8720-4508-8ed3-64dcb01fb226
+New Mapping: Device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 is now associated with replicas: {'train_ddp_0:e0d9df8d-8b61-4f2d-a769-5acc59b9ef9d', 'train_ddp_0:dadd1c51-3aaa-4520-b075-81cb3c852c35', 'train_ddp_1:6ad962f4-d8ed-4ceb-9f98-617c9ec34dbe', 'train_ddp_1:d9a230c1-8720-4508-8ed3-64dcb01fb226', 'train_ddp_1:fb11d769-8180-4740-b51c-ac3ce43bfa07', 'train_ddp_1:fe7a317e-6474-4d9d-8c8a-2a74b321af17'}
+New Mapping: Replica train_ddp_1:d9a230c1-8720-4508-8ed3-64dcb01fb226 is now associated with devices: {'GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28'}
+Marduk constants module loaded
+Retrieved GPU UUID: GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 for device index 0
+Received 1 messages on marduk.DRentry
+Received message: register_device {
+  device_uuid: "GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28"
+  replica_id: "train_ddp_1:d5d820fc-27ad-4bf1-a41d-8498ea5ec6d5"
+}
+
+
+----------------------------------------------------------------------------------------------------
+Received register_device event for device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 and replica train_ddp_1:d5d820fc-27ad-4bf1-a41d-8498ea5ec6d5
+New Mapping: Device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 is now associated with replicas: {'train_ddp_0:e0d9df8d-8b61-4f2d-a769-5acc59b9ef9d', 'train_ddp_0:dadd1c51-3aaa-4520-b075-81cb3c852c35', 'train_ddp_1:6ad962f4-d8ed-4ceb-9f98-617c9ec34dbe', 'train_ddp_1:d9a230c1-8720-4508-8ed3-64dcb01fb226', 'train_ddp_1:d5d820fc-27ad-4bf1-a41d-8498ea5ec6d5', 'train_ddp_1:fb11d769-8180-4740-b51c-ac3ce43bfa07', 'train_ddp_1:fe7a317e-6474-4d9d-8c8a-2a74b321af17'}
+New Mapping: Replica train_ddp_1:d5d820fc-27ad-4bf1-a41d-8498ea5ec6d5 is now associated with devices: {'GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28'}
+Marduk constants module loaded
+Retrieved GPU UUID: GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 for device index 0
+Received 1 messages on marduk.DRentry
+Received message: register_device {
+  device_uuid: "GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28"
+  replica_id: "train_ddp_1:4e77018c-5b51-4717-81ec-8af60698d37d"
+}
+
+
+----------------------------------------------------------------------------------------------------
+Received register_device event for device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 and replica train_ddp_1:4e77018c-5b51-4717-81ec-8af60698d37d
+New Mapping: Device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 is now associated with replicas: {'train_ddp_0:e0d9df8d-8b61-4f2d-a769-5acc59b9ef9d', 'train_ddp_1:4e77018c-5b51-4717-81ec-8af60698d37d', 'train_ddp_0:dadd1c51-3aaa-4520-b075-81cb3c852c35', 'train_ddp_1:6ad962f4-d8ed-4ceb-9f98-617c9ec34dbe', 'train_ddp_1:d9a230c1-8720-4508-8ed3-64dcb01fb226', 'train_ddp_1:d5d820fc-27ad-4bf1-a41d-8498ea5ec6d5', 'train_ddp_1:fb11d769-8180-4740-b51c-ac3ce43bfa07', 'train_ddp_1:fe7a317e-6474-4d9d-8c8a-2a74b321af17'}
+New Mapping: Replica train_ddp_1:4e77018c-5b51-4717-81ec-8af60698d37d is now associated with devices: {'GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28'}
+Marduk constants module loaded
+Retrieved GPU UUID: GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 for device index 0
+Received 1 messages on marduk.DRentry
+Received message: register_device {
+  device_uuid: "GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28"
+  replica_id: "train_ddp_1:2727a371-3b95-4ce6-8d87-b39050ce9ae1"
+}
+
+
+----------------------------------------------------------------------------------------------------
+Received register_device event for device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 and replica train_ddp_1:2727a371-3b95-4ce6-8d87-b39050ce9ae1
+New Mapping: Device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 is now associated with replicas: {'train_ddp_0:e0d9df8d-8b61-4f2d-a769-5acc59b9ef9d', 'train_ddp_1:4e77018c-5b51-4717-81ec-8af60698d37d', 'train_ddp_0:dadd1c51-3aaa-4520-b075-81cb3c852c35', 'train_ddp_1:6ad962f4-d8ed-4ceb-9f98-617c9ec34dbe', 'train_ddp_1:2727a371-3b95-4ce6-8d87-b39050ce9ae1', 'train_ddp_1:d9a230c1-8720-4508-8ed3-64dcb01fb226', 'train_ddp_1:d5d820fc-27ad-4bf1-a41d-8498ea5ec6d5', 'train_ddp_1:fb11d769-8180-4740-b51c-ac3ce43bfa07', 'train_ddp_1:fe7a317e-6474-4d9d-8c8a-2a74b321af17'}
+New Mapping: Replica train_ddp_1:2727a371-3b95-4ce6-8d87-b39050ce9ae1 is now associated with devices: {'GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28'}
+Marduk constants module loaded
+Retrieved GPU UUID: GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 for device index 0
+Received 1 messages on marduk.DRentry
+Received message: register_device {
+  device_uuid: "GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28"
+  replica_id: "train_ddp_1:97816be6-0a48-4906-b192-9d5d87a723e1"
+}
+
+
+----------------------------------------------------------------------------------------------------
+Received register_device event for device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 and replica train_ddp_1:97816be6-0a48-4906-b192-9d5d87a723e1
+New Mapping: Device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 is now associated with replicas: {'train_ddp_0:e0d9df8d-8b61-4f2d-a769-5acc59b9ef9d', 'train_ddp_1:4e77018c-5b51-4717-81ec-8af60698d37d', 'train_ddp_0:dadd1c51-3aaa-4520-b075-81cb3c852c35', 'train_ddp_1:6ad962f4-d8ed-4ceb-9f98-617c9ec34dbe', 'train_ddp_1:2727a371-3b95-4ce6-8d87-b39050ce9ae1', 'train_ddp_1:d9a230c1-8720-4508-8ed3-64dcb01fb226', 'train_ddp_1:d5d820fc-27ad-4bf1-a41d-8498ea5ec6d5', 'train_ddp_1:fb11d769-8180-4740-b51c-ac3ce43bfa07', 'train_ddp_1:97816be6-0a48-4906-b192-9d5d87a723e1', 'train_ddp_1:fe7a317e-6474-4d9d-8c8a-2a74b321af17'}
+New Mapping: Replica train_ddp_1:97816be6-0a48-4906-b192-9d5d87a723e1 is now associated with devices: {'GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28'}
+Marduk constants module loaded
+Retrieved GPU UUID: GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 for device index 0
+Received 1 messages on marduk.DRentry
+Received message: register_device {
+  device_uuid: "GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28"
+  replica_id: "train_ddp_1:6a8a1be2-217b-493b-b42b-27a976c5f34a"
+}
+
+
+----------------------------------------------------------------------------------------------------
+Received register_device event for device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 and replica train_ddp_1:6a8a1be2-217b-493b-b42b-27a976c5f34a
+New Mapping: Device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 is now associated with replicas: {'train_ddp_0:e0d9df8d-8b61-4f2d-a769-5acc59b9ef9d', 'train_ddp_1:4e77018c-5b51-4717-81ec-8af60698d37d', 'train_ddp_0:dadd1c51-3aaa-4520-b075-81cb3c852c35', 'train_ddp_1:6ad962f4-d8ed-4ceb-9f98-617c9ec34dbe', 'train_ddp_1:2727a371-3b95-4ce6-8d87-b39050ce9ae1', 'train_ddp_1:d9a230c1-8720-4508-8ed3-64dcb01fb226', 'train_ddp_1:d5d820fc-27ad-4bf1-a41d-8498ea5ec6d5', 'train_ddp_1:fb11d769-8180-4740-b51c-ac3ce43bfa07', 'train_ddp_1:97816be6-0a48-4906-b192-9d5d87a723e1', 'train_ddp_1:fe7a317e-6474-4d9d-8c8a-2a74b321af17', 'train_ddp_1:6a8a1be2-217b-493b-b42b-27a976c5f34a'}
+New Mapping: Replica train_ddp_1:6a8a1be2-217b-493b-b42b-27a976c5f34a is now associated with devices: {'GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28'}
+Marduk constants module loaded
+Retrieved GPU UUID: GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 for device index 0
+Received 1 messages on marduk.DRentry
+Received message: register_device {
+  device_uuid: "GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28"
+  replica_id: "train_ddp_1:a5208bbd-6ff6-4d72-81f7-a1696f7089bc"
+}
+
+
+----------------------------------------------------------------------------------------------------
+Received register_device event for device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 and replica train_ddp_1:a5208bbd-6ff6-4d72-81f7-a1696f7089bc
+New Mapping: Device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 is now associated with replicas: {'train_ddp_0:e0d9df8d-8b61-4f2d-a769-5acc59b9ef9d', 'train_ddp_1:4e77018c-5b51-4717-81ec-8af60698d37d', 'train_ddp_0:dadd1c51-3aaa-4520-b075-81cb3c852c35', 'train_ddp_1:a5208bbd-6ff6-4d72-81f7-a1696f7089bc', 'train_ddp_1:6ad962f4-d8ed-4ceb-9f98-617c9ec34dbe', 'train_ddp_1:2727a371-3b95-4ce6-8d87-b39050ce9ae1', 'train_ddp_1:d9a230c1-8720-4508-8ed3-64dcb01fb226', 'train_ddp_1:d5d820fc-27ad-4bf1-a41d-8498ea5ec6d5', 'train_ddp_1:fb11d769-8180-4740-b51c-ac3ce43bfa07', 'train_ddp_1:97816be6-0a48-4906-b192-9d5d87a723e1', 'train_ddp_1:fe7a317e-6474-4d9d-8c8a-2a74b321af17', 'train_ddp_1:6a8a1be2-217b-493b-b42b-27a976c5f34a'}
+New Mapping: Replica train_ddp_1:a5208bbd-6ff6-4d72-81f7-a1696f7089bc is now associated with devices: {'GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28'}
+Stopping Controller
+All subscriptions cleared
+NATS connection closed
+Marduk constants module loaded
+Starting Marduk Controller
+Controller initialized with NATS address: nats://0.0.0.0:4222
+Connected to NATS server at nats://0.0.0.0:4222
+Subscribing to marduk.DRentry on stream CONTROLLER-STREAM with consumer controller-consumer
+Subscribed to marduk.monitored.failure
+Controller initialized and subscribed to all subjects
+Started listening on marduk.DRentry
+Started listening on marduk.monitored.failure
+Marduk constants module loaded
+Retrieved GPU UUID: GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 for device index 0
+Received 1 messages on marduk.DRentry
+Received message: register_device {
+  device_uuid: "GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28"
+  replica_id: "train_ddp_1:82bd1227-fa42-477b-be31-ed50db5fe819"
+}
+
+
+----------------------------------------------------------------------------------------------------
+Received register_device event for device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 and replica train_ddp_1:82bd1227-fa42-477b-be31-ed50db5fe819
+New Mapping: Device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 is now associated with replicas: {'train_ddp_1:82bd1227-fa42-477b-be31-ed50db5fe819'}
+New Mapping: Replica train_ddp_1:82bd1227-fa42-477b-be31-ed50db5fe819 is now associated with devices: {'GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28'}
+Marduk constants module loaded
+Retrieved GPU UUID: GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 for device index 0
+Received 1 messages on marduk.DRentry
+Received message: register_device {
+  device_uuid: "GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28"
+  replica_id: "train_ddp_0:d5f069d8-011a-418a-9d4c-ecf3b2bf22c6"
+}
+
+
+----------------------------------------------------------------------------------------------------
+Received register_device event for device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 and replica train_ddp_0:d5f069d8-011a-418a-9d4c-ecf3b2bf22c6
+New Mapping: Device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 is now associated with replicas: {'train_ddp_1:82bd1227-fa42-477b-be31-ed50db5fe819', 'train_ddp_0:d5f069d8-011a-418a-9d4c-ecf3b2bf22c6'}
+New Mapping: Replica train_ddp_0:d5f069d8-011a-418a-9d4c-ecf3b2bf22c6 is now associated with devices: {'GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28'}
+Marduk constants module loaded
+Using NATS server at nats://localhost:4222
+Starting Marduk CLI
+Marduk CLI initialized
+Executing test command with input: 1
+Simulating failed GPU with uuid: 1
+Connected to NATS server at nats://localhost:4222
+Published device failure event for device 1
+Received message on marduk.monitored.failure
+Received message: monitored_fail {
+  device_uuid: "1"
+}
+
+[GPU FAILURE] Device 1 not found in device-to-replicas map
+Executing test command with input: GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28
+Simulating failed GPU with uuid: GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28
+Connected to NATS server at nats://localhost:4222
+Published device failure event for device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28
+Received message on marduk.monitored.failure
+Received message: monitored_fail {
+  device_uuid: "GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28"
+}
+
+[GPU FAILURE] Associated Replica IDs: {'train_ddp_1:82bd1227-fa42-477b-be31-ed50db5fe819', 'train_ddp_0:d5f069d8-011a-418a-9d4c-ecf3b2bf22c6'}
+Marduk constants module loaded
+Retrieved GPU UUID: GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 for device index 0
+Received 1 messages on marduk.DRentry
+Received message: register_device {
+  device_uuid: "GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28"
+  replica_id: "train_ddp_1:b0f11ffe-b445-468c-a2d7-8d819d4b2c7b"
+}
+
+
+----------------------------------------------------------------------------------------------------
+Received register_device event for device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 and replica train_ddp_1:b0f11ffe-b445-468c-a2d7-8d819d4b2c7b
+New Mapping: Device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 is now associated with replicas: {'train_ddp_1:82bd1227-fa42-477b-be31-ed50db5fe819', 'train_ddp_0:d5f069d8-011a-418a-9d4c-ecf3b2bf22c6', 'train_ddp_1:b0f11ffe-b445-468c-a2d7-8d819d4b2c7b'}
+New Mapping: Replica train_ddp_1:b0f11ffe-b445-468c-a2d7-8d819d4b2c7b is now associated with devices: {'GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28'}
+Marduk constants module loaded
+Retrieved GPU UUID: GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 for device index 0
+Received 1 messages on marduk.DRentry
+Received message: register_device {
+  device_uuid: "GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28"
+  replica_id: "train_ddp_1:0ecda60a-bcdc-4489-b8a4-90ddba7f1c6b"
+}
+
+
+----------------------------------------------------------------------------------------------------
+Received register_device event for device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 and replica train_ddp_1:0ecda60a-bcdc-4489-b8a4-90ddba7f1c6b
+New Mapping: Device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 is now associated with replicas: {'train_ddp_1:82bd1227-fa42-477b-be31-ed50db5fe819', 'train_ddp_0:d5f069d8-011a-418a-9d4c-ecf3b2bf22c6', 'train_ddp_1:0ecda60a-bcdc-4489-b8a4-90ddba7f1c6b', 'train_ddp_1:b0f11ffe-b445-468c-a2d7-8d819d4b2c7b'}
+New Mapping: Replica train_ddp_1:0ecda60a-bcdc-4489-b8a4-90ddba7f1c6b is now associated with devices: {'GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28'}
+Marduk constants module loaded
+Retrieved GPU UUID: GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 for device index 0
+Received 1 messages on marduk.DRentry
+Received message: register_device {
+  device_uuid: "GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28"
+  replica_id: "train_ddp_1:d9b8aabe-66f7-412e-a1f9-cb9000dcc2ac"
+}
+
+
+----------------------------------------------------------------------------------------------------
+Received register_device event for device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 and replica train_ddp_1:d9b8aabe-66f7-412e-a1f9-cb9000dcc2ac
+New Mapping: Device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 is now associated with replicas: {'train_ddp_0:d5f069d8-011a-418a-9d4c-ecf3b2bf22c6', 'train_ddp_1:0ecda60a-bcdc-4489-b8a4-90ddba7f1c6b', 'train_ddp_1:d9b8aabe-66f7-412e-a1f9-cb9000dcc2ac', 'train_ddp_1:82bd1227-fa42-477b-be31-ed50db5fe819', 'train_ddp_1:b0f11ffe-b445-468c-a2d7-8d819d4b2c7b'}
+New Mapping: Replica train_ddp_1:d9b8aabe-66f7-412e-a1f9-cb9000dcc2ac is now associated with devices: {'GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28'}
+Marduk constants module loaded
+Retrieved GPU UUID: GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 for device index 0
+Received 1 messages on marduk.DRentry
+Received message: register_device {
+  device_uuid: "GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28"
+  replica_id: "train_ddp_1:25cffe73-3b11-47f1-bc3e-d83237118c1a"
+}
+
+
+----------------------------------------------------------------------------------------------------
+Received register_device event for device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 and replica train_ddp_1:25cffe73-3b11-47f1-bc3e-d83237118c1a
+New Mapping: Device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 is now associated with replicas: {'train_ddp_1:25cffe73-3b11-47f1-bc3e-d83237118c1a', 'train_ddp_0:d5f069d8-011a-418a-9d4c-ecf3b2bf22c6', 'train_ddp_1:0ecda60a-bcdc-4489-b8a4-90ddba7f1c6b', 'train_ddp_1:d9b8aabe-66f7-412e-a1f9-cb9000dcc2ac', 'train_ddp_1:82bd1227-fa42-477b-be31-ed50db5fe819', 'train_ddp_1:b0f11ffe-b445-468c-a2d7-8d819d4b2c7b'}
+New Mapping: Replica train_ddp_1:25cffe73-3b11-47f1-bc3e-d83237118c1a is now associated with devices: {'GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28'}
+Marduk constants module loaded
+Retrieved GPU UUID: GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 for device index 0
+Received 1 messages on marduk.DRentry
+Received message: register_device {
+  device_uuid: "GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28"
+  replica_id: "train_ddp_1:8fafb622-17fd-4f87-b4c1-20ca7dc14e97"
+}
+
+
+----------------------------------------------------------------------------------------------------
+Received register_device event for device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 and replica train_ddp_1:8fafb622-17fd-4f87-b4c1-20ca7dc14e97
+New Mapping: Device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 is now associated with replicas: {'train_ddp_1:25cffe73-3b11-47f1-bc3e-d83237118c1a', 'train_ddp_0:d5f069d8-011a-418a-9d4c-ecf3b2bf22c6', 'train_ddp_1:0ecda60a-bcdc-4489-b8a4-90ddba7f1c6b', 'train_ddp_1:d9b8aabe-66f7-412e-a1f9-cb9000dcc2ac', 'train_ddp_1:82bd1227-fa42-477b-be31-ed50db5fe819', 'train_ddp_1:8fafb622-17fd-4f87-b4c1-20ca7dc14e97', 'train_ddp_1:b0f11ffe-b445-468c-a2d7-8d819d4b2c7b'}
+New Mapping: Replica train_ddp_1:8fafb622-17fd-4f87-b4c1-20ca7dc14e97 is now associated with devices: {'GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28'}
+Marduk constants module loaded
+Retrieved GPU UUID: GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 for device index 0
+Received 1 messages on marduk.DRentry
+Received message: register_device {
+  device_uuid: "GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28"
+  replica_id: "train_ddp_1:32499b5d-7908-4955-b923-37685d71ef60"
+}
+
+
+----------------------------------------------------------------------------------------------------
+Received register_device event for device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 and replica train_ddp_1:32499b5d-7908-4955-b923-37685d71ef60
+New Mapping: Device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 is now associated with replicas: {'train_ddp_1:25cffe73-3b11-47f1-bc3e-d83237118c1a', 'train_ddp_0:d5f069d8-011a-418a-9d4c-ecf3b2bf22c6', 'train_ddp_1:0ecda60a-bcdc-4489-b8a4-90ddba7f1c6b', 'train_ddp_1:d9b8aabe-66f7-412e-a1f9-cb9000dcc2ac', 'train_ddp_1:32499b5d-7908-4955-b923-37685d71ef60', 'train_ddp_1:82bd1227-fa42-477b-be31-ed50db5fe819', 'train_ddp_1:8fafb622-17fd-4f87-b4c1-20ca7dc14e97', 'train_ddp_1:b0f11ffe-b445-468c-a2d7-8d819d4b2c7b'}
+New Mapping: Replica train_ddp_1:32499b5d-7908-4955-b923-37685d71ef60 is now associated with devices: {'GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28'}
+Marduk constants module loaded
+Retrieved GPU UUID: GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 for device index 0
+Received 1 messages on marduk.DRentry
+Received message: register_device {
+  device_uuid: "GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28"
+  replica_id: "train_ddp_1:041b0862-7edb-4d85-98a7-757c86f04743"
+}
+
+
+----------------------------------------------------------------------------------------------------
+Received register_device event for device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 and replica train_ddp_1:041b0862-7edb-4d85-98a7-757c86f04743
+New Mapping: Device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 is now associated with replicas: {'train_ddp_1:25cffe73-3b11-47f1-bc3e-d83237118c1a', 'train_ddp_1:041b0862-7edb-4d85-98a7-757c86f04743', 'train_ddp_0:d5f069d8-011a-418a-9d4c-ecf3b2bf22c6', 'train_ddp_1:0ecda60a-bcdc-4489-b8a4-90ddba7f1c6b', 'train_ddp_1:d9b8aabe-66f7-412e-a1f9-cb9000dcc2ac', 'train_ddp_1:32499b5d-7908-4955-b923-37685d71ef60', 'train_ddp_1:82bd1227-fa42-477b-be31-ed50db5fe819', 'train_ddp_1:8fafb622-17fd-4f87-b4c1-20ca7dc14e97', 'train_ddp_1:b0f11ffe-b445-468c-a2d7-8d819d4b2c7b'}
+New Mapping: Replica train_ddp_1:041b0862-7edb-4d85-98a7-757c86f04743 is now associated with devices: {'GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28'}
+Marduk constants module loaded
+Retrieved GPU UUID: GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 for device index 0
+Received 1 messages on marduk.DRentry
+Received message: register_device {
+  device_uuid: "GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28"
+  replica_id: "train_ddp_1:dbb9a0aa-2d93-4b09-98cc-eecdcb91459e"
+}
+
+
+----------------------------------------------------------------------------------------------------
+Received register_device event for device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 and replica train_ddp_1:dbb9a0aa-2d93-4b09-98cc-eecdcb91459e
+New Mapping: Device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 is now associated with replicas: {'train_ddp_1:25cffe73-3b11-47f1-bc3e-d83237118c1a', 'train_ddp_1:041b0862-7edb-4d85-98a7-757c86f04743', 'train_ddp_1:dbb9a0aa-2d93-4b09-98cc-eecdcb91459e', 'train_ddp_0:d5f069d8-011a-418a-9d4c-ecf3b2bf22c6', 'train_ddp_1:0ecda60a-bcdc-4489-b8a4-90ddba7f1c6b', 'train_ddp_1:d9b8aabe-66f7-412e-a1f9-cb9000dcc2ac', 'train_ddp_1:32499b5d-7908-4955-b923-37685d71ef60', 'train_ddp_1:82bd1227-fa42-477b-be31-ed50db5fe819', 'train_ddp_1:8fafb622-17fd-4f87-b4c1-20ca7dc14e97', 'train_ddp_1:b0f11ffe-b445-468c-a2d7-8d819d4b2c7b'}
+New Mapping: Replica train_ddp_1:dbb9a0aa-2d93-4b09-98cc-eecdcb91459e is now associated with devices: {'GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28'}
+Marduk constants module loaded
+Retrieved GPU UUID: GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 for device index 0
+Received 1 messages on marduk.DRentry
+Received message: register_device {
+  device_uuid: "GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28"
+  replica_id: "train_ddp_1:f6ec809b-cf37-4552-821d-1a21facfc4c2"
+}
+
+
+----------------------------------------------------------------------------------------------------
+Received register_device event for device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 and replica train_ddp_1:f6ec809b-cf37-4552-821d-1a21facfc4c2
+New Mapping: Device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 is now associated with replicas: {'train_ddp_1:25cffe73-3b11-47f1-bc3e-d83237118c1a', 'train_ddp_1:041b0862-7edb-4d85-98a7-757c86f04743', 'train_ddp_1:f6ec809b-cf37-4552-821d-1a21facfc4c2', 'train_ddp_1:dbb9a0aa-2d93-4b09-98cc-eecdcb91459e', 'train_ddp_0:d5f069d8-011a-418a-9d4c-ecf3b2bf22c6', 'train_ddp_1:0ecda60a-bcdc-4489-b8a4-90ddba7f1c6b', 'train_ddp_1:d9b8aabe-66f7-412e-a1f9-cb9000dcc2ac', 'train_ddp_1:32499b5d-7908-4955-b923-37685d71ef60', 'train_ddp_1:82bd1227-fa42-477b-be31-ed50db5fe819', 'train_ddp_1:8fafb622-17fd-4f87-b4c1-20ca7dc14e97', 'train_ddp_1:b0f11ffe-b445-468c-a2d7-8d819d4b2c7b'}
+New Mapping: Replica train_ddp_1:f6ec809b-cf37-4552-821d-1a21facfc4c2 is now associated with devices: {'GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28'}

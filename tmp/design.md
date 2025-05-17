@@ -16,6 +16,14 @@ The need for this comes from two parts:
 
 ## Code Design
 
+Marduk has a new environmental variable:
+
+```python
+os.environ["MARDUK_ADDR"]
+```
+
+All the constants are defined in `torchft/marduk/constants.py`. The default address is `nats://localhost:4222`
+
 DRMap is a crucial part of the design. It is the way for the controller to translate from the langauge of the monitoring system (device_uuid) to the language of the training manager (replica_id).
 
 Currently it is implemented as two separate maps:

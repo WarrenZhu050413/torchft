@@ -65,6 +65,7 @@ class Controller():
         device_uuid: str = env.register_device.device_uuid
         replica_id: str = env.register_device.replica_id
 
+        logger.info("\n" + "-" * 100)
         logger.info(f"Received register_device event for device {device_uuid} and replica {replica_id}")
         
         # Update device to replicas mapping
@@ -95,9 +96,6 @@ class Controller():
                 
                 for replica_id in replica_ids:
                     await self.send_replica_fail_event(replica_id)
-                else:
-                    failure_message = f"[GPU FAILURE] Replica {replica_id} not found in replica-to-devices map"
-                    log_and_raise_exception(logger, failure_message)
             else:
                 logger.warning(f"[GPU FAILURE] Device {device_uuid} not found in device-to-replicas map")
         except Exception as e:
