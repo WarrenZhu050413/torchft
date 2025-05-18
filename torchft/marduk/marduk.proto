@@ -4,7 +4,7 @@ message RegisterDevice       { string device_uuid = 1; string replica_id = 2; }
 message DrainEvent           { string device_uuid = 1; }
 message ReplicaFailEvent     { string  replica_id = 1; }
 message MonitoredFailEvent   { string  device_uuid = 1; }
-message ChangeBatchSizeEvent { int32  new_batch_sz = 1; }
+message ChangeTrConfigEvent  { string  tr_config_type = 1; string  tr_config_value = 2; }
 
 message EventEnvelope {
   uint64  seq      = 1;
@@ -14,7 +14,7 @@ message EventEnvelope {
     DrainEvent           drain             = 10;
     ReplicaFailEvent     replica_fail      = 11;
     MonitoredFailEvent   monitored_fail    = 12;
-    ChangeBatchSizeEvent change_batch_sz   = 13;
+    ChangeTrConfigEvent  change_tr_config  = 13;
   }
 }
 

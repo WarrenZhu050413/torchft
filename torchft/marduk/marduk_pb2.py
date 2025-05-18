@@ -24,7 +24,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x1btorchft/marduk/marduk.proto\"9\n\x0eRegisterDevice\x12\x13\n\x0b\x64\x65vice_uuid\x18\x01 \x01(\t\x12\x12\n\nreplica_id\x18\x02 \x01(\t\"!\n\nDrainEvent\x12\x13\n\x0b\x64\x65vice_uuid\x18\x01 \x01(\t\"&\n\x10ReplicaFailEvent\x12\x12\n\nreplica_id\x18\x01 \x01(\t\")\n\x12MonitoredFailEvent\x12\x13\n\x0b\x64\x65vice_uuid\x18\x01 \x01(\t\",\n\x14\x43hangeBatchSizeEvent\x12\x14\n\x0cnew_batch_sz\x18\x01 \x01(\x05\"\x8c\x02\n\rEventEnvelope\x12\x0b\n\x03seq\x18\x01 \x01(\x04\x12\x10\n\x08ts_nanos\x18\x02 \x01(\x04\x12*\n\x0fregister_device\x18\t \x01(\x0b\x32\x0f.RegisterDeviceH\x00\x12\x1c\n\x05\x64rain\x18\n \x01(\x0b\x32\x0b.DrainEventH\x00\x12)\n\x0creplica_fail\x18\x0b \x01(\x0b\x32\x11.ReplicaFailEventH\x00\x12-\n\x0emonitored_fail\x18\x0c \x01(\x0b\x32\x13.MonitoredFailEventH\x00\x12\x30\n\x0f\x63hange_batch_sz\x18\r \x01(\x0b\x32\x15.ChangeBatchSizeEventH\x00\x42\x06\n\x04\x62ody\"@\n\x15\x44\x65viceReplicaMapEntry\x12\x13\n\x0b\x64\x65vice_uuid\x18\x01 \x01(\t\x12\x12\n\nreplica_id\x18\x02 \x01(\x05\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x1btorchft/marduk/marduk.proto\"9\n\x0eRegisterDevice\x12\x13\n\x0b\x64\x65vice_uuid\x18\x01 \x01(\t\x12\x12\n\nreplica_id\x18\x02 \x01(\t\"!\n\nDrainEvent\x12\x13\n\x0b\x64\x65vice_uuid\x18\x01 \x01(\t\"&\n\x10ReplicaFailEvent\x12\x12\n\nreplica_id\x18\x01 \x01(\t\")\n\x12MonitoredFailEvent\x12\x13\n\x0b\x64\x65vice_uuid\x18\x01 \x01(\t\"F\n\x13\x43hangeTrConfigEvent\x12\x16\n\x0etr_config_type\x18\x01 \x01(\t\x12\x17\n\x0ftr_config_value\x18\x02 \x01(\t\"\x8c\x02\n\rEventEnvelope\x12\x0b\n\x03seq\x18\x01 \x01(\x04\x12\x10\n\x08ts_nanos\x18\x02 \x01(\x04\x12*\n\x0fregister_device\x18\t \x01(\x0b\x32\x0f.RegisterDeviceH\x00\x12\x1c\n\x05\x64rain\x18\n \x01(\x0b\x32\x0b.DrainEventH\x00\x12)\n\x0creplica_fail\x18\x0b \x01(\x0b\x32\x11.ReplicaFailEventH\x00\x12-\n\x0emonitored_fail\x18\x0c \x01(\x0b\x32\x13.MonitoredFailEventH\x00\x12\x30\n\x10\x63hange_tr_config\x18\r \x01(\x0b\x32\x14.ChangeTrConfigEventH\x00\x42\x06\n\x04\x62ody\"@\n\x15\x44\x65viceReplicaMapEntry\x12\x13\n\x0b\x64\x65vice_uuid\x18\x01 \x01(\t\x12\x12\n\nreplica_id\x18\x02 \x01(\x05\x62\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -39,10 +39,10 @@ if not _descriptor._USE_C_DESCRIPTORS:
   _globals['_REPLICAFAILEVENT']._serialized_end=163
   _globals['_MONITOREDFAILEVENT']._serialized_start=165
   _globals['_MONITOREDFAILEVENT']._serialized_end=206
-  _globals['_CHANGEBATCHSIZEEVENT']._serialized_start=208
-  _globals['_CHANGEBATCHSIZEEVENT']._serialized_end=252
-  _globals['_EVENTENVELOPE']._serialized_start=255
-  _globals['_EVENTENVELOPE']._serialized_end=523
-  _globals['_DEVICEREPLICAMAPENTRY']._serialized_start=525
-  _globals['_DEVICEREPLICAMAPENTRY']._serialized_end=589
+  _globals['_CHANGETRCONFIGEVENT']._serialized_start=208
+  _globals['_CHANGETRCONFIGEVENT']._serialized_end=278
+  _globals['_EVENTENVELOPE']._serialized_start=281
+  _globals['_EVENTENVELOPE']._serialized_end=549
+  _globals['_DEVICEREPLICAMAPENTRY']._serialized_start=551
+  _globals['_DEVICEREPLICAMAPENTRY']._serialized_end=615
 # @@protoc_insertion_point(module_scope)

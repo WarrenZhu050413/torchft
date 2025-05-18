@@ -193,6 +193,10 @@ def main() -> None:
             # must be called at the beginning of each train loop
             # Quorum computation is triggered here but only needed in the backwards pass.
             optimizer.zero_grad()
+            # optimizer.load_state_dict(manager.new_state_dict())
+            # manager.new_state_dict comes from the controller
+            # What is hard about this? 1. Controller needs to give information to the manager in a timely manner.
+            # 2. There needs to have enough time for a listening thread to put these into the state dict and modify the manager state.
 
             out = m(inputs)
             loss = criterion(out, labels)
@@ -217,12 +221,11 @@ def main() -> None:
             # long as not every worker goes down.
 
             time.sleep(1)
-
-            if manager.current_step() >= 10000:
+            if manager.current_step() >= 10000: # if manager.stop_training()
+                # Print out all the stats, etc., calculate. Post-amble (or some other word)
                 # complete training
                 prof.stop()
                 exit()
-
 
 if __name__ == "__main__":
     main()

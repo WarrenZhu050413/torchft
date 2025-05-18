@@ -33,7 +33,7 @@ class Controller():
         self._loop: asyncio.AbstractEventLoop = asyncio.get_event_loop()
         self._subscriptions = {}
         self._nc_timeout = Config.NC_TIMEOUT or 1   
-        self._exception_sleep = Config.EXCEPTION_SLEEP or 1
+        self._exception_sleep = Config.EXCEPTION_RETRY_TIME or 1
         logger.info(f"Controller initialized with NATS address: {marduk_addr}")
 
         self._nc: Client | None = None

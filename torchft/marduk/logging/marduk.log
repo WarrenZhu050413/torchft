@@ -383,3 +383,477 @@ Received message: monitored_fail {
 }
 
 [GPU FAILURE] Device 1 not found in device-to-replicas map
+Stopping Controller
+All subscriptions cleared
+Marduk constants module loaded
+Marduk constants module loaded
+Marduk constants module loaded
+Retrieved GPU UUID: GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 for device index 0
+Marduk constants module loaded
+Retrieved GPU UUID: GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 for device index 0
+Marduk constants module loaded
+Retrieved GPU UUID: GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 for device index 0
+Marduk constants module loaded
+Retrieved GPU UUID: GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 for device index 0
+Marduk constants module loaded
+Starting Marduk Controller
+Controller initialized with NATS address: nats://0.0.0.0:4222
+Connected to NATS server at nats://0.0.0.0:4222
+Controller initialized
+Started subscribing to all subjects
+Subscribing to marduk.DRentry on stream CONTROLLER-STREAM with consumer controller-consumer
+Subscribing to marduk.monitored.failure
+Subscribed to marduk.monitored.failure
+Started listening on marduk.monitored.failure
+Pull subscription created for marduk.DRentry on stream CONTROLLER-STREAM with consumer controller-consumer
+Started listening on marduk.DRentry
+Subscribed to all subjects
+Received 1 messages on marduk.DRentry
+Received message: register_device {
+  device_uuid: "GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28"
+  replica_id: "train_ddp_0:192faa5b-654c-4e18-aa48-642c9436c38b"
+}
+
+
+----------------------------------------------------------------------------------------------------
+Received register_device event for device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 and replica train_ddp_0:192faa5b-654c-4e18-aa48-642c9436c38b
+New Mapping: Device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 is now associated with replicas: {'train_ddp_0:192faa5b-654c-4e18-aa48-642c9436c38b'}
+New Mapping: Replica train_ddp_0:192faa5b-654c-4e18-aa48-642c9436c38b is now associated with devices: {'GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28'}
+Received 1 messages on marduk.DRentry
+Received message: register_device {
+  device_uuid: "GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28"
+  replica_id: "train_ddp_1:19e0c480-39d6-44b8-9756-9b1b11122c13"
+}
+
+
+----------------------------------------------------------------------------------------------------
+Received register_device event for device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 and replica train_ddp_1:19e0c480-39d6-44b8-9756-9b1b11122c13
+New Mapping: Device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 is now associated with replicas: {'train_ddp_1:19e0c480-39d6-44b8-9756-9b1b11122c13', 'train_ddp_0:192faa5b-654c-4e18-aa48-642c9436c38b'}
+New Mapping: Replica train_ddp_1:19e0c480-39d6-44b8-9756-9b1b11122c13 is now associated with devices: {'GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28'}
+Received 1 messages on marduk.DRentry
+Received message: register_device {
+  device_uuid: "GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28"
+  replica_id: "train_ddp_0:db2f980b-452c-4f48-9bee-3228ec250578"
+}
+
+
+----------------------------------------------------------------------------------------------------
+Received register_device event for device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 and replica train_ddp_0:db2f980b-452c-4f48-9bee-3228ec250578
+New Mapping: Device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 is now associated with replicas: {'train_ddp_1:19e0c480-39d6-44b8-9756-9b1b11122c13', 'train_ddp_0:192faa5b-654c-4e18-aa48-642c9436c38b', 'train_ddp_0:db2f980b-452c-4f48-9bee-3228ec250578'}
+New Mapping: Replica train_ddp_0:db2f980b-452c-4f48-9bee-3228ec250578 is now associated with devices: {'GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28'}
+Received 1 messages on marduk.DRentry
+Received message: register_device {
+  device_uuid: "GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28"
+  replica_id: "train_ddp_0:4a148c81-c9bf-4765-9463-844fec1e81dc"
+}
+
+
+----------------------------------------------------------------------------------------------------
+Received register_device event for device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 and replica train_ddp_0:4a148c81-c9bf-4765-9463-844fec1e81dc
+New Mapping: Device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 is now associated with replicas: {'train_ddp_1:19e0c480-39d6-44b8-9756-9b1b11122c13', 'train_ddp_0:192faa5b-654c-4e18-aa48-642c9436c38b', 'train_ddp_0:db2f980b-452c-4f48-9bee-3228ec250578', 'train_ddp_0:4a148c81-c9bf-4765-9463-844fec1e81dc'}
+New Mapping: Replica train_ddp_0:4a148c81-c9bf-4765-9463-844fec1e81dc is now associated with devices: {'GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28'}
+Stopping Controller
+All subscriptions cleared
+NATS connection closed
+Marduk constants module loaded
+Starting Marduk Controller
+Controller initialized with NATS address: nats://0.0.0.0:4222
+Connected to NATS server at nats://0.0.0.0:4222
+Controller initialized
+Started subscribing to all subjects
+Subscribing to marduk.DRentry on stream CONTROLLER-STREAM with consumer controller-consumer
+Subscribing to marduk.monitored.failure
+Subscribed to marduk.monitored.failure
+Started listening on marduk.monitored.failure
+Pull subscription created for marduk.DRentry on stream CONTROLLER-STREAM with consumer controller-consumer
+Started listening on marduk.DRentry
+Subscribed to all subjects
+Marduk constants module loaded
+Retrieved GPU UUID: GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 for device index 0
+Received 1 messages on marduk.DRentry
+Received message: register_device {
+  device_uuid: "GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28"
+  replica_id: "train_ddp_0:e01c79df-bfbd-4ef2-81c2-1957f7cbbec6"
+}
+
+
+----------------------------------------------------------------------------------------------------
+Received register_device event for device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 and replica train_ddp_0:e01c79df-bfbd-4ef2-81c2-1957f7cbbec6
+New Mapping: Device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 is now associated with replicas: {'train_ddp_0:e01c79df-bfbd-4ef2-81c2-1957f7cbbec6'}
+New Mapping: Replica train_ddp_0:e01c79df-bfbd-4ef2-81c2-1957f7cbbec6 is now associated with devices: {'GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28'}
+Marduk constants module loaded
+Using NATS server at nats://localhost:4222
+Starting Marduk CLI
+Marduk CLI initialized
+Executing test command with input: 1
+Simulating failed GPU with uuid: 1
+Connected to NATS server at nats://localhost:4222
+Published device failure event for device 1
+Received message on marduk.monitored.failure
+Received message: monitored_fail {
+  device_uuid: "1"
+}
+
+[GPU FAILURE] Device 1 not found in device-to-replicas map
+Executing test command with input: 50
+Simulating failed GPU with uuid: 50
+Connected to NATS server at nats://localhost:4222
+Published device failure event for device 50
+Received message on marduk.monitored.failure
+Received message: monitored_fail {
+  device_uuid: "50"
+}
+
+[GPU FAILURE] Device 50 not found in device-to-replicas map
+Executing test command with input: GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28
+Simulating failed GPU with uuid: GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28
+Connected to NATS server at nats://localhost:4222
+Published device failure event for device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28
+Received message on marduk.monitored.failure
+Received message: monitored_fail {
+  device_uuid: "GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28"
+}
+
+[GPU FAILURE] Associated Replica IDs: {'train_ddp_0:e01c79df-bfbd-4ef2-81c2-1957f7cbbec6'}
+Published replica fail event for replica train_ddp_0:e01c79df-bfbd-4ef2-81c2-1957f7cbbec6
+Error in subscription loop for marduk.monitored.failure: nats: connection closed
+Traceback (most recent call last):
+  File "/srv/apps/danny/miniconda3/envs/warren/torchtitan/lib/python3.11/site-packages/nats/aio/subscription.py", line 189, in next_msg
+    msg = await future
+          ^^^^^^^^^^^^
+  File "/srv/apps/danny/miniconda3/envs/warren/torchtitan/lib/python3.11/asyncio/tasks.py", line 476, in wait_for
+    await waiter
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/srv/apps/warren/torchft/torchft/marduk/controller.py", line 169, in listen_to_nc_subscription
+    msg = await sub.next_msg(timeout=self._nc_timeout)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/srv/apps/danny/miniconda3/envs/warren/torchtitan/lib/python3.11/site-packages/nats/aio/subscription.py", line 196, in next_msg
+    raise errors.ConnectionClosedError
+nats.errors.ConnectionClosedError: nats: connection closed
+Error fetching messages from marduk.DRentry: nats: connection closed
+Traceback (most recent call last):
+  File "/srv/apps/danny/miniconda3/envs/warren/torchtitan/lib/python3.11/site-packages/nats/aio/subscription.py", line 189, in next_msg
+    msg = await future
+          ^^^^^^^^^^^^
+  File "/srv/apps/danny/miniconda3/envs/warren/torchtitan/lib/python3.11/asyncio/tasks.py", line 476, in wait_for
+    await waiter
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/srv/apps/warren/torchft/torchft/marduk/controller.py", line 134, in listen_to_js_subscription
+    msgs = await psub.fetch(1, timeout=1)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/srv/apps/danny/miniconda3/envs/warren/torchtitan/lib/python3.11/site-packages/nats/js/client.py", line 1098, in fetch
+    msg = await self._fetch_one(expires, timeout, heartbeat)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/srv/apps/danny/miniconda3/envs/warren/torchtitan/lib/python3.11/site-packages/nats/js/client.py", line 1150, in _fetch_one
+    msg = await self._sub.next_msg(timeout=deadline)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/srv/apps/danny/miniconda3/envs/warren/torchtitan/lib/python3.11/site-packages/nats/aio/subscription.py", line 196, in next_msg
+    raise errors.ConnectionClosedError
+nats.errors.ConnectionClosedError: nats: connection closed
+Error fetching messages from marduk.DRentry: nats: connection closed
+Traceback (most recent call last):
+  File "/srv/apps/warren/torchft/torchft/marduk/controller.py", line 134, in listen_to_js_subscription
+    msgs = await psub.fetch(1, timeout=1)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/srv/apps/danny/miniconda3/envs/warren/torchtitan/lib/python3.11/site-packages/nats/js/client.py", line 1098, in fetch
+    msg = await self._fetch_one(expires, timeout, heartbeat)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/srv/apps/danny/miniconda3/envs/warren/torchtitan/lib/python3.11/site-packages/nats/js/client.py", line 1136, in _fetch_one
+    await self._nc.publish(
+  File "/srv/apps/danny/miniconda3/envs/warren/torchtitan/lib/python3.11/site-packages/nats/aio/client.py", line 896, in publish
+    raise errors.ConnectionClosedError
+nats.errors.ConnectionClosedError: nats: connection closed
+Error fetching messages from marduk.DRentry: nats: connection closed
+Traceback (most recent call last):
+  File "/srv/apps/warren/torchft/torchft/marduk/controller.py", line 134, in listen_to_js_subscription
+    msgs = await psub.fetch(1, timeout=1)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/srv/apps/danny/miniconda3/envs/warren/torchtitan/lib/python3.11/site-packages/nats/js/client.py", line 1098, in fetch
+    msg = await self._fetch_one(expires, timeout, heartbeat)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/srv/apps/danny/miniconda3/envs/warren/torchtitan/lib/python3.11/site-packages/nats/js/client.py", line 1136, in _fetch_one
+    await self._nc.publish(
+  File "/srv/apps/danny/miniconda3/envs/warren/torchtitan/lib/python3.11/site-packages/nats/aio/client.py", line 896, in publish
+    raise errors.ConnectionClosedError
+nats.errors.ConnectionClosedError: nats: connection closed
+Error fetching messages from marduk.DRentry: nats: connection closed
+Traceback (most recent call last):
+  File "/srv/apps/warren/torchft/torchft/marduk/controller.py", line 134, in listen_to_js_subscription
+    msgs = await psub.fetch(1, timeout=1)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/srv/apps/danny/miniconda3/envs/warren/torchtitan/lib/python3.11/site-packages/nats/js/client.py", line 1098, in fetch
+    msg = await self._fetch_one(expires, timeout, heartbeat)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/srv/apps/danny/miniconda3/envs/warren/torchtitan/lib/python3.11/site-packages/nats/js/client.py", line 1136, in _fetch_one
+    await self._nc.publish(
+  File "/srv/apps/danny/miniconda3/envs/warren/torchtitan/lib/python3.11/site-packages/nats/aio/client.py", line 896, in publish
+    raise errors.ConnectionClosedError
+nats.errors.ConnectionClosedError: nats: connection closed
+Error fetching messages from marduk.DRentry: nats: connection closed
+Traceback (most recent call last):
+  File "/srv/apps/warren/torchft/torchft/marduk/controller.py", line 134, in listen_to_js_subscription
+    msgs = await psub.fetch(1, timeout=1)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/srv/apps/danny/miniconda3/envs/warren/torchtitan/lib/python3.11/site-packages/nats/js/client.py", line 1098, in fetch
+    msg = await self._fetch_one(expires, timeout, heartbeat)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/srv/apps/danny/miniconda3/envs/warren/torchtitan/lib/python3.11/site-packages/nats/js/client.py", line 1136, in _fetch_one
+    await self._nc.publish(
+  File "/srv/apps/danny/miniconda3/envs/warren/torchtitan/lib/python3.11/site-packages/nats/aio/client.py", line 896, in publish
+    raise errors.ConnectionClosedError
+nats.errors.ConnectionClosedError: nats: connection closed
+Error fetching messages from marduk.DRentry: nats: connection closed
+Traceback (most recent call last):
+  File "/srv/apps/warren/torchft/torchft/marduk/controller.py", line 134, in listen_to_js_subscription
+    msgs = await psub.fetch(1, timeout=1)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/srv/apps/danny/miniconda3/envs/warren/torchtitan/lib/python3.11/site-packages/nats/js/client.py", line 1098, in fetch
+    msg = await self._fetch_one(expires, timeout, heartbeat)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/srv/apps/danny/miniconda3/envs/warren/torchtitan/lib/python3.11/site-packages/nats/js/client.py", line 1136, in _fetch_one
+    await self._nc.publish(
+  File "/srv/apps/danny/miniconda3/envs/warren/torchtitan/lib/python3.11/site-packages/nats/aio/client.py", line 896, in publish
+    raise errors.ConnectionClosedError
+nats.errors.ConnectionClosedError: nats: connection closed
+Marduk constants module loaded
+Marduk constants module loaded
+Starting Marduk Controller
+Controller initialized with NATS address: nats://0.0.0.0:4222
+Connected to NATS server at nats://0.0.0.0:4222
+Controller initialized
+Started subscribing to all subjects
+Subscribing to marduk.DRentry on stream CONTROLLER-STREAM with consumer controller-consumer
+Subscribing to marduk.monitored.failure
+Subscribed to marduk.monitored.failure
+Started listening on marduk.monitored.failure
+Pull subscription created for marduk.DRentry on stream CONTROLLER-STREAM with consumer controller-consumer
+Started listening on marduk.DRentry
+Subscribed to all subjects
+Marduk constants module loaded
+Stopping Controller
+All subscriptions cleared
+NATS connection closed
+Marduk constants module loaded
+Marduk constants module loaded
+Starting Marduk Controller
+Controller initialized with NATS address: nats://0.0.0.0:4222
+Connected to NATS server at nats://0.0.0.0:4222
+Controller initialized
+Started subscribing to all subjects
+Subscribing to marduk.DRentry on stream CONTROLLER-STREAM with consumer controller-consumer
+Subscribing to marduk.monitored.failure
+Subscribed to marduk.monitored.failure
+Started listening on marduk.monitored.failure
+Pull subscription created for marduk.DRentry on stream CONTROLLER-STREAM with consumer controller-consumer
+Started listening on marduk.DRentry
+Subscribed to all subjects
+Marduk constants module loaded
+Retrieved GPU UUID: GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 for device index 0
+Received 1 messages on marduk.DRentry
+Received message: register_device {
+  device_uuid: "GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28"
+  replica_id: "train_ddp_0:b96c28d9-cc27-46e0-afe3-43b43cce796a"
+}
+
+
+----------------------------------------------------------------------------------------------------
+Received register_device event for device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 and replica train_ddp_0:b96c28d9-cc27-46e0-afe3-43b43cce796a
+New Mapping: Device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 is now associated with replicas: {'train_ddp_0:b96c28d9-cc27-46e0-afe3-43b43cce796a'}
+New Mapping: Replica train_ddp_0:b96c28d9-cc27-46e0-afe3-43b43cce796a is now associated with devices: {'GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28'}
+Marduk constants module loaded
+Marduk constants module loaded
+Marduk constants module loaded
+Retrieved GPU UUID: GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 for device index 0
+Received 1 messages on marduk.DRentry
+Received message: register_device {
+  device_uuid: "GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28"
+  replica_id: "train_ddp_1:c70ca173-e6d6-43c3-b5fc-877203753f2f"
+}
+
+
+----------------------------------------------------------------------------------------------------
+Received register_device event for device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 and replica train_ddp_1:c70ca173-e6d6-43c3-b5fc-877203753f2f
+New Mapping: Device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 is now associated with replicas: {'train_ddp_0:b96c28d9-cc27-46e0-afe3-43b43cce796a', 'train_ddp_1:c70ca173-e6d6-43c3-b5fc-877203753f2f'}
+New Mapping: Replica train_ddp_1:c70ca173-e6d6-43c3-b5fc-877203753f2f is now associated with devices: {'GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28'}
+Marduk constants module loaded
+Starting Marduk Controller
+Controller initialized with NATS address: nats://0.0.0.0:4222
+Connected to NATS server at nats://0.0.0.0:4222
+Controller initialized
+Started subscribing to all subjects
+Subscribing to marduk.DRentry on stream CONTROLLER-STREAM with consumer controller-consumer
+Subscribing to marduk.monitored.failure
+Subscribed to marduk.monitored.failure
+Started listening on marduk.monitored.failure
+Pull subscription created for marduk.DRentry on stream CONTROLLER-STREAM with consumer controller-consumer
+Started listening on marduk.DRentry
+Subscribed to all subjects
+Stopping Controller
+All subscriptions cleared
+NATS connection closed
+Marduk constants module loaded
+Using NATS server at nats://localhost:4222
+Starting Marduk CLI
+Marduk CLI initialized
+Marduk constants module loaded
+Retrieved GPU UUID: GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 for device index 0
+Received 1 messages on marduk.DRentry
+Received message: register_device {
+  device_uuid: "GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28"
+  replica_id: "train_ddp_0:5df83d5c-ecbc-4a59-affd-ec5a27fa52fa"
+}
+
+
+----------------------------------------------------------------------------------------------------
+Received register_device event for device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 and replica train_ddp_0:5df83d5c-ecbc-4a59-affd-ec5a27fa52fa
+New Mapping: Device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 is now associated with replicas: {'train_ddp_0:5df83d5c-ecbc-4a59-affd-ec5a27fa52fa', 'train_ddp_0:b96c28d9-cc27-46e0-afe3-43b43cce796a', 'train_ddp_1:c70ca173-e6d6-43c3-b5fc-877203753f2f'}
+New Mapping: Replica train_ddp_0:5df83d5c-ecbc-4a59-affd-ec5a27fa52fa is now associated with devices: {'GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28'}
+Executing test command with input: 10
+Simulating failed GPU with uuid: 10
+Connected to NATS server at nats://localhost:4222
+Published device failure event for device 10
+Received message on marduk.monitored.failure
+Received message: monitored_fail {
+  device_uuid: "10"
+}
+
+[GPU FAILURE] Device 10 not found in device-to-replicas map
+Marduk constants module loaded
+Retrieved GPU UUID: GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 for device index 0
+Received 1 messages on marduk.DRentry
+Received message: register_device {
+  device_uuid: "GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28"
+  replica_id: "train_ddp_0:b8ca4a7a-3b94-42ef-87d4-118fc60fe9d8"
+}
+
+
+----------------------------------------------------------------------------------------------------
+Received register_device event for device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 and replica train_ddp_0:b8ca4a7a-3b94-42ef-87d4-118fc60fe9d8
+New Mapping: Device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 is now associated with replicas: {'train_ddp_0:5df83d5c-ecbc-4a59-affd-ec5a27fa52fa', 'train_ddp_0:b8ca4a7a-3b94-42ef-87d4-118fc60fe9d8', 'train_ddp_0:b96c28d9-cc27-46e0-afe3-43b43cce796a', 'train_ddp_1:c70ca173-e6d6-43c3-b5fc-877203753f2f'}
+New Mapping: Replica train_ddp_0:b8ca4a7a-3b94-42ef-87d4-118fc60fe9d8 is now associated with devices: {'GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28'}
+Marduk constants module loaded
+Retrieved GPU UUID: GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 for device index 0
+Received 1 messages on marduk.DRentry
+Received message: register_device {
+  device_uuid: "GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28"
+  replica_id: "train_ddp_0:01376c52-3049-443b-9782-4049fc9bfcd6"
+}
+
+
+----------------------------------------------------------------------------------------------------
+Received register_device event for device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 and replica train_ddp_0:01376c52-3049-443b-9782-4049fc9bfcd6
+New Mapping: Device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 is now associated with replicas: {'train_ddp_0:5df83d5c-ecbc-4a59-affd-ec5a27fa52fa', 'train_ddp_1:c70ca173-e6d6-43c3-b5fc-877203753f2f', 'train_ddp_0:b8ca4a7a-3b94-42ef-87d4-118fc60fe9d8', 'train_ddp_0:01376c52-3049-443b-9782-4049fc9bfcd6', 'train_ddp_0:b96c28d9-cc27-46e0-afe3-43b43cce796a'}
+New Mapping: Replica train_ddp_0:01376c52-3049-443b-9782-4049fc9bfcd6 is now associated with devices: {'GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28'}
+Marduk constants module loaded
+Retrieved GPU UUID: GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 for device index 0
+Received 1 messages on marduk.DRentry
+Received message: register_device {
+  device_uuid: "GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28"
+  replica_id: "train_ddp_1:9ca24e48-5eba-43d0-ba97-24c92d723c7b"
+}
+
+
+----------------------------------------------------------------------------------------------------
+Received register_device event for device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 and replica train_ddp_1:9ca24e48-5eba-43d0-ba97-24c92d723c7b
+New Mapping: Device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 is now associated with replicas: {'train_ddp_0:5df83d5c-ecbc-4a59-affd-ec5a27fa52fa', 'train_ddp_1:9ca24e48-5eba-43d0-ba97-24c92d723c7b', 'train_ddp_1:c70ca173-e6d6-43c3-b5fc-877203753f2f', 'train_ddp_0:b8ca4a7a-3b94-42ef-87d4-118fc60fe9d8', 'train_ddp_0:01376c52-3049-443b-9782-4049fc9bfcd6', 'train_ddp_0:b96c28d9-cc27-46e0-afe3-43b43cce796a'}
+New Mapping: Replica train_ddp_1:9ca24e48-5eba-43d0-ba97-24c92d723c7b is now associated with devices: {'GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28'}
+Marduk constants module loaded
+Retrieved GPU UUID: GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 for device index 0
+Received 1 messages on marduk.DRentry
+Received message: register_device {
+  device_uuid: "GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28"
+  replica_id: "train_ddp_0:8ec6695e-b776-46eb-905d-2a871a38d9c3"
+}
+
+
+----------------------------------------------------------------------------------------------------
+Received register_device event for device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 and replica train_ddp_0:8ec6695e-b776-46eb-905d-2a871a38d9c3
+New Mapping: Device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 is now associated with replicas: {'train_ddp_0:5df83d5c-ecbc-4a59-affd-ec5a27fa52fa', 'train_ddp_0:8ec6695e-b776-46eb-905d-2a871a38d9c3', 'train_ddp_1:9ca24e48-5eba-43d0-ba97-24c92d723c7b', 'train_ddp_1:c70ca173-e6d6-43c3-b5fc-877203753f2f', 'train_ddp_0:b8ca4a7a-3b94-42ef-87d4-118fc60fe9d8', 'train_ddp_0:01376c52-3049-443b-9782-4049fc9bfcd6', 'train_ddp_0:b96c28d9-cc27-46e0-afe3-43b43cce796a'}
+New Mapping: Replica train_ddp_0:8ec6695e-b776-46eb-905d-2a871a38d9c3 is now associated with devices: {'GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28'}
+Marduk constants module loaded
+Stopping Controller
+All subscriptions cleared
+NATS connection closed
+Marduk constants module loaded
+Starting Marduk Controller
+Controller initialized with NATS address: nats://0.0.0.0:4222
+Connected to NATS server at nats://0.0.0.0:4222
+Controller initialized
+Started subscribing to all subjects
+Subscribing to marduk.DRentry on stream CONTROLLER-STREAM with consumer controller-consumer
+Subscribing to marduk.monitored.failure
+Subscribed to marduk.monitored.failure
+Started listening on marduk.monitored.failure
+Unexpected error in controller: unhandled errors in a TaskGroup (1 sub-exception)
+  + Exception Group Traceback (most recent call last):
+  |   File "/srv/apps/warren/torchft/torchft/marduk/controller.py", line 212, in main
+  |     async with asyncio.TaskGroup() as tg:
+  |   File "/srv/apps/danny/miniconda3/envs/warren/torchtitan/lib/python3.11/asyncio/taskgroups.py", line 145, in __aexit__
+  |     raise me from None
+  | ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)
+  +-+---------------- 1 ----------------
+    | Traceback (most recent call last):
+    |   File "/srv/apps/warren/torchft/torchft/marduk/controller.py", line 125, in subscribe_js
+    |     psub = await self._js.pull_subscribe(subject, durable=consumer, stream=stream)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/srv/apps/danny/miniconda3/envs/warren/torchtitan/lib/python3.11/site-packages/nats/js/client.py", line 600, in pull_subscribe
+    |     await self._jsm.add_consumer(stream, config=config)
+    |   File "/srv/apps/danny/miniconda3/envs/warren/torchtitan/lib/python3.11/site-packages/nats/js/manager.py", line 262, in add_consumer
+    |     resp = await self._api_request(subject, req_data, timeout=timeout)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/srv/apps/danny/miniconda3/envs/warren/torchtitan/lib/python3.11/site-packages/nats/js/manager.py", line 421, in _api_request
+    |     raise APIError.from_error(resp["error"])
+    |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/srv/apps/danny/miniconda3/envs/warren/torchtitan/lib/python3.11/site-packages/nats/js/errors.py", line 87, in from_error
+    |     raise NotFoundError(**err)
+    | nats.js.errors.NotFoundError: nats: NotFoundError: code=404 err_code=10059 description='stream not found'
+    +------------------------------------
+Stopping Controller
+All subscriptions cleared
+NATS connection closed
+Marduk constants module loaded
+Starting Marduk Controller
+Controller initialized with NATS address: nats://0.0.0.0:4222
+Connected to NATS server at nats://0.0.0.0:4222
+Controller initialized
+Started subscribing to all subjects
+Subscribing to marduk.DRentry on stream CONTROLLER-STREAM with consumer controller-consumer
+Subscribing to marduk.monitored.failure
+Subscribed to marduk.monitored.failure
+Started listening on marduk.monitored.failure
+Unexpected error in controller: unhandled errors in a TaskGroup (1 sub-exception)
+  + Exception Group Traceback (most recent call last):
+  |   File "/srv/apps/warren/torchft/torchft/marduk/controller.py", line 212, in main
+  |     async with asyncio.TaskGroup() as tg:
+  |   File "/srv/apps/danny/miniconda3/envs/warren/torchtitan/lib/python3.11/asyncio/taskgroups.py", line 145, in __aexit__
+  |     raise me from None
+  | ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)
+  +-+---------------- 1 ----------------
+    | Traceback (most recent call last):
+    |   File "/srv/apps/warren/torchft/torchft/marduk/controller.py", line 125, in subscribe_js
+    |     psub = await self._js.pull_subscribe(subject, durable=consumer, stream=stream)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/srv/apps/danny/miniconda3/envs/warren/torchtitan/lib/python3.11/site-packages/nats/js/client.py", line 600, in pull_subscribe
+    |     await self._jsm.add_consumer(stream, config=config)
+    |   File "/srv/apps/danny/miniconda3/envs/warren/torchtitan/lib/python3.11/site-packages/nats/js/manager.py", line 262, in add_consumer
+    |     resp = await self._api_request(subject, req_data, timeout=timeout)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/srv/apps/danny/miniconda3/envs/warren/torchtitan/lib/python3.11/site-packages/nats/js/manager.py", line 421, in _api_request
+    |     raise APIError.from_error(resp["error"])
+    |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/srv/apps/danny/miniconda3/envs/warren/torchtitan/lib/python3.11/site-packages/nats/js/errors.py", line 87, in from_error
+    |     raise NotFoundError(**err)
+    | nats.js.errors.NotFoundError: nats: NotFoundError: code=404 err_code=10059 description='stream not found'
+    +------------------------------------
+Stopping Controller
+All subscriptions cleared
+NATS connection closed
+Marduk constants module loaded

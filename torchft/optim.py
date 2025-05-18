@@ -33,7 +33,7 @@ class OptimizerWrapper(Optimizer):
     """
 
     def __init__(self, manager: "Manager", optim: Optimizer) -> None:
-        self.optim = optim
+        self.optim: Optimizer = optim
         self.manager = manager
 
     def add_param_group(self, param_group: Dict[str, Any]) -> None:
@@ -48,11 +48,17 @@ class OptimizerWrapper(Optimizer):
     def zero_grad(self, set_to_none: bool = True) -> None:
         self.manager.start_quorum()
         self.optim.zero_grad(set_to_none)
+        # config = self.manager.grab_config()
+        # new_optimizer_hyperparameters = config['optimizer']['states']
+        # self.new_hyperparameters(new_optimizer_hyperparameters)
 
     def step(self, closure: Optional[object] = None) -> None:
         assert closure is None, "optimizers that use closures are not supported"
         if self.manager.should_commit():
             self.optim.step()
+
+    def new_hyperparameters(self, new_optimizer_hyperparameters):      
+        raise NotImplementedError
 
     @property
     def param_groups(self) -> List[Dict[str, Any]]:

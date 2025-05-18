@@ -188,7 +188,7 @@ class Manager:
 
         store_addr = store_addr or os.environ["MASTER_ADDR"]
         store_port = store_port or int(os.environ["MASTER_PORT"])
-        self._group_rank: int = rank if rank is not None else int(os.environ["RANK"])
+        self._group_rank: int = rank if rank is not None else int(os.environ.get("RANK", 0))
         group_rank = self._group_rank
         group_world_size = world_size or int(os.environ["WORLD_SIZE"])
         self._min_replica_size = min_replica_size
@@ -274,7 +274,7 @@ class Manager:
         self._marduk_addr = marduk_addr or os.environ.get("MARDUK_ADDR", MardukConstants.DEFAULT_ADDR)
         self._stop_nats = asyncio.Event()
         self._nc_timeout = Config.NC_TIMEOUT
-        self._exception_sleep = Config.EXCEPTION_SLEEP
+        self._exception_sleep = Config.EXCEPTION_RETRY_TIME
         
         # Set up the event loop and ensure it keeps running
         if asyncio.get_event_loop().is_closed():
