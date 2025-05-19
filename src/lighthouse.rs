@@ -28,16 +28,18 @@ use tokio::sync::broadcast;
 use tokio::sync::Mutex;
 use tokio::task::JoinSet;
 use tokio::time::interval;
+use tokio_stream::wrappers::BroadcastStream;
 use tonic::service::Routes;
 use tonic::transport::server::TcpIncoming;
 use tonic::transport::Server;
 use tonic::{Request, Response, Status};
+use prost_types::Empty;
 
 use crate::manager::manager_client_new;
 use crate::torchftpb::{
     lighthouse_service_server::{LighthouseService, LighthouseServiceServer},
-    KillRequest, LighthouseHeartbeatRequest, LighthouseHeartbeatResponse, LighthouseQuorumRequest,
-    LighthouseQuorumResponse, Quorum, QuorumMember,
+    KillRequest, FailureNotification, LighthouseHeartbeatRequest, LighthouseHeartbeatResponse,
+    LighthouseQuorumRequest, LighthouseQuorumResponse, Quorum, QuorumMember,
 };
 
 #[derive(Clone)]
@@ -48,6 +50,7 @@ struct QuorumMemberDetails {
 
 struct State {
     channel: broadcast::Sender<Quorum>,
+    failure_channel: broadcast::Sender<FailureNotification>,
     participants: HashMap<String, QuorumMemberDetails>,
     prev_quorum: Option<Quorum>,
     quorum_id: i64,
@@ -265,11 +268,13 @@ impl Lighthouse {
         let listener = tokio::net::TcpListener::bind(&opt.bind).await?;
 
         let (tx, _) = broadcast::channel(16);
+        let (failure_tx, _) = broadcast::channel(16);
 
         Ok(Arc::new(Self {
             state: Mutex::new(State {
                 participants: HashMap::new(),
                 channel: tx,
+                failure_channel: failure_tx,
                 prev_quorum: None,
                 quorum_id: 0,
                 heartbeats: HashMap::new(),
@@ -343,6 +348,32 @@ impl Lighthouse {
         }
     }
 
+    async fn _run_failure_watch(self: Arc<Self>) -> Result<()> {
+        let mut interval = interval(Duration::from_millis(self.opt.heartbeat_timeout_ms / 2));
+        loop {
+            interval.tick().await;
+            let mut timeouts = Vec::new();
+            {
+                let state = self.state.lock().await;
+                let now = Instant::now();
+                for (replica_id, last) in state.heartbeats.iter() {
+                    if now.duration_since(*last)
+                        > Duration::from_millis(self.opt.heartbeat_timeout_ms)
+                    {
+                        timeouts.push(replica_id.clone());
+                    }
+                }
+            }
+
+            if !timeouts.is_empty() {
+                let mut state = self.state.lock().await;
+                for replica_id in timeouts {
+                    let _ = state.failure_channel.send(FailureNotification { replica_id });
+                }
+            }
+        }
+    }
+
     pub fn address(&self) -> String {
         format!(
             "http://{}:{}",
@@ -395,6 +426,8 @@ impl Lighthouse {
         let mut set = JoinSet::new();
 
         set.spawn(self.clone()._run_quorum());
+
+        set.spawn(self.clone()._run_failure_watch());
 
         set.spawn(self.clone()._run_grpc());
 
@@ -555,6 +588,19 @@ impl LighthouseService for Arc<Lighthouse> {
 
         let reply = LighthouseHeartbeatResponse {};
         Ok(Response::new(reply))
+    }
+
+    type SubscribeFailuresStream = BroadcastStream<FailureNotification>;
+
+    async fn subscribe_failures(
+        &self,
+        _request: Request<prost_types::Empty>,
+    ) -> Result<Response<Self::SubscribeFailuresStream>, Status> {
+        let rx = {
+            let state = self.state.lock().await;
+            state.failure_channel.subscribe()
+        };
+        Ok(Response::new(BroadcastStream::new(rx)))
     }
 }
 

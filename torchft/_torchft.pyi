@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from datetime import timedelta
-from typing import Hashable, List, Optional
+from typing import Hashable, List, Optional, Iterator
 
 class ManagerClient:
     def __init__(self, addr: str, connect_timeout: timedelta) -> None: ...
@@ -86,6 +86,10 @@ class Quorum:
     created: Timestamp
 
 @dataclass
+class FailureNotification:
+    replica_id: str
+
+@dataclass
 class LighthouseClient:
     addr: str
     connect_timeout: timedelta
@@ -106,3 +110,4 @@ class LighthouseClient:
         replica_id: str,
         timeout: timedelta = timedelta(seconds=5),
     ) -> None: ...
+    def subscribe_failures(self) -> Iterator[FailureNotification]: ...

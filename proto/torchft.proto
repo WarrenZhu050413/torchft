@@ -67,9 +67,14 @@ message LighthouseHeartbeatRequest {
 
 message LighthouseHeartbeatResponse {}
 
+message FailureNotification {
+    string replica_id = 1;
+}
+
 service LighthouseService {
     rpc Quorum (LighthouseQuorumRequest) returns (LighthouseQuorumResponse);
     rpc Heartbeat (LighthouseHeartbeatRequest) returns (LighthouseHeartbeatResponse);
+    rpc SubscribeFailures (google.protobuf.Empty) returns (stream FailureNotification);
 }
 
 message ManagerQuorumRequest {

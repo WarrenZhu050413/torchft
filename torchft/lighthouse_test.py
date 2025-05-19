@@ -155,3 +155,23 @@ class TestLighthouse(TestCase):
 
         finally:
             lighthouse.shutdown()
+
+    def test_failure_notification(self) -> None:
+        lighthouse = LighthouseServer(
+            bind="[::]:0",
+            min_replicas=1,
+            heartbeat_timeout_ms=100,
+        )
+        try:
+            client = LighthouseClient(
+                addr=lighthouse.address(),
+                connect_timeout=timedelta(seconds=1),
+            )
+
+            notifications = client.subscribe_failures()
+            client.heartbeat("rep_fail")
+            time.sleep(0.15)
+            note = next(notifications)
+            assert note.replica_id == "rep_fail"
+        finally:
+            lighthouse.shutdown()
