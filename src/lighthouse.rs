@@ -32,7 +32,7 @@ use tonic::service::Routes;
 use tonic::transport::server::TcpIncoming;
 use tonic::transport::Server;
 use tonic::{Request, Response, Status};
-use tokio_stream::wrappers::{BroadcastStream, errors::BroadcastStreamRecvError};
+use tokio_stream::wrappers::{BroadcastStream, errors::BroadcastStreamRecvError as TokioStreamBroadcastStreamRecvError};
 use tokio_stream::StreamExt;
 use crate::torchftpb::FailureNotification;
 
@@ -54,20 +54,27 @@ struct QuorumMemberDetails {
 
 struct State {
     quorum_channel: broadcast::Sender<Quorum>,
+    // Tracks currently active participants in the process of forming a quorum.
+    // Replicas are added upon receiving a `LighthouseQuorumRequest`.
+    // Replicas are cleared after a quorum is successfully formed OR
+    // removed by `_failure_tick` if their heartbeat expires.
     participants: HashMap<String, QuorumMemberDetails>,
     prev_quorum: Option<Quorum>,
     quorum_id: i64,
 
-    // heartbeat information
-    // replica_id -> last heartbeat
+    // Stores the last heartbeat time for each replica ID.
+    // Replicas are added/updated upon receiving `LighthouseHeartbeatRequest` or `LighthouseQuorumRequest`.
+    // Replicas are removed by `_failure_tick` if their heartbeat expires and a failure notification is sent.
     heartbeats: HashMap<String, Instant>,
 
-    // failure information
-    // replica_id -> last failure
+    // Stores the timestamp of when a replica was first detected as failed (heartbeat expired).
+    // This is used to ensure only one `FailureNotification` is sent per failure event.
+    // Replicas are added by `_failure_tick` upon detecting a new failure.
+    // Replicas are removed by `_failure_tick` if a subsequent heartbeat is received (signifying recovery).
     failures: HashMap<String, Instant>,
 
-    // failure notification quorum_channel
-    failure_channel: broadcast::Sender<FailureNotification>,
+    // Broadcast channel for sending failure notifications to subscribers.
+    pub failure_channel: broadcast::Sender<FailureNotification>,
 }
 
 pub struct Lighthouse {
@@ -96,7 +103,7 @@ impl ChangeLogger {
     }
 }
 
-#[derive(StructOpt, Debug)]
+#[derive(StructOpt, Debug, Clone)]
 #[structopt()]
 pub struct LighthouseOpt {
     // bind is the address to bind the server to.
@@ -423,23 +430,68 @@ impl Lighthouse {
         }
     }
 
+    // Periodically checks for expired heartbeats.
+    // If a replica's heartbeat has timed out and it hasn't been marked as failed before:
+    //  1. A `FailureNotification` is broadcast on the `failure_channel`.
+    //  2. The replica is added to the `failures` map with the current timestamp.
+    //  3. The replica is removed from both `heartbeats` and `participants` maps to prevent 
+    //     repeated notifications and to ensure it doesn't partake in current quorum formation attempts.
+    // If a replica's heartbeat is current and it was previously in `failures`, it's removed from `failures` (recovered).
     fn _failure_tick(self: Arc<Self>, state: &mut State) -> Result<()> {
         let now = Instant::now();
         let timeout = Duration::from_millis(self.opt.heartbeat_timeout_ms);
 
-        // Check for failed replicas
+        // Use a temporary list to collect replica IDs to remove from heartbeats
+        // to avoid modifying the map while iterating over it.
+        let mut failed_replica_ids_to_remove_from_heartbeats = Vec::new();
+        let mut failure_detected = false; // Flag to indicate if any new failure was detected
+
         for (replica_id, last_heartbeat) in state.heartbeats.iter() {
             if now.duration_since(*last_heartbeat) > timeout {
-                state.failures.insert(replica_id.clone(), now);
-                if let Err(e) = state.failure_channel.send(FailureNotification {
-                    replica_id: replica_id.clone(),
-                }) {
-                    error!("Failed to send failure notification: {}", e);
+                // Check if this is a new failure
+                if !state.failures.contains_key(replica_id) {
+                    info!(
+                        "Replica {} timed out (last heartbeat: {:?}), sending failure notification.",
+                        replica_id,
+                        last_heartbeat
+                    );
+                    if let Err(e) = state.failure_channel.send(FailureNotification {
+                        replica_id: replica_id.clone(),
+                    }) {
+                        error!("Failed to send failure notification for {}: {}", replica_id, e);
+                    } else {
+                        failure_detected = true; // Set flag if notification sent successfully
+                    }
+                    // Record the failure
+                    state.failures.insert(replica_id.clone(), now);
+                    // Mark for removal from participants as well
+                    state.participants.remove(replica_id);
+                    // Mark for removal from heartbeats after iteration
+                    failed_replica_ids_to_remove_from_heartbeats.push(replica_id.clone());
                 }
             } else {
-                state.failures.remove(replica_id);
+                // Heartbeat is current, so if it was previously marked as failed, remove it from failures.
+                if state.failures.remove(replica_id).is_some() {
+                    info!("Replica {} recovered from failure.", replica_id);
+                }
             }
         }
+
+        // Remove failed replicas from heartbeats
+        for replica_id in failed_replica_ids_to_remove_from_heartbeats {
+            state.heartbeats.remove(&replica_id);
+            info!(
+                "Removed replica {} from heartbeats and participants due to timeout.",
+                replica_id
+            );
+        }
+
+        // If a new failure was detected and broadcasted, reset participants to restart quorum formation
+        if failure_detected {
+            info!("New failure detected, resetting all participants for quorum formation.");
+            state.participants.clear();
+        }
+
         Ok(())
     }
 
@@ -521,6 +573,13 @@ impl Lighthouse {
         });
         let _resp = client.kill(request).await?;
 
+        Ok(())
+    }
+
+    pub async fn inject_failure(self: Arc<Self>, replica_id: String) -> Result<()> {
+        let state = self.state.lock().await;
+        state.failure_channel.send(FailureNotification { replica_id })
+            .map_err(|e| anyhow!("Failed to send failure notification: {}", e))?;
         Ok(())
     }
 }
@@ -628,7 +687,7 @@ impl LighthouseService for Arc<Lighthouse> {
         let stream = BroadcastStream::new(rx).filter_map(|res| {
             match res {
                 Ok(note)               => Some(Ok(note)),
-                Err(BroadcastStreamRecvError::Lagged(n))   => Some(Err(Status::resource_exhausted(
+                Err(TokioStreamBroadcastStreamRecvError::Lagged(n))   => Some(Err(Status::resource_exhausted(
                                             format!("client lagged {n} messages")
                                         ))),
             }
@@ -687,6 +746,8 @@ where
 mod tests {
     use super::*;
     use std::ops::Sub;
+    use tokio::time::timeout as tokio_timeout;
+    use tokio::sync::broadcast::error::RecvError as TokioBroadcastRecvError;
 
     use tonic::transport::Channel;
 
@@ -1201,6 +1262,137 @@ mod tests {
         assert!(quorum_changed(&a, &c));
     }
 
+    // Helper to create a default QuorumMember for tests
+    fn test_quorum_member(replica_id: &str) -> QuorumMember {
+        QuorumMember {
+            replica_id: replica_id.to_string(),
+            address: format!("addr_{}", replica_id),
+            store_address: format!("store_{}", replica_id),
+            step: 1,
+            world_size: 2, // Assuming 2 for this test context
+            shrink_only: false,
+            data: String::new(),
+            commit_failures: 0,
+        }
+    }
+
+    /// Test that `_failure_tick` correctly identifies timed-out replicas,
+    /// broadcasts a failure notification exactly once per failure, and
+    /// cleans up the replica from `heartbeats` and `participants` while
+    /// adding it to `failures`. Subsequent ticks should not re-notify
+    /// or change the state for an already failed replica.
+    #[tokio::test]
+    async fn test_failure_tick_single_notification_and_cleanup() -> Result<()> {
+        let opt = LighthouseOpt {
+            min_replicas: 1,
+            bind: "[::]:0".to_string(),
+            join_timeout_ms: 0, // Not relevant for this test
+            quorum_tick_ms: 10, // Not directly relevant but keep it small
+            heartbeat_timeout_ms: 100, // Reasonably short for testing
+            failure_tick_ms: 50,   // How often _failure_tick would be called
+        };
+        let lighthouse = Lighthouse::new(opt.clone()).await?;
+
+        let mut failure_rx = {
+            let state_guard = lighthouse.state.lock().await;
+            state_guard.failure_channel.subscribe()
+        };
+
+        let replica_id_failing = "failing_one";
+
+        let now = Instant::now();
+        // Ensure expired_time is definitively older than heartbeat_timeout_ms
+        let expired_time = now - Duration::from_millis(opt.heartbeat_timeout_ms * 2);
+
+        // Setup initial state: one about to fail
+        {
+            let mut state_guard = lighthouse.state.lock().await;
+            let state = &mut *state_guard;
+
+            // Failing replica
+            state.participants.insert(
+                replica_id_failing.to_string(),
+                QuorumMemberDetails {
+                    joined: now, // Joined time doesn't prevent failure due to heartbeat
+                    member: test_quorum_member(replica_id_failing),
+                },
+            );
+            state.heartbeats.insert(replica_id_failing.to_string(), expired_time);
+        }
+
+        // --- First call to _failure_tick ---
+        // This call should detect the failure, send a notification, and update state.
+        {
+            let mut state_guard = lighthouse.state.lock().await;
+            lighthouse.clone()._failure_tick(&mut *state_guard)?;
+        }
+
+        // Assertions after first tick
+        // 1. Check notification for failing_replica
+        match tokio_timeout(Duration::from_millis(opt.failure_tick_ms * 2), failure_rx.recv()).await {
+            Ok(Ok(notification)) => {
+                assert_eq!(notification.replica_id, replica_id_failing, "Notification should be for the failing replica");
+            }
+            Ok(Err(TokioBroadcastRecvError::Lagged(n))) => {
+                 panic!("Broadcast channel lagged by {} messages, missed the failure notification", n);
+            }
+            Ok(Err(TokioBroadcastRecvError::Closed)) => {
+                 panic!("Broadcast channel closed unexpectedly after first tick");
+            }
+            Err(_) => panic!("Did not receive failure notification for {} in time", replica_id_failing),
+        }
+
+        // 2. Verify state changes
+        {
+            let state_guard = lighthouse.state.lock().await;
+            let state = &*state_guard;
+
+            // Failing replica assertions
+            assert!(state.failures.contains_key(replica_id_failing), "{} should be in failures map", replica_id_failing);
+            assert!(!state.heartbeats.contains_key(replica_id_failing), "{} should be removed from heartbeats", replica_id_failing);
+            assert!(!state.participants.contains_key(replica_id_failing), "{} should be removed from participants", replica_id_failing);
+        }
+
+        // --- Second call to _failure_tick ---
+        // This call should *not* detect a *new* failure for the same replica
+        // and should not send another notification.
+        {
+            let mut state_guard = lighthouse.state.lock().await;
+            lighthouse.clone()._failure_tick(&mut *state_guard)?;
+        }
+
+        // Assertions after second tick
+        // 1. No new notification for failing_replica
+        match tokio_timeout(Duration::from_millis(opt.failure_tick_ms * 2), failure_rx.recv()).await {
+            Ok(Ok(notification)) => {
+                panic!("Received unexpected second failure notification for {}", notification.replica_id);
+            }
+            Ok(Err(TokioBroadcastRecvError::Lagged(n))) => {
+                // This might happen if the test environment is slow and ticks are processed faster than receives.
+                // For this specific assertion (no *new* message), lagging is an acceptable outcome.
+                info!("Broadcast channel lagged by {} messages on second check, implies no new distinct message.", n);
+            }
+            Ok(Err(TokioBroadcastRecvError::Closed)) => {
+                 // Channel might close if sender is dropped, implies no new message.
+                 info!("Broadcast channel closed on second check, implies no new distinct message.");
+            }
+            Err(_) => {
+                // Expected: Timeout, meaning no new message was received for failing_replica.
+            }
+        }
+
+        // 2. Verify state remains consistent for failing_replica
+        {
+            let state_guard = lighthouse.state.lock().await;
+            let state = &*state_guard;
+
+            assert!(state.failures.contains_key(replica_id_failing), "{} should remain in failures map", replica_id_failing);
+            assert!(!state.heartbeats.contains_key(replica_id_failing), "{} should remain removed from heartbeats", replica_id_failing);
+            assert!(!state.participants.contains_key(replica_id_failing), "{} should remain removed from participants", replica_id_failing);
+        }
+        Ok(())
+    }
+
     #[tokio::test]
     async fn test_lighthouse_join_during_shrink() -> Result<()> {
         fn create_member(id: &str, addr_num: &str, step: i64, shrink_only: bool) -> QuorumMember {
@@ -1377,6 +1569,64 @@ mod tests {
         assert_eq!(first_quorum.participants.len(), 2);
         assert_eq!(first_quorum.participants[0].commit_failures, 0);
         assert_eq!(first_quorum.participants[1].commit_failures, 2);
+
+        lighthouse_task.abort();
+        Ok(())
+    }
+
+    #[tokio::test]
+    async fn test_lighthouse_subscribe_failures() -> Result<()> {
+        let opt = LighthouseOpt {
+            min_replicas: 1,
+            bind: "[::]:0".to_string(),
+            join_timeout_ms: 60 * 60 * 1000, // 1hr
+            quorum_tick_ms: 10,
+            heartbeat_timeout_ms: 5000,
+            failure_tick_ms: 1000,
+        };
+
+        let lighthouse = Lighthouse::new(opt).await?;
+        let lighthouse_task = tokio::spawn(lighthouse.clone().run());
+
+        let mut client = lighthouse_client_new(lighthouse.address()).await?;
+        let mut request = tonic::Request::new(SubscribeFailuresRequest {});
+        request.set_timeout(Duration::from_secs(1));
+        client.subscribe_failures(request).await?;
+
+        lighthouse_task.abort();
+        Ok(())
+    }
+
+    #[tokio::test]
+    async fn test_subscribe_failures_delivers_notifications() -> Result<()> {
+        let opt = LighthouseOpt {
+            min_replicas: 1,
+            bind: "[::]:0".to_string(),
+            join_timeout_ms: 60 * 60 * 1000,
+            quorum_tick_ms: 10,
+            heartbeat_timeout_ms: 5000,
+            failure_tick_ms: 1000,
+        };
+        let lighthouse = Lighthouse::new(opt).await?;
+        let mut client = lighthouse_client_new(lighthouse.address()).await?;
+        let lighthouse_task = tokio::spawn(lighthouse.clone().run());
+
+        // 1. Subscribe with a deadline
+        let mut req = tonic::Request::new(SubscribeFailuresRequest {});
+        req.set_timeout(Duration::from_secs(5));
+        let mut stream = client.subscribe_failures(req).await?.into_inner();
+
+        // 2. Trigger a failure notification
+        {
+            let state = lighthouse.state.lock().await;
+            state.failure_channel.send(FailureNotification { replica_id: "nodeX".into() }).unwrap();
+        }
+
+        // 3. Ensure we receive it
+        match stream.next().await {
+            Some(Ok(note)) => assert_eq!(note.replica_id, "nodeX"),
+            other => panic!("Expected notification, got {:?}", other),
+        }
 
         lighthouse_task.abort();
         Ok(())

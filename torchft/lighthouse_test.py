@@ -1,7 +1,9 @@
 import time
 from datetime import timedelta
 from unittest import TestCase
+import threading # Import the threading module
 
+import pytest
 import torch.distributed as dist
 
 from torchft import Manager, ProcessGroupGloo
@@ -167,7 +169,24 @@ class TestLighthouse(TestCase):
                 addr=lighthouse.address(),
                 connect_timeout=timedelta(seconds=1),
             )
-            client.subscribe_failures(timeout=timedelta(seconds=1))
-            self.assertTrue(True)
+            stream = client.subscribe_failures(timeout=timedelta(milliseconds=100))
+        finally:
+            lighthouse.shutdown()
+
+    def test_subscribe_failures_notification(self) -> None:
+        """Test that failure notifications are delivered to subscribers."""
+        lighthouse = LighthouseServer(
+            bind="[::]:0",
+            min_replicas=1,
+        )
+        try:
+            client = LighthouseClient(
+                addr=lighthouse.address(),
+                connect_timeout=timedelta(seconds=1),
+            )
+            stream = client.subscribe_failures(timeout=timedelta(seconds=1))
+            lighthouse.inject_failure("nodeX")
+            note = next(stream)
+            assert note.replica_id == "nodeX"
         finally:
             lighthouse.shutdown()
