@@ -38,8 +38,10 @@ use crate::torchftpb::{
     CheckpointMetadataRequest, LighthouseHeartbeatRequest, LighthouseQuorumRequest,
     ManagerQuorumRequest, ShouldCommitRequest,
 };
+use crate::torchftpb::FailureNotification as PbFailureNotification;
+use prost_types::Empty;
 use pyo3::prelude::*;
-use pyo3::types::{PyDict, PyString};
+use pyo3::types::{PyDict, PyString, PyIterator};
 
 // Get the number of threads to use for the tokio runtime
 fn num_threads() -> usize {
@@ -409,6 +411,11 @@ struct Quorum {
     created: Timestamp,
 }
 
+#[pyclass(get_all, set_all)]
+pub struct FailureNotification {
+    pub replica_id: String,
+}
+
 impl From<prost_types::Timestamp> for Timestamp {
     fn from(ts: prost_types::Timestamp) -> Self {
         Timestamp {
@@ -466,6 +473,12 @@ fn convert_quorum(py: Python, q: &torchftpb::Quorum) -> PyResult<Quorum> {
         participants: participants,
         created: Timestamp::from(q.created.unwrap()),
     })
+}
+
+fn convert_failure_notification(pb: &PbFailureNotification) -> FailureNotification {
+    FailureNotification {
+        replica_id: pb.replica_id.clone(),
+    }
 }
 
 /// LighthouseClient is a GRPC client to the lighthouse service.
@@ -585,6 +598,26 @@ impl LighthouseClient {
             self.runtime.block_on(self.client.clone().heartbeat(req))?;
             Ok(())
         })
+    }
+
+    fn subscribe_failures<'py>(&self, py: Python<'py>) -> PyResult<&'py PyAny> {
+        let mut stream = self
+            .runtime
+            .block_on(self.client.clone().subscribe_failures(tonic::Request::new(Empty {})))
+            .map_err(|e| StatusError(e))?
+            .into_inner();
+
+        let runtime = self.runtime.clone();
+        PyIterator::from_fn(py, move || {
+            match runtime.block_on(stream.message()) {
+                Ok(Some(note)) => {
+                    Python::with_gil(|py| Ok(Some(Py::new(py, convert_failure_notification(&note))?)))
+                }
+                Ok(None) => Ok(None),
+                Err(e) => Err(StatusError(e).into()),
+            }
+        })
+        .into_py(py)
     }
 }
 
@@ -749,6 +782,7 @@ fn _torchft(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_class::<ManagerClient>()?;
     m.add_class::<LighthouseServer>()?;
     m.add_class::<LighthouseClient>()?;
+    m.add_class::<FailureNotification>()?;
     m.add_class::<QuorumResult>()?;
     m.add_function(wrap_pyfunction!(lighthouse_main, m)?)?;
 

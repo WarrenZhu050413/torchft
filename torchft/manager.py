@@ -31,6 +31,7 @@ import os
 import socket
 import traceback
 import uuid
+import threading
 from concurrent.futures import ThreadPoolExecutor
 from contextlib import nullcontext
 from datetime import timedelta
@@ -40,7 +41,7 @@ from typing import TYPE_CHECKING, Callable, Dict, List, Optional, TypeVar, cast
 import torch
 from torch.distributed import ReduceOp, TCPStore
 
-from torchft._torchft import ManagerClient, ManagerServer
+from torchft._torchft import ManagerClient, ManagerServer, LighthouseClient
 from torchft.checkpointing import CheckpointTransport, HTTPTransport
 from torchft.futures import future_timeout
 
@@ -205,12 +206,13 @@ class Manager:
             torch.cuda.Stream() if torch.cuda.is_available() else None
         )
 
+        lighthouse_addr = lighthouse_addr or os.environ["TORCHFT_LIGHTHOUSE"]
+
         if self._group_rank == 0:
             if port is None:
                 port = int(os.environ.get(MANAGER_PORT_ENV, 0))
 
             bind = f"[::]:{port}"
-            lighthouse_addr = lighthouse_addr or os.environ["TORCHFT_LIGHTHOUSE"]
 
             # We need a unique identifier in the case that a worker restarts quickly and
             # replaces the previous worker with the same ID.
@@ -241,6 +243,16 @@ class Manager:
             manager=self, replica_id=replica_id or "", group_rank=group_rank
         )
 
+        self._lighthouse_client = LighthouseClient(
+            addr=lighthouse_addr,
+            connect_timeout=connect_timeout,
+        )
+        self._failure_thread = threading.Thread(
+            target=self._listen_failures,
+            daemon=True,
+        )
+        self._failure_thread.start()
+
         self._step = 0
         self._quorum_id = -1
         self._errored: Optional[ExceptionWithTraceback] = None
@@ -251,6 +263,10 @@ class Manager:
         # first step is 1
         self._participating_replica_rank: Optional[int] = None
         self._participating_replica_world_size: int = 0
+
+    def _listen_failures(self) -> None:
+        for notification in self._lighthouse_client.subscribe_failures():
+            self._logger.info(f"Failure detected for {notification.replica_id}")
 
     def set_state_dict_fns(
         self, load_state_dict: Callable[[T], None], state_dict: Callable[[], T]
@@ -265,6 +281,8 @@ class Manager:
         self._checkpoint_transport.shutdown(wait=wait)
         if self._manager is not None:
             self._manager.shutdown()
+        if wait and hasattr(self, "_failure_thread"):
+            self._failure_thread.join(timeout=0)
         self._executor.shutdown(wait=wait)
 
     def allreduce(self, tensor: torch.Tensor) -> torch.futures.Future[torch.Tensor]:
