@@ -28,6 +28,10 @@ use tokio::sync::broadcast;
 use tokio::sync::Mutex;
 use tokio::task::JoinSet;
 use tokio::time::interval;
+use std::pin::Pin;
+use futures::Stream;
+use tokio_stream::wrappers::BroadcastStream;
+use tokio_stream::StreamExt;
 use tonic::service::Routes;
 use tonic::transport::server::TcpIncoming;
 use tonic::transport::Server;
@@ -37,7 +41,7 @@ use crate::manager::manager_client_new;
 use crate::torchftpb::{
     lighthouse_service_server::{LighthouseService, LighthouseServiceServer},
     KillRequest, LighthouseHeartbeatRequest, LighthouseHeartbeatResponse, LighthouseQuorumRequest,
-    LighthouseQuorumResponse, Quorum, QuorumMember,
+    LighthouseQuorumResponse, FailureNotification, Quorum, QuorumMember,
 };
 
 #[derive(Clone)]
@@ -55,6 +59,8 @@ struct State {
     // heartbeat information
     // replica_id -> last heartbeat
     heartbeats: HashMap<String, Instant>,
+    failure_channel: broadcast::Sender<FailureNotification>,
+    dead_replicas: HashSet<String>,
 }
 
 pub struct Lighthouse {
@@ -265,6 +271,7 @@ impl Lighthouse {
         let listener = tokio::net::TcpListener::bind(&opt.bind).await?;
 
         let (tx, _) = broadcast::channel(16);
+        let (failure_tx, _) = broadcast::channel(16);
 
         Ok(Arc::new(Self {
             state: Mutex::new(State {
@@ -273,6 +280,8 @@ impl Lighthouse {
                 prev_quorum: None,
                 quorum_id: 0,
                 heartbeats: HashMap::new(),
+                failure_channel: failure_tx,
+                dead_replicas: HashSet::new(),
             }),
             opt: opt,
             local_addr: listener.local_addr()?,
@@ -282,7 +291,20 @@ impl Lighthouse {
     }
 
     fn _quorum_tick(self: Arc<Self>, state: &mut State) -> Result<()> {
-        let (quorum_met, reason) = quorum_compute(Instant::now(), state, &self.opt);
+        let now = Instant::now();
+        // detect heartbeat failures
+        for (replica_id, last) in state.heartbeats.iter() {
+            if now.duration_since(*last) >= Duration::from_millis(self.opt.heartbeat_timeout_ms)
+                && !state.dead_replicas.contains(replica_id)
+            {
+                state.dead_replicas.insert(replica_id.clone());
+                let _ = state
+                    .failure_channel
+                    .send(FailureNotification { replica_id: replica_id.clone() });
+            }
+        }
+
+        let (quorum_met, reason) = quorum_compute(now, state, &self.opt);
         self.change_logger.log_if_changed(&reason);
 
         if quorum_met.is_some() {
@@ -555,6 +577,21 @@ impl LighthouseService for Arc<Lighthouse> {
 
         let reply = LighthouseHeartbeatResponse {};
         Ok(Response::new(reply))
+    }
+
+    type WatchFailuresStream =
+        Pin<Box<dyn futures::Stream<Item = Result<FailureNotification, Status>> + Send + 'static>>;
+
+    async fn watch_failures(
+        &self,
+        _request: Request<prost_types::Empty>,
+    ) -> Result<Response<Self::WatchFailuresStream>, Status> {
+        let rx = { self.state.lock().await.failure_channel.subscribe() };
+        let stream = BroadcastStream::new(rx).map(|res| match res {
+            Ok(v) => Ok(v),
+            Err(_) => Err(Status::internal("broadcast error")),
+        });
+        Ok(Response::new(Box::pin(stream) as Self::WatchFailuresStream))
     }
 }
 

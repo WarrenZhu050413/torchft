@@ -35,9 +35,10 @@ pub mod torchftpb {
 use crate::torchftpb::lighthouse_service_client::LighthouseServiceClient;
 use crate::torchftpb::manager_service_client::ManagerServiceClient;
 use crate::torchftpb::{
-    CheckpointMetadataRequest, LighthouseHeartbeatRequest, LighthouseQuorumRequest,
+    CheckpointMetadataRequest, FailureNotification, LighthouseHeartbeatRequest, LighthouseQuorumRequest,
     ManagerQuorumRequest, ShouldCommitRequest,
 };
+use prost_types::Empty;
 use pyo3::prelude::*;
 use pyo3::types::{PyDict, PyString};
 
@@ -271,6 +272,28 @@ impl ManagerClient {
                 .block_on(self.client.clone().should_commit(request))?;
             let resp = response.into_inner();
             Ok(resp.should_commit)
+        })
+    }
+
+    fn next_failure(
+        &self,
+        py: Python<'_>,
+        timeout: Duration,
+    ) -> Result<Option<String>, StatusError> {
+        py.allow_threads(move || {
+            let mut stream = self
+                .runtime
+                .block_on(self.client.clone().failure_notifications(Empty {}))?
+                .into_inner();
+            let res = self
+                .runtime
+                .block_on(async { tokio::time::timeout(timeout, stream.message()).await });
+            match res {
+                Ok(Ok(Some(note))) => Ok(Some(note.replica_id)),
+                Ok(Ok(None)) => Ok(None),
+                Ok(Err(e)) => Err(e.into()),
+                Err(_) => Err(Status::deadline_exceeded("timeout").into()),
+            }
         })
     }
 }

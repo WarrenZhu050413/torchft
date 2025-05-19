@@ -15,6 +15,10 @@ use tokio::sync::broadcast;
 use tokio::sync::Mutex;
 use tokio::task::JoinSet;
 use tokio::time::sleep;
+use tokio_stream::wrappers::BroadcastStream;
+use tokio_stream::StreamExt;
+use std::pin::Pin;
+use futures::Stream;
 use tonic::transport::server::TcpIncoming;
 use tonic::transport::Channel;
 use tonic::transport::Server;
@@ -29,7 +33,9 @@ use crate::torchftpb::{
     CheckpointMetadataRequest, CheckpointMetadataResponse, KillRequest, KillResponse,
     LighthouseHeartbeatRequest, LighthouseQuorumRequest, ManagerQuorumRequest,
     ManagerQuorumResponse, Quorum, QuorumMember, ShouldCommitRequest, ShouldCommitResponse,
+    FailureNotification,
 };
+use prost_types::Empty;
 
 #[cfg(not(test))]
 use log::{info, warn};
@@ -56,6 +62,8 @@ struct ManagerState {
     checkpoint_metadata: HashMap<i64, String>,
     channel: broadcast::Sender<Quorum>,
     participants: HashMap<i64, QuorumMember>,
+
+    failure_channel: broadcast::Sender<FailureNotification>,
 
     should_commit_channel: broadcast::Sender<bool>,
     should_commit_failures: HashSet<i64>,
@@ -114,6 +122,7 @@ impl Manager {
 
         let (should_commit_tx, _) = broadcast::channel(16);
         let (tx, _) = broadcast::channel(16);
+        let (failure_tx, _) = broadcast::channel(16);
 
         let client = lighthouse_client_new(lighthouse_addr.clone(), connect_timeout).await?;
 
@@ -129,6 +138,8 @@ impl Manager {
                 channel: tx,
                 participants: HashMap::new(),
 
+                failure_channel: failure_tx,
+
                 should_commit_channel: should_commit_tx,
                 should_commit_count: HashSet::new(),
                 should_commit_failures: HashSet::new(),
@@ -142,6 +153,7 @@ impl Manager {
         let mut set = JoinSet::new();
 
         set.spawn(self.clone()._run_heartbeat());
+        set.spawn(self.clone()._run_watch_failures());
 
         set.spawn(self.clone()._run_grpc());
 
@@ -179,6 +191,28 @@ impl Manager {
             let _response = client.heartbeat(request).await;
 
             sleep(self.heartbeat_interval).await;
+        }
+    }
+
+    async fn _run_watch_failures(self: Arc<Self>) -> Result<()> {
+        let mut client = self.lighthouse_client.clone();
+        loop {
+            let response = client
+                .watch_failures(tonic::Request::new(prost_types::Empty {}))
+                .await;
+            match response {
+                Ok(mut stream) => {
+                    let mut stream = stream.into_inner();
+                    while let Some(note) = stream.message().await.transpose()? {
+                        let mut state = self.state.lock().await;
+                        let _ = state.failure_channel.send(note);
+                    }
+                }
+                Err(e) => {
+                    warn!("watch_failures error: {}", e);
+                    sleep(Duration::from_secs(1)).await;
+                }
+            }
         }
     }
 
@@ -380,6 +414,21 @@ impl ManagerService for Arc<Manager> {
 
         warn!("got kill request: {}", req.msg);
         std::process::exit(1);
+    }
+
+    type FailureNotificationsStream =
+        Pin<Box<dyn futures::Stream<Item = Result<FailureNotification, Status>> + Send + 'static>>;
+
+    async fn failure_notifications(
+        &self,
+        _request: Request<Empty>,
+    ) -> Result<Response<Self::FailureNotificationsStream>, Status> {
+        let rx = self.state.lock().await.failure_channel.subscribe();
+        let stream = BroadcastStream::new(rx).map(|res| match res {
+            Ok(v) => Ok(v),
+            Err(_) => Err(Status::internal("broadcast error")),
+        });
+        Ok(Response::new(Box::pin(stream) as Self::FailureNotificationsStream))
     }
 }
 

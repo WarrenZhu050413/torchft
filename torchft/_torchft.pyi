@@ -22,6 +22,7 @@ class ManagerClient:
         should_commit: bool,
         timeout: timedelta,
     ) -> bool: ...
+    def next_failure(self, timeout: timedelta) -> Optional[str]: ...
 
 class QuorumResult:
     quorum_id: int

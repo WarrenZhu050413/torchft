@@ -31,6 +31,7 @@ import os
 import socket
 import traceback
 import uuid
+import threading
 from concurrent.futures import ThreadPoolExecutor
 from contextlib import nullcontext
 from datetime import timedelta
@@ -252,6 +253,12 @@ class Manager:
         self._participating_replica_rank: Optional[int] = None
         self._participating_replica_world_size: int = 0
 
+        self._stop_event = threading.Event()
+        self._failure_thread = threading.Thread(
+            target=self._failure_listener, daemon=True
+        )
+        self._failure_thread.start()
+
     def set_state_dict_fns(
         self, load_state_dict: Callable[[T], None], state_dict: Callable[[], T]
     ) -> None:
@@ -262,6 +269,8 @@ class Manager:
         """
         Shutdown the manager and checkpoint server.
         """
+        self._stop_event.set()
+        self._failure_thread.join(timeout=1)
         self._checkpoint_transport.shutdown(wait=wait)
         if self._manager is not None:
             self._manager.shutdown()
@@ -350,6 +359,17 @@ class Manager:
             The error or None if no error has occurred.
         """
         return self._errored
+
+    def _failure_listener(self) -> None:
+        while not self._stop_event.is_set():
+            try:
+                replica = self._client.next_failure(timedelta(seconds=30))
+                if replica is not None:
+                    self._logger.warn(f"failure detected from {replica}, aborting")
+                    self._pg.abort()
+                    self.report_error(RuntimeError("peer failure"))
+            except Exception as e:
+                self._logger.warn(f"failure listener error: {e}")
 
     def wrap_future(
         self,
