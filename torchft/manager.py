@@ -40,7 +40,7 @@ from typing import TYPE_CHECKING, Callable, Dict, List, Optional, TypeVar, cast
 import torch
 from torch.distributed import ReduceOp, TCPStore
 
-from torchft._torchft import ManagerClient, ManagerServer
+from torchft._torchft import ManagerClient, ManagerServer, LighthouseClient
 from torchft.checkpointing import CheckpointTransport, HTTPTransport
 from torchft.futures import future_timeout
 
@@ -205,12 +205,20 @@ class Manager:
             torch.cuda.Stream() if torch.cuda.is_available() else None
         )
 
+        lighthouse_addr = lighthouse_addr or None
+        if os.environ.get("TORCHFT_LIGHTHOUSE") is not None:
+            lighthouse_addr = lighthouse_addr or os.environ["TORCHFT_LIGHTHOUSE"]
+
+        if lighthouse_addr is not None:
+            self._lighthouse_client: Optional[LighthouseClient] = (
+                LighthouseClient(lighthouse_addr, connect_timeout=connect_timeout)
+            )
+
         if self._group_rank == 0:
             if port is None:
                 port = int(os.environ.get(MANAGER_PORT_ENV, 0))
 
             bind = f"[::]:{port}"
-            lighthouse_addr = lighthouse_addr or os.environ["TORCHFT_LIGHTHOUSE"]
 
             # We need a unique identifier in the case that a worker restarts quickly and
             # replaces the previous worker with the same ID.

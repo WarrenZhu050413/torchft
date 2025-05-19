@@ -32,12 +32,18 @@ use tonic::service::Routes;
 use tonic::transport::server::TcpIncoming;
 use tonic::transport::Server;
 use tonic::{Request, Response, Status};
+use tokio_stream::wrappers::{BroadcastStream, errors::BroadcastStreamRecvError};
+use tokio_stream::StreamExt;
+use crate::torchftpb::FailureNotification;
+
+use futures_core::Stream;
+use std::pin::Pin;
 
 use crate::manager::manager_client_new;
 use crate::torchftpb::{
     lighthouse_service_server::{LighthouseService, LighthouseServiceServer},
     KillRequest, LighthouseHeartbeatRequest, LighthouseHeartbeatResponse, LighthouseQuorumRequest,
-    LighthouseQuorumResponse, Quorum, QuorumMember,
+    LighthouseQuorumResponse, Quorum, QuorumMember, SubscribeFailuresRequest,
 };
 
 #[derive(Clone)]
@@ -47,7 +53,7 @@ struct QuorumMemberDetails {
 }
 
 struct State {
-    channel: broadcast::Sender<Quorum>,
+    quorum_channel: broadcast::Sender<Quorum>,
     participants: HashMap<String, QuorumMemberDetails>,
     prev_quorum: Option<Quorum>,
     quorum_id: i64,
@@ -55,6 +61,13 @@ struct State {
     // heartbeat information
     // replica_id -> last heartbeat
     heartbeats: HashMap<String, Instant>,
+
+    // failure information
+    // replica_id -> last failure
+    failures: HashMap<String, Instant>,
+
+    // failure notification quorum_channel
+    failure_channel: broadcast::Sender<FailureNotification>,
 }
 
 pub struct Lighthouse {
@@ -120,6 +133,13 @@ pub struct LighthouseOpt {
         help = "How long to wait for a heartbeat before considering a replica dead."
     )]
     pub heartbeat_timeout_ms: u64,
+
+    #[structopt(
+        long = "failure_tick_ms",
+        default_value = "1000",
+        help = "How frequently to check for failures."
+    )]
+    pub failure_tick_ms: u64,
 }
 
 fn quorum_changed(a: &Vec<QuorumMember>, b: &Vec<QuorumMember>) -> bool {
@@ -265,14 +285,17 @@ impl Lighthouse {
         let listener = tokio::net::TcpListener::bind(&opt.bind).await?;
 
         let (tx, _) = broadcast::channel(16);
+        let (failure_tx, _) = broadcast::channel(16);
 
         Ok(Arc::new(Self {
             state: Mutex::new(State {
                 participants: HashMap::new(),
-                channel: tx,
+                quorum_channel: tx,
                 prev_quorum: None,
                 quorum_id: 0,
                 heartbeats: HashMap::new(),
+                failures: HashMap::new(),
+                failure_channel: failure_tx,
             }),
             opt: opt,
             local_addr: listener.local_addr()?,
@@ -326,7 +349,7 @@ impl Lighthouse {
 
             state.prev_quorum = Some(quorum.clone());
             state.participants.clear();
-            match state.channel.send(quorum) {
+            match state.quorum_channel.send(quorum) {
                 Ok(_) => (),
                 Err(e) => error!("failed to send quorum {}", e),
             }
@@ -391,12 +414,43 @@ impl Lighthouse {
             .map_err(|e| e.into())
     }
 
+    async fn _run_failure_tick(self: Arc<Self>) -> Result<()> {
+        let mut interval = interval(Duration::from_millis(self.opt.failure_tick_ms));
+        loop {
+            interval.tick().await; // Wait for the next tick
+            let mut state = self.state.lock().await;
+            self.clone()._failure_tick(&mut state)?;
+        }
+    }
+
+    fn _failure_tick(self: Arc<Self>, state: &mut State) -> Result<()> {
+        let now = Instant::now();
+        let timeout = Duration::from_millis(self.opt.heartbeat_timeout_ms);
+
+        // Check for failed replicas
+        for (replica_id, last_heartbeat) in state.heartbeats.iter() {
+            if now.duration_since(*last_heartbeat) > timeout {
+                state.failures.insert(replica_id.clone(), now);
+                if let Err(e) = state.failure_channel.send(FailureNotification {
+                    replica_id: replica_id.clone(),
+                }) {
+                    error!("Failed to send failure notification: {}", e);
+                }
+            } else {
+                state.failures.remove(replica_id);
+            }
+        }
+        Ok(())
+    }
+
     pub async fn run(self: Arc<Self>) -> Result<()> {
         let mut set = JoinSet::new();
 
         set.spawn(self.clone()._run_quorum());
 
         set.spawn(self.clone()._run_grpc());
+
+        set.spawn(self.clone()._run_failure_tick());
 
         while let Some(res) = set.join_next().await {
             res??;
@@ -473,6 +527,7 @@ impl Lighthouse {
 
 #[tonic::async_trait]
 impl LighthouseService for Arc<Lighthouse> {
+
     async fn quorum(
         &self,
         request: Request<LighthouseQuorumRequest>,
@@ -502,7 +557,7 @@ impl LighthouseService for Arc<Lighthouse> {
                     member: requester.clone(),
                 },
             );
-            let rx = state.channel.subscribe();
+            let rx = state.quorum_channel.subscribe();
 
             // proactively run quorum tick
             self.clone()
@@ -556,7 +611,34 @@ impl LighthouseService for Arc<Lighthouse> {
         let reply = LighthouseHeartbeatResponse {};
         Ok(Response::new(reply))
     }
+
+    type SubscribeFailuresStream = Pin<Box<dyn Stream<Item = Result<FailureNotification, Status>> + Send + 'static>>;
+
+    async fn subscribe_failures(
+        &self,
+        _req: Request<SubscribeFailuresRequest>,
+    ) -> Result<Response<Self::SubscribeFailuresStream>, Status> {
+        // clone a receiver
+        let rx = {
+            let state = self.state.lock().await;
+            state.failure_channel.subscribe()
+        };
+
+        // Wrap the receiver; map its *internal* error into `tonic::Status`
+        let stream = BroadcastStream::new(rx).filter_map(|res| {
+            match res {
+                Ok(note)               => Some(Ok(note)),
+                Err(BroadcastStreamRecvError::Lagged(n))   => Some(Err(Status::resource_exhausted(
+                                            format!("client lagged {n} messages")
+                                        ))),
+            }
+        });
+
+        Ok(Response::new(Box::pin(stream)))
+    }
 }
+
+
 
 #[derive(Template)]
 #[template(path = "index.html")]
@@ -624,14 +706,17 @@ mod tests {
             join_timeout_ms: 60 * 60 * 1000, // 1hr
             quorum_tick_ms: 10,
             heartbeat_timeout_ms: 5000,
+            failure_tick_ms: 1000,
         };
 
         let mut state = State {
-            channel: broadcast::channel(16).0,
+            quorum_channel: broadcast::channel(16).0,
             participants: HashMap::new(),
             prev_quorum: None,
             quorum_id: 0,
             heartbeats: HashMap::new(),
+            failures: HashMap::new(),
+            failure_channel: broadcast::channel(16).0,
         };
 
         let now = Instant::now();
@@ -703,14 +788,17 @@ mod tests {
             join_timeout_ms: 0,
             quorum_tick_ms: 10,
             heartbeat_timeout_ms: 5000,
+            failure_tick_ms: 1000,
         };
 
         let mut state = State {
-            channel: broadcast::channel(16).0,
+            quorum_channel: broadcast::channel(16).0,
             participants: HashMap::new(),
             prev_quorum: None,
             quorum_id: 0,
             heartbeats: HashMap::new(),
+            failures: HashMap::new(),
+            failure_channel: broadcast::channel(16).0,
         };
 
         let now = Instant::now();
@@ -789,14 +877,17 @@ mod tests {
             join_timeout_ms: 60 * 60 * 1000, // 1hr
             quorum_tick_ms: 10,
             heartbeat_timeout_ms: 5000,
+            failure_tick_ms: 1000,
         };
 
         let mut state = State {
-            channel: broadcast::channel(16).0,
+            quorum_channel: broadcast::channel(16).0,
             participants: HashMap::new(),
             prev_quorum: None,
             quorum_id: 0,
             heartbeats: HashMap::new(),
+            failures: HashMap::new(),
+            failure_channel: broadcast::channel(16).0,
         };
 
         let now = Instant::now();
@@ -879,14 +970,17 @@ mod tests {
             join_timeout_ms: 60 * 60 * 1000, // 1hr
             quorum_tick_ms: 10,
             heartbeat_timeout_ms: 5000,
+            failure_tick_ms: 1000,
         };
 
         let mut state = State {
-            channel: broadcast::channel(16).0,
+            quorum_channel: broadcast::channel(16).0,
             participants: HashMap::new(),
             prev_quorum: None,
             quorum_id: 0,
             heartbeats: HashMap::new(),
+            failures: HashMap::new(),
+            failure_channel: broadcast::channel(16).0,
         };
 
         let now = Instant::now();
@@ -974,6 +1068,7 @@ mod tests {
             join_timeout_ms: 1,
             quorum_tick_ms: 10,
             heartbeat_timeout_ms: 5000,
+            failure_tick_ms: 1000,
         };
         let lighthouse = Lighthouse::new(opt).await?;
 
@@ -1020,14 +1115,17 @@ mod tests {
             join_timeout_ms: 60 * 60 * 1000, // 1hr
             quorum_tick_ms: 10,
             heartbeat_timeout_ms: 5000,
+            failure_tick_ms: 1000,
         };
 
         let mut state = State {
-            channel: broadcast::channel(16).0,
+            quorum_channel: broadcast::channel(16).0,
             participants: HashMap::new(),
             prev_quorum: None,
             quorum_id: 0,
             heartbeats: HashMap::new(),
+            failures: HashMap::new(),
+            failure_channel: broadcast::channel(16).0,
         };
 
         let now = Instant::now();
@@ -1130,6 +1228,7 @@ mod tests {
             join_timeout_ms: 1000,
             quorum_tick_ms: 10,
             heartbeat_timeout_ms: 5000,
+            failure_tick_ms: 1000,
         };
 
         // Start the lighthouse service
@@ -1237,6 +1336,7 @@ mod tests {
             join_timeout_ms: 1000,
             quorum_tick_ms: 10,
             heartbeat_timeout_ms: 5000,
+            failure_tick_ms: 1000,
         };
 
         // Start the lighthouse service

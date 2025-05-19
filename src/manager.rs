@@ -54,7 +54,7 @@ macro_rules! info_with_replica {
 
 struct ManagerState {
     checkpoint_metadata: HashMap<i64, String>,
-    channel: broadcast::Sender<Quorum>,
+    quorum_channel: broadcast::Sender<Quorum>,
     participants: HashMap<i64, QuorumMember>,
 
     should_commit_channel: broadcast::Sender<bool>,
@@ -126,7 +126,7 @@ impl Manager {
             heartbeat_interval: heartbeat_interval,
             state: Mutex::new(ManagerState {
                 checkpoint_metadata: HashMap::new(),
-                channel: tx,
+                quorum_channel: tx,
                 participants: HashMap::new(),
 
                 should_commit_channel: should_commit_tx,
@@ -217,7 +217,7 @@ impl Manager {
         info_with_replica!(self.replica_id, "got lighthouse quorum {:?}", resp);
 
         state
-            .channel
+            .quorum_channel
             .send(
                 resp.quorum
                     .ok_or_else(|| Status::internal("missing quorum"))?,
@@ -273,7 +273,7 @@ impl ManagerService for Arc<Manager> {
             };
             // TODO check step
             state.participants.insert(group_rank, member.clone());
-            let rx = state.channel.subscribe();
+            let rx = state.quorum_channel.subscribe();
 
             self._run_quorum(&mut state, member, timeout).await?;
 
@@ -550,6 +550,7 @@ mod tests {
             min_replicas: 1,
             quorum_tick_ms: 100,
             heartbeat_timeout_ms: 5000,
+            failure_tick_ms: 1000,
         })
         .await?;
         let lighthouse_fut = tokio::spawn(lighthouse.clone().run());
@@ -597,6 +598,7 @@ mod tests {
             min_replicas: 1,
             quorum_tick_ms: 100,
             heartbeat_timeout_ms: 5000,
+            failure_tick_ms: 1000,
         })
         .await?;
         let lighthouse_fut = tokio::spawn(lighthouse.clone().run());
@@ -652,6 +654,7 @@ mod tests {
             min_replicas: 2,
             quorum_tick_ms: 100,
             heartbeat_timeout_ms: 5000,
+            failure_tick_ms: 1000,
         })
         .await?;
         let lighthouse_fut = tokio::spawn(lighthouse.clone().run());
@@ -724,6 +727,7 @@ mod tests {
             min_replicas: 1,
             quorum_tick_ms: 100,
             heartbeat_timeout_ms: 5000,
+            failure_tick_ms: 1000,
         })
         .await?;
         let lighthouse_fut = tokio::spawn(lighthouse.clone().run());

@@ -155,3 +155,19 @@ class TestLighthouse(TestCase):
 
         finally:
             lighthouse.shutdown()
+
+    def test_subscribe_failures(self) -> None:
+        """Test that subscribe_failures can be called without raising an exception."""
+        lighthouse = LighthouseServer(
+            bind="[::]:0",
+            min_replicas=1,
+        )
+        try:
+            client = LighthouseClient(
+                addr=lighthouse.address(),
+                connect_timeout=timedelta(seconds=1),
+            )
+            client.subscribe_failures(timeout=timedelta(seconds=1))
+            self.assertTrue(True)
+        finally:
+            lighthouse.shutdown()

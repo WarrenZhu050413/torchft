@@ -23,6 +23,7 @@ use tokio::runtime::Runtime;
 use tokio::task::JoinHandle;
 use tonic::transport::Channel;
 use tonic::Status;
+use tokio_stream::StreamExt;
 
 use chrono::Local;
 use fern::colors::{Color, ColoredLevelConfig};
@@ -36,7 +37,7 @@ use crate::torchftpb::lighthouse_service_client::LighthouseServiceClient;
 use crate::torchftpb::manager_service_client::ManagerServiceClient;
 use crate::torchftpb::{
     CheckpointMetadataRequest, LighthouseHeartbeatRequest, LighthouseQuorumRequest,
-    ManagerQuorumRequest, ShouldCommitRequest,
+    ManagerQuorumRequest, ShouldCommitRequest, SubscribeFailuresRequest,
 };
 use pyo3::prelude::*;
 use pyo3::types::{PyDict, PyString};
@@ -586,6 +587,42 @@ impl LighthouseClient {
             Ok(())
         })
     }
+
+    #[pyo3(signature = (timeout = Duration::from_secs(5)))]
+    fn subscribe_failures(&self,
+        py: Python<'_>,
+        timeout: Duration
+    ) -> PyResult<()> {
+        // 1) Build the tonic request
+        let mut req = tonic::Request::new(SubscribeFailuresRequest {});
+        req.set_timeout(timeout);
+    
+        // 2) Execute all blocking work outside the GIL
+        let result: PyResult<()> = py.allow_threads(move || {
+            // a) Invoke the streaming RPC
+            let response = self
+                .runtime
+                .block_on(self.client.clone().subscribe_failures(req))
+                .map_err(|e| PyRuntimeError::new_err(e.to_string()))?;
+            // b) Take the inner stream
+            let mut stream = response.into_inner();
+            // c) Pull from the stream asynchronously
+            self.runtime
+                .block_on(async move {
+                    while let Some(item) = stream.next().await {
+                        let failure = item?;
+                        // Replace with actual handling (e.g., Python callback)
+                        println!("Received failure: {:?}", failure);
+                    }
+                    Ok::<(), tonic::Status>(())
+                })
+                .map_err(|e| PyRuntimeError::new_err(e.to_string()))?;
+            Ok(())
+        });
+    
+        // 3) Convert any errors into PyRuntimeError
+        result.map_err(|e| PyRuntimeError::new_err(e.to_string()))
+    }
 }
 
 /// LighthouseServer is a GRPC server for the lighthouse service.
@@ -610,7 +647,7 @@ struct LighthouseServer {
 
 #[pymethods]
 impl LighthouseServer {
-    #[pyo3(signature = (bind, min_replicas, join_timeout_ms=None, quorum_tick_ms=None, heartbeat_timeout_ms=None))]
+    #[pyo3(signature = (bind, min_replicas, join_timeout_ms=None, quorum_tick_ms=None, heartbeat_timeout_ms=None, failure_tick_ms=None))]
     #[new]
     fn new(
         py: Python<'_>,
@@ -619,10 +656,12 @@ impl LighthouseServer {
         join_timeout_ms: Option<u64>,
         quorum_tick_ms: Option<u64>,
         heartbeat_timeout_ms: Option<u64>,
+        failure_tick_ms: Option<u64>,
     ) -> PyResult<Self> {
         let join_timeout_ms = join_timeout_ms.unwrap_or(100);
         let quorum_tick_ms = quorum_tick_ms.unwrap_or(100);
         let heartbeat_timeout_ms = heartbeat_timeout_ms.unwrap_or(5000);
+        let failure_tick_ms = failure_tick_ms.unwrap_or(1000);
 
         py.allow_threads(move || {
             let rt = tokio::runtime::Builder::new_multi_thread()
@@ -638,6 +677,7 @@ impl LighthouseServer {
                     join_timeout_ms: join_timeout_ms,
                     quorum_tick_ms: quorum_tick_ms,
                     heartbeat_timeout_ms: heartbeat_timeout_ms,
+                    failure_tick_ms: failure_tick_ms,
                 }))
                 .map_err(|e| PyRuntimeError::new_err(e.to_string()))?;
 
