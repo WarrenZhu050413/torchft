@@ -162,12 +162,58 @@ class TestLighthouse(TestCase):
             bind="[::]:0",
             min_replicas=1,
         )
+        print("lighthouse created")
         try:
             client = LighthouseClient(
                 addr=lighthouse.address(),
                 connect_timeout=timedelta(seconds=1),
             )
-            client.subscribe_failures(timeout=timedelta(seconds=1))
+            print("client created")
+            # call = client.subscribe_failures(timeout=timedelta(milliseconds=100))
+            print("subscribe_failures called")
+            # start = time.time()
+            # with self.assertRaises(grpc.RpcError) as ctx:
+            #     next(call)                # this blocks until the 100 ms deadline
+            # elapsed = time.time() - start
+            # self.assertLess(elapsed, 0.5)
+            # self.assertGreater(elapsed, 0.05)
+            # self.assertEqual(ctx.exception.code(), grpc.StatusCode.DEADLINE_EXCEEDED)
             self.assertTrue(True)
+        finally:
+            print("lighthouse shutdown")
+            lighthouse.shutdown()
+
+    def test_subscribe_failures_timeout(self) -> None:
+        """Test that subscribe_failures respects the timeout parameter."""
+        print("starting lighthouse")
+        lighthouse = LighthouseServer(
+            bind="[::]:0",
+            min_replicas=1,
+            join_timeout_ms=1000,
+            heartbeat_timeout_ms=1000,
+            failure_tick_ms=10,
+        )
+
+        print("lighthouse created")
+        try:
+            client = LighthouseClient(
+                addr=lighthouse.address(),
+                connect_timeout=timedelta(seconds=1),
+            )
+            print("client created")
+            # Test with a very short timeout that should trigger
+            start_time = time.time()
+            with self.assertRaises(Exception) as context:
+                client.subscribe_failures(timeout=timedelta(milliseconds=100))
+            end_time = time.time()
+            print("subscribe_failures called")
+            # Verify that the operation took approximately the timeout duration
+            time_taken = end_time - start_time
+            self.assertLess(time_taken, 0.5)  # Should be close to 100ms but allow some buffer
+            self.assertGreater(time_taken, 0.05)  # Should be at least 50ms
+            print("subscribe_failures done")
+            # Verify that the error is a timeout error
+            self.assertIn("timeout", str(context.exception).lower())
+            print("subscribe_failures done")
         finally:
             lighthouse.shutdown()

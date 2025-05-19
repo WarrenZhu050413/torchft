@@ -1381,4 +1381,63 @@ mod tests {
         lighthouse_task.abort();
         Ok(())
     }
+
+    #[tokio::test]
+    async fn test_lighthouse_subscribe_failures() -> Result<()> {
+        let opt = LighthouseOpt {
+            min_replicas: 1,
+            bind: "[::]:0".to_string(),
+            join_timeout_ms: 60 * 60 * 1000, // 1hr
+            quorum_tick_ms: 10,
+            heartbeat_timeout_ms: 5000,
+            failure_tick_ms: 1000,
+        };
+
+        let lighthouse = Lighthouse::new(opt).await?;
+        let lighthouse_task = tokio::spawn(lighthouse.clone().run());
+
+        let mut client = lighthouse_client_new(lighthouse.address()).await?;
+        let mut request = tonic::Request::new(SubscribeFailuresRequest {});
+        request.set_timeout(Duration::from_secs(1));
+        client.subscribe_failures(request).await?;
+
+        lighthouse_task.abort();
+        Ok(())
+    }
+
+    #[tokio::test]
+    async fn test_subscribe_failures_delivers_notifications() -> Result<()> {
+        // 1) Start service
+        let opt = LighthouseOpt {
+            min_replicas: 1,
+            bind: "[::]:0".to_string(),
+            join_timeout_ms: 60 * 60 * 1000,
+            quorum_tick_ms: 10,
+            heartbeat_timeout_ms: 5000,
+            failure_tick_ms: 1000,
+        };
+        let lighthouse = Lighthouse::new(opt).await?;
+        let mut client = lighthouse_client_new(lighthouse.address()).await?;
+        let lighthouse_task = tokio::spawn(lighthouse.clone().run());
+
+        // 2) Subscribe with a deadline
+        let mut req = tonic::Request::new(SubscribeFailuresRequest {});
+        req.set_timeout(Duration::from_secs(5));
+        let mut stream = client.subscribe_failures(req).await?.into_inner();
+
+        // 3) Trigger a failure notification
+        {
+            let state = lighthouse.state.lock().await;
+            state.failure_channel.send(FailureNotification { replica_id: "nodeX".into() }).unwrap();
+        }
+
+        // 4) Ensure we receive it
+        match stream.next().await {
+            Some(Ok(note)) => assert_eq!(note.replica_id, "nodeX"),
+            other => panic!("Expected notification, got {:?}", other),
+        }
+
+        lighthouse_task.abort();
+        Ok(())
+    }
 }

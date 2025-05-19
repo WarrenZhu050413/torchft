@@ -596,17 +596,21 @@ impl LighthouseClient {
         // 1) Build the tonic request
         let mut req = tonic::Request::new(SubscribeFailuresRequest {});
         req.set_timeout(timeout);
+        println!("subscribe_failures called");
     
         // 2) Execute all blocking work outside the GIL
         let result: PyResult<()> = py.allow_threads(move || {
             // a) Invoke the streaming RPC
+            println!("invoke streaming RPC");
             let response = self
                 .runtime
                 .block_on(self.client.clone().subscribe_failures(req))
                 .map_err(|e| PyRuntimeError::new_err(e.to_string()))?;
             // b) Take the inner stream
+            println!("take inner stream");
             let mut stream = response.into_inner();
             // c) Pull from the stream asynchronously
+            println!("pull from stream asynchronously");
             self.runtime
                 .block_on(async move {
                     while let Some(item) = stream.next().await {
@@ -617,6 +621,7 @@ impl LighthouseClient {
                     Ok::<(), tonic::Status>(())
                 })
                 .map_err(|e| PyRuntimeError::new_err(e.to_string()))?;
+            println!("done");
             Ok(())
         });
     
