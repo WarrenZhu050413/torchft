@@ -8,6 +8,7 @@ syntax = "proto3";
 package torchft;
 
 import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
 
 message RaftMessageRequest {
     // Request message contains the serialized Raft proto message.
@@ -67,9 +68,14 @@ message LighthouseHeartbeatRequest {
 
 message LighthouseHeartbeatResponse {}
 
+message FailureNotification {
+    string replica_id = 1;
+}
+
 service LighthouseService {
     rpc Quorum (LighthouseQuorumRequest) returns (LighthouseQuorumResponse);
     rpc Heartbeat (LighthouseHeartbeatRequest) returns (LighthouseHeartbeatResponse);
+    rpc WatchFailures (google.protobuf.Empty) returns (stream FailureNotification);
 }
 
 message ManagerQuorumRequest {
@@ -125,4 +131,5 @@ service ManagerService {
     rpc CheckpointMetadata(CheckpointMetadataRequest) returns (CheckpointMetadataResponse);
     rpc ShouldCommit(ShouldCommitRequest) returns (ShouldCommitResponse);
     rpc Kill(KillRequest) returns (KillResponse);
+    rpc FailureNotifications(google.protobuf.Empty) returns (stream FailureNotification);
 }
