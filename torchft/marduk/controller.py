@@ -1,6 +1,6 @@
 import nats, asyncio
 
-from typing import Dict, Callable, Awaitable, Set
+from typing import Dict, Callable, Awaitable, Set, List
 
 from nats.aio.client import Client
 import nats.errors
@@ -9,9 +9,11 @@ from nats.js.client import JetStreamContext
 from torchft.marduk.config import Config
 from torchft.marduk.marduk_pb2 import EventEnvelope, MonitoredFailEvent
 from torchft.marduk.constants import MardukConstants, NC, JS
-from torchft.marduk.logging.logger import logger
+from torchft.marduk.logging.logger import setup_logger
 from torchft.marduk.logging.log_utils import log_and_raise_exception
 from torchft.marduk.utils import cancel_subscriptions
+
+logger = setup_logger(name="marduk_controller", log_file=Config.MARDUK_CONTROLLER_LOG_FILE)
 
 class Controller():
     """Controller for Marduk.
@@ -116,9 +118,21 @@ class Controller():
     def get_devices_for_replica(self, replica_id: str) -> Set[str]:
         return self.replica_to_devices.get(replica_id, set())
     
+    async def maybe_create_stream(self, stream: str, subjects: List[str]) -> None:
+        try:
+            await self._js.add_stream(name=stream, 
+                                     subjects=subjects)
+            logger.info(f"Created stream: {stream}")
+        except nats.js.errors.StreamAlreadyExistsError:
+            logger.info(f"Stream {stream} already exists, continuing...")
+        except Exception as e:
+            logger.exception(f"Error creating stream {stream}: {e}")
+            raise
+    
     async def subscribe_js(self, stream: str, subject: str, consumer: str, message_handler: Callable[[Msg], Awaitable[None]]) -> None:
         self.maybe_log_and_raise_exception(JS)
         assert self._js is not None
+        await self.maybe_create_stream(stream, [subject])
 
         logger.info(f"Subscribing to {subject} on stream {stream} with consumer {consumer}")
 
@@ -217,7 +231,7 @@ async def main():
                 controller.message_handler
             ))
             tg.create_task(controller.subscribe_nc(
-                subject=MardukConstants.monitor_stream.subjects.EXTERNAL, 
+                subject=MardukConstants.subjects.EXTERNAL, 
                 message_handler=controller.message_handler
             ))
             logger.info("Started subscribing to all subjects")

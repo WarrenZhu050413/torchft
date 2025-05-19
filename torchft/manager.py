@@ -59,7 +59,7 @@ from torchft.marduk.utils import get_device_uuid
 from torchft.marduk.constants import MardukConstants
 from torchft.marduk.utils import cancel_subscriptions
 from torchft.marduk.config import Config
-from torchft.marduk.logging.logger import debug_manager_logger
+from torchft.marduk.logging.logger import setup_logger
 
 MANAGER_ADDR_KEY: str = "manager_addr"
 MANAGER_PORT_ENV: str = "TORCHFT_MANAGER_PORT"
@@ -234,6 +234,7 @@ class Manager:
                 replica_id = new_uuid
             else:
                 replica_id = f"{replica_id}:{new_uuid}"
+            self._replica_id = replica_id
             self._manager = ManagerServer(
                 replica_id=replica_id,
                 lighthouse_addr=lighthouse_addr,
@@ -253,9 +254,20 @@ class Manager:
 
         replica_id = self._store.get(REPLICA_ID_KEY).decode("utf-8")
         self._logger = _ManagerLogger(
-            manager=self, replica_id=replica_id or "", group_rank=group_rank
+            manager=self, 
+            name=__name__,
+            format_log=True,
+            print_to_console=True,
+            log_file=Config.MANAGER_RUNTIME_LOG_FILE
         )
 
+        self._marduk_logger = _ManagerLogger(
+            manager=self, 
+            name="manager_marduk",
+            log_file=Config.MANAGER_MARDUK_LOG_FILE, 
+            format_log=True, 
+            print_to_console=False
+        )
 
         self._step = 0
         self._quorum_id = -1
@@ -270,7 +282,6 @@ class Manager:
 
         # Start marduk
         self._subscriptions = {}
-        self._replica_id = replica_id
         self._marduk_addr = marduk_addr or os.environ.get("MARDUK_ADDR", MardukConstants.DEFAULT_ADDR)
         self._stop_nats = asyncio.Event()
         self._nc_timeout = Config.NC_TIMEOUT
@@ -283,77 +294,77 @@ class Manager:
         else:
             self._loop = asyncio.get_event_loop()
         
-        # Start the NATS connection
+        # Start the n
         self._loop.run_until_complete(self.marduk_start())
         
         # Set up background task to keep the event loop running
         self._loop_thread = ThreadPoolExecutor(max_workers=1, thread_name_prefix="asyncio_loop")
         self._loop_thread.submit(self._run_event_loop_in_background)
         
-        debug_manager_logger.info("Asyncio event loop set up in background thread")
+        self._marduk_logger.info("Asyncio event loop set up in background thread")
 
     async def marduk_start(self):   
-        debug_manager_logger.info(f"In marduk_start")
+        self._marduk_logger.info(f"In marduk_start")
         try:
             await self.marduk_connect()
             await self.subscribe_nc(MardukConstants.subjects.REPLICA_FAIL, self.message_handler)
             await self.publish_DRmapping_info()
-            debug_manager_logger.info(f"Marduk initialization completed successfully")
+            self._marduk_logger.info(f"Marduk initialization completed successfully")
         except Exception as e:
-            debug_manager_logger.exception(f"Error during marduk_start: {e}")
+            self._marduk_logger.exception(f"Error during marduk_start: {e}")
 
     async def marduk_connect(self):
         try:
             self._nc: Client = await nats.connect(self._marduk_addr)
             self._js: JetStreamContext = self._nc.jetstream()
-            debug_manager_logger.info("Connected to NATS server")
+            self._marduk_logger.info("Connected to NATS server")
         except Exception as e:
-            debug_manager_logger.error(f"Failed to connect to NATS server: {e}")
+            self._marduk_logger.error(f"Failed to connect to NATS server: {e}")
 
     async def message_handler(self, msg: Msg):
         try:
             env = EventEnvelope()
             env.ParseFromString(msg.data)
             
-            debug_manager_logger.info(f"Received message on {msg.subject}: {msg.data}")
+            self._marduk_logger.info(f"Received message on {msg.subject}: {msg.data}")
 
             if env.HasField("replica_fail"):
                 replica_id = env.replica_fail.replica_id
-                debug_manager_logger.info(f"Received replica fail event for replica: {replica_id}")
+                self._marduk_logger.info(f"Received replica fail event for replica: {replica_id}")
                 # Check if this is our replica
                 if replica_id == self._replica_id:
-                    debug_manager_logger.info(f"This replica ({self._replica_id}) has been marked as failed, initiating recovery")
+                    self._marduk_logger.info(f"This replica ({self._replica_id}) has been marked as failed, initiating recovery")
                     # Report an error to trigger recovery
-                    debug_manager_logger.info(f"MOCK IMPLEMENTATION: Reporting error to trigger recovery")
+                    self._marduk_logger.info(f"MOCK IMPLEMENTATION: Reporting error to trigger recovery")
             else:
-                debug_manager_logger.warning(f"Received unsupported message: {env}")
+                self._marduk_logger.warning(f"Received unsupported message: {env}")
         except Exception as e:
-            debug_manager_logger.exception(f"Error handling message: {e}")
+            self._marduk_logger.exception(f"Error handling message: {e}")
 
     async def subscribe_nc(self, subject: str, message_handler: Callable[[Msg], Awaitable[None]]) -> None:
         assert self._nc is not None # This should always be true because we connect to NATS in marduk_start in Manager constructor
 
         sub = await self._nc.subscribe(subject)
-        debug_manager_logger.info(f"Subscribed to {subject}")
+        self._marduk_logger.info(f"Subscribed to {subject}")
         
         async def listen_to_nc_subscription():
-            debug_manager_logger.info(f"Started listening on {subject}")
+            self._marduk_logger.info(f"Started listening on {subject}")
             try:
-                debug_manager_logger.info(f"self._nc_timeout: {self._nc_timeout}")
-                debug_manager_logger.info(f"self._stop_nats.is_set(): {self._stop_nats.is_set()}")
+                self._marduk_logger.info(f"self._nc_timeout: {self._nc_timeout}")
+                self._marduk_logger.info(f"self._stop_nats.is_set(): {self._stop_nats.is_set()}")
                 while self._stop_nats.is_set() is False:
                     try:
-                        debug_manager_logger.info(f"Waiting for message on {subject}")
+                        self._marduk_logger.info(f"Waiting for message on {subject}")
                         msg = await sub.next_msg(timeout=self._nc_timeout)
-                        debug_manager_logger.info(f"Received message on {subject}: {msg.data}")
+                        self._marduk_logger.info(f"Received message on {subject}: {msg.data}")
                         await message_handler(msg)
                     except asyncio.TimeoutError:
                         continue
                     except Exception as e:
-                        debug_manager_logger.exception(f"Error in subscription loop for {subject}: {str(e)}")
+                        self._marduk_logger.exception(f"Error in subscription loop for {subject}: {str(e)}")
                         await asyncio.sleep(self._exception_sleep)
             except Exception as e:
-                debug_manager_logger.exception(f"Error in listener task: {str(e)}")
+                self._marduk_logger.exception(f"Error in listener task: {str(e)}")
         
         task = asyncio.create_task(listen_to_nc_subscription())
         self._subscriptions[subject] = (sub, task)
@@ -391,15 +402,15 @@ class Manager:
         
         # Close NATS connection
         self._loop.run_until_complete(self._nc.close())
-        debug_manager_logger.info("NATS connection closed")
+        self._marduk_logger.info("NATS connection closed")
         
         # Stop the event loop
         self._loop.call_soon_threadsafe(self._loop.stop)
-        debug_manager_logger.info("Event loop stopped")
+        self._marduk_logger.info("Event loop stopped")
         
         # Shut down the loop thread
         self._loop_thread.shutdown(wait=wait)
-        debug_manager_logger.info("Background loop thread shutdown")
+        self._marduk_logger.info("Background loop thread shutdown")
 
     def allreduce(self, tensor: torch.Tensor) -> torch.futures.Future[torch.Tensor]:
         """
@@ -943,23 +954,21 @@ class Manager:
         """Run the event loop in a background thread to process NATS messages."""
         try:
             if not self._loop.is_running():
-                debug_manager_logger.info("Starting asyncio event loop in background")
+                self._marduk_logger.info("Starting asyncio event loop in background")
                 self._loop.run_forever()
             else:
-                debug_manager_logger.info("Event loop is already running")
+                self._marduk_logger.info("Event loop is already running")
         except Exception as e:
-            debug_manager_logger.exception(f"Error in background event loop: {e}")
+            self._marduk_logger.exception(f"Error in background event loop: {e}")
 
 
 class _ManagerLogger:
-    def __init__(self, manager: Manager, replica_id: str, group_rank: int) -> None:
-        self._logger: logging.Logger = logging.getLogger(__name__)
-        self._replica_id = replica_id
-        self._group_rank = group_rank
+    def __init__(self, manager: Manager, name: str = __name__, format_log: bool = False, print_to_console: bool = True, log_file: str = "logging.log") -> None:
+        self._logger: logging.Logger = setup_logger(name=name, format_log=format_log, print_to_console=print_to_console, log_file=log_file)
         self._manager = manager
 
     def prefix(self) -> str:
-        return f"[{self._replica_id}/{self._group_rank} - step {self._manager.current_step()}]"
+        return f"[{self._manager._replica_id}/{self._manager._group_rank} - step {self._manager.current_step()}]"
 
     def info(self, msg: str) -> None:
         self._logger.info(f"{self.prefix()} {msg}")

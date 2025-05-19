@@ -3,7 +3,10 @@ from typing import Tuple, Any, Dict
 from pynvml import nvmlInit, nvmlDeviceGetHandleByIndex, nvmlDeviceGetUUID
 import torch
 from torchft.marduk.logging.log_utils import log_and_raise_exception
-from torchft.marduk.logging.logger import logger
+from torchft.marduk.logging.logger import setup_logger
+from torchft.marduk.config import Config
+
+logger = setup_logger(name="marduk_utils", log_file=Config.MARDUK_UTILS_LOG_FILE)
 
 def get_device_uuid():
     try:

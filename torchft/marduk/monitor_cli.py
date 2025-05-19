@@ -3,10 +3,13 @@ import asyncio
 import cmd
 
 import nats
+from torchft.marduk.config import Config
 from torchft.marduk.marduk_pb2 import EventEnvelope
 import time
 from torchft.marduk.constants import MardukConstants, MonitorStream, ControllerStream
-from torchft.marduk.logging.logger import logger
+from torchft.marduk.logging.logger import setup_logger
+
+logger = setup_logger(name="marduk_monitor_cli", log_file=Config.MARDUK_MONITOR_CLI_LOG_FILE)
 
 class MyShell(cmd.Cmd):
     prompt = 'marduk> '

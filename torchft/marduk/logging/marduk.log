@@ -857,3 +857,389 @@ Stopping Controller
 All subscriptions cleared
 NATS connection closed
 Marduk constants module loaded
+Error fetching messages from marduk.DRentry: nats: connection closed
+Traceback (most recent call last):
+  File "/srv/apps/warren/torchft/torchft/marduk/controller.py", line 134, in listen_to_js_subscription
+    msgs = await psub.fetch(1, timeout=1)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/srv/apps/danny/miniconda3/envs/warren/torchtitan/lib/python3.11/site-packages/nats/js/client.py", line 1098, in fetch
+    msg = await self._fetch_one(expires, timeout, heartbeat)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/srv/apps/danny/miniconda3/envs/warren/torchtitan/lib/python3.11/site-packages/nats/js/client.py", line 1136, in _fetch_one
+    await self._nc.publish(
+  File "/srv/apps/danny/miniconda3/envs/warren/torchtitan/lib/python3.11/site-packages/nats/aio/client.py", line 896, in publish
+    raise errors.ConnectionClosedError
+nats.errors.ConnectionClosedError: nats: connection closed
+Unknown command: EOF
+Unknown command: EOF
+Unknown command: EOF
+Marduk constants module loaded
+Starting Marduk Controller
+Controller initialized with NATS address: nats://0.0.0.0:4222
+Connected to NATS server at nats://0.0.0.0:4222
+Controller initialized
+Started subscribing to all subjects
+Subscribing to marduk.DRentry on stream CONTROLLER-STREAM with consumer controller-consumer
+Subscribing to marduk.monitored.failure
+Subscribed to marduk.monitored.failure
+Started listening on marduk.monitored.failure
+Unexpected error in controller: unhandled errors in a TaskGroup (1 sub-exception)
+  + Exception Group Traceback (most recent call last):
+  |   File "/srv/apps/warren/torchft/./torchft/marduk/controller.py", line 212, in main
+  |     async with asyncio.TaskGroup() as tg:
+  |   File "/srv/apps/danny/miniconda3/envs/warren/torchtitan/lib/python3.11/asyncio/taskgroups.py", line 145, in __aexit__
+  |     raise me from None
+  | ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)
+  +-+---------------- 1 ----------------
+    | Traceback (most recent call last):
+    |   File "/srv/apps/warren/torchft/./torchft/marduk/controller.py", line 125, in subscribe_js
+    |     psub = await self._js.pull_subscribe(subject, durable=consumer, stream=stream)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/srv/apps/danny/miniconda3/envs/warren/torchtitan/lib/python3.11/site-packages/nats/js/client.py", line 600, in pull_subscribe
+    |     await self._jsm.add_consumer(stream, config=config)
+    |   File "/srv/apps/danny/miniconda3/envs/warren/torchtitan/lib/python3.11/site-packages/nats/js/manager.py", line 262, in add_consumer
+    |     resp = await self._api_request(subject, req_data, timeout=timeout)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/srv/apps/danny/miniconda3/envs/warren/torchtitan/lib/python3.11/site-packages/nats/js/manager.py", line 421, in _api_request
+    |     raise APIError.from_error(resp["error"])
+    |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/srv/apps/danny/miniconda3/envs/warren/torchtitan/lib/python3.11/site-packages/nats/js/errors.py", line 87, in from_error
+    |     raise NotFoundError(**err)
+    | nats.js.errors.NotFoundError: nats: NotFoundError: code=404 err_code=10059 description='stream not found'
+    +------------------------------------
+Stopping Controller
+All subscriptions cleared
+NATS connection closed
+Marduk constants module loaded
+Marduk constants module loaded
+Starting Marduk Controller
+Controller initialized with NATS address: nats://0.0.0.0:4222
+Connected to NATS server at nats://0.0.0.0:4222
+Controller initialized
+Started subscribing to all subjects
+Subscribing to marduk.DRentry on stream CONTROLLER-STREAM with consumer controller-consumer
+Subscribing to marduk.monitored.failure
+Subscribed to marduk.monitored.failure
+Started listening on marduk.monitored.failure
+Unexpected error in controller: unhandled errors in a TaskGroup (1 sub-exception)
+  + Exception Group Traceback (most recent call last):
+  |   File "/srv/apps/warren/torchft/./torchft/marduk/controller.py", line 212, in main
+  |     async with asyncio.TaskGroup() as tg:
+  |   File "/srv/apps/danny/miniconda3/envs/warren/torchtitan/lib/python3.11/asyncio/taskgroups.py", line 145, in __aexit__
+  |     raise me from None
+  | ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)
+  +-+---------------- 1 ----------------
+    | Traceback (most recent call last):
+    |   File "/srv/apps/warren/torchft/./torchft/marduk/controller.py", line 125, in subscribe_js
+    |     psub = await self._js.pull_subscribe(subject, durable=consumer, stream=stream)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/srv/apps/danny/miniconda3/envs/warren/torchtitan/lib/python3.11/site-packages/nats/js/client.py", line 600, in pull_subscribe
+    |     await self._jsm.add_consumer(stream, config=config)
+    |   File "/srv/apps/danny/miniconda3/envs/warren/torchtitan/lib/python3.11/site-packages/nats/js/manager.py", line 262, in add_consumer
+    |     resp = await self._api_request(subject, req_data, timeout=timeout)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/srv/apps/danny/miniconda3/envs/warren/torchtitan/lib/python3.11/site-packages/nats/js/manager.py", line 421, in _api_request
+    |     raise APIError.from_error(resp["error"])
+    |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/srv/apps/danny/miniconda3/envs/warren/torchtitan/lib/python3.11/site-packages/nats/js/errors.py", line 87, in from_error
+    |     raise NotFoundError(**err)
+    | nats.js.errors.NotFoundError: nats: NotFoundError: code=404 err_code=10059 description='stream not found'
+    +------------------------------------
+Stopping Controller
+All subscriptions cleared
+NATS connection closed
+Marduk constants module loaded
+Using NATS server at nats://localhost:4222
+Starting Marduk CLI
+Marduk CLI initialized
+Marduk constants module loaded
+Starting Marduk Controller
+Controller initialized with NATS address: nats://0.0.0.0:4222
+Connected to NATS server at nats://0.0.0.0:4222
+Controller initialized
+Started subscribing to all subjects
+Subscribing to marduk.monitored.failure
+Subscribed to marduk.monitored.failure
+Started listening on marduk.monitored.failure
+Created stream: CONTROLLER-STREAM
+Subscribing to marduk.DRentry on stream CONTROLLER-STREAM with consumer controller-consumer
+Pull subscription created for marduk.DRentry on stream CONTROLLER-STREAM with consumer controller-consumer
+Started listening on marduk.DRentry
+Subscribed to all subjects
+Unknown command: hi
+Executing test command with input: h
+Simulating failed GPU with uuid: h
+Connected to NATS server at nats://localhost:4222
+Published device failure event for device h
+Received message on marduk.monitored.failure
+Received message: monitored_fail {
+  device_uuid: "h"
+}
+
+[GPU FAILURE] Device h not found in device-to-replicas map
+Executing test command with input: boo
+Simulating failed GPU with uuid: boo
+Connected to NATS server at nats://localhost:4222
+Published device failure event for device boo
+Received message on marduk.monitored.failure
+Received message: monitored_fail {
+  device_uuid: "boo"
+}
+
+[GPU FAILURE] Device boo not found in device-to-replicas map
+Executing test command with input: dd
+Simulating failed GPU with uuid: dd
+Connected to NATS server at nats://localhost:4222
+Published device failure event for device dd
+Received message on marduk.monitored.failure
+Received message: monitored_fail {
+  device_uuid: "dd"
+}
+
+[GPU FAILURE] Device dd not found in device-to-replicas map
+Executing test command with input: strong
+Simulating failed GPU with uuid: strong
+Connected to NATS server at nats://localhost:4222
+Published device failure event for device strong
+Received message on marduk.monitored.failure
+Received message: monitored_fail {
+  device_uuid: "strong"
+}
+
+[GPU FAILURE] Device strong not found in device-to-replicas map
+Marduk constants module loaded
+Retrieved GPU UUID: GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 for device index 0
+Received 1 messages on marduk.DRentry
+Received message: register_device {
+  device_uuid: "GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28"
+  replica_id: "train_ddp_0:d7ad648f-8326-457c-83cc-7a794040bf34"
+}
+
+
+----------------------------------------------------------------------------------------------------
+Received register_device event for device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 and replica train_ddp_0:d7ad648f-8326-457c-83cc-7a794040bf34
+New Mapping: Device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 is now associated with replicas: {'train_ddp_0:d7ad648f-8326-457c-83cc-7a794040bf34'}
+New Mapping: Replica train_ddp_0:d7ad648f-8326-457c-83cc-7a794040bf34 is now associated with devices: {'GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28'}
+Marduk constants module loaded
+Retrieved GPU UUID: GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 for device index 0
+Received 1 messages on marduk.DRentry
+Received message: register_device {
+  device_uuid: "GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28"
+  replica_id: "train_ddp_1:26319191-9dd5-4b2c-9fb5-10b73174f828"
+}
+
+
+----------------------------------------------------------------------------------------------------
+Received register_device event for device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 and replica train_ddp_1:26319191-9dd5-4b2c-9fb5-10b73174f828
+New Mapping: Device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 is now associated with replicas: {'train_ddp_0:d7ad648f-8326-457c-83cc-7a794040bf34', 'train_ddp_1:26319191-9dd5-4b2c-9fb5-10b73174f828'}
+New Mapping: Replica train_ddp_1:26319191-9dd5-4b2c-9fb5-10b73174f828 is now associated with devices: {'GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28'}
+Marduk constants module loaded
+Marduk constants module loaded
+2025-05-19 08:42:11 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 0] In marduk_start
+2025-05-19 08:42:11 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 0] Connected to NATS server
+2025-05-19 08:42:11 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 0] Subscribed to marduk.replica.fail
+2025-05-19 08:42:11 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 0] Started listening on marduk.replica.fail
+2025-05-19 08:42:11 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 0] self._nc_timeout: 1
+2025-05-19 08:42:11 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 0] self._stop_nats.is_set(): False
+2025-05-19 08:42:11 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 0] Waiting for message on marduk.replica.fail
+2025-05-19 08:42:11 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 0] Marduk initialization completed successfully
+Received 1 messages on marduk.DRentry
+2025-05-19 08:42:11 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 0] Starting asyncio event loop in background
+2025-05-19 08:42:11 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 0] Asyncio event loop set up in background thread
+Received message: register_device {
+  device_uuid: "GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28"
+  replica_id: "train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860"
+}
+
+
+----------------------------------------------------------------------------------------------------
+Received register_device event for device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 and replica train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860
+New Mapping: Device GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28 is now associated with replicas: {'train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860', 'train_ddp_0:d7ad648f-8326-457c-83cc-7a794040bf34', 'train_ddp_1:26319191-9dd5-4b2c-9fb5-10b73174f828'}
+New Mapping: Replica train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860 is now associated with devices: {'GPU-307a982d-bf2b-4cc3-64e3-aae456bf6a28'}
+2025-05-19 08:42:12 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 0] Waiting for message on marduk.replica.fail
+2025-05-19 08:42:13 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 0] Waiting for message on marduk.replica.fail
+2025-05-19 08:42:14 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 1] Waiting for message on marduk.replica.fail
+2025-05-19 08:42:15 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 2] Waiting for message on marduk.replica.fail
+2025-05-19 08:42:16 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 3] Waiting for message on marduk.replica.fail
+2025-05-19 08:42:17 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 4] Waiting for message on marduk.replica.fail
+2025-05-19 08:42:18 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 5] Waiting for message on marduk.replica.fail
+2025-05-19 08:42:19 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 6] Waiting for message on marduk.replica.fail
+2025-05-19 08:42:20 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 7] Waiting for message on marduk.replica.fail
+2025-05-19 08:42:21 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 8] Waiting for message on marduk.replica.fail
+2025-05-19 08:42:22 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 9] Waiting for message on marduk.replica.fail
+2025-05-19 08:42:23 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 10] Waiting for message on marduk.replica.fail
+2025-05-19 08:42:24 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 10] Waiting for message on marduk.replica.fail
+2025-05-19 08:42:25 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 11] Waiting for message on marduk.replica.fail
+2025-05-19 08:42:26 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 12] Waiting for message on marduk.replica.fail
+2025-05-19 08:42:27 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 13] Waiting for message on marduk.replica.fail
+2025-05-19 08:42:28 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 14] Waiting for message on marduk.replica.fail
+2025-05-19 08:42:29 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 15] Waiting for message on marduk.replica.fail
+2025-05-19 08:42:30 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 16] Waiting for message on marduk.replica.fail
+2025-05-19 08:42:31 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 17] Waiting for message on marduk.replica.fail
+2025-05-19 08:42:32 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 18] Waiting for message on marduk.replica.fail
+2025-05-19 08:42:33 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 19] Waiting for message on marduk.replica.fail
+2025-05-19 08:42:34 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 20] Waiting for message on marduk.replica.fail
+2025-05-19 08:42:35 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 21] Waiting for message on marduk.replica.fail
+2025-05-19 08:42:36 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 22] Waiting for message on marduk.replica.fail
+2025-05-19 08:42:37 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 23] Waiting for message on marduk.replica.fail
+2025-05-19 08:42:38 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 24] Waiting for message on marduk.replica.fail
+2025-05-19 08:42:39 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 25] Waiting for message on marduk.replica.fail
+2025-05-19 08:42:40 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 26] Waiting for message on marduk.replica.fail
+2025-05-19 08:42:41 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 27] Waiting for message on marduk.replica.fail
+2025-05-19 08:42:42 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 28] Waiting for message on marduk.replica.fail
+2025-05-19 08:42:43 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 29] Waiting for message on marduk.replica.fail
+2025-05-19 08:42:44 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 30] Waiting for message on marduk.replica.fail
+2025-05-19 08:42:45 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 31] Waiting for message on marduk.replica.fail
+2025-05-19 08:42:46 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 31] Waiting for message on marduk.replica.fail
+2025-05-19 08:42:47 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 32] Waiting for message on marduk.replica.fail
+2025-05-19 08:42:48 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 33] Waiting for message on marduk.replica.fail
+2025-05-19 08:42:49 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 34] Waiting for message on marduk.replica.fail
+2025-05-19 08:42:50 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 35] Waiting for message on marduk.replica.fail
+2025-05-19 08:42:51 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 36] Waiting for message on marduk.replica.fail
+2025-05-19 08:42:52 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 37] Waiting for message on marduk.replica.fail
+2025-05-19 08:42:53 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 38] Waiting for message on marduk.replica.fail
+2025-05-19 08:42:54 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 39] Waiting for message on marduk.replica.fail
+2025-05-19 08:42:55 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 40] Waiting for message on marduk.replica.fail
+2025-05-19 08:42:56 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 41] Waiting for message on marduk.replica.fail
+2025-05-19 08:42:57 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 42] Waiting for message on marduk.replica.fail
+2025-05-19 08:42:58 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 43] Waiting for message on marduk.replica.fail
+2025-05-19 08:42:59 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 44] Waiting for message on marduk.replica.fail
+2025-05-19 08:43:00 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 45] Waiting for message on marduk.replica.fail
+2025-05-19 08:43:01 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 46] Waiting for message on marduk.replica.fail
+2025-05-19 08:43:02 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 47] Waiting for message on marduk.replica.fail
+2025-05-19 08:43:03 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 48] Waiting for message on marduk.replica.fail
+2025-05-19 08:43:04 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 49] Waiting for message on marduk.replica.fail
+2025-05-19 08:43:05 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 50] Waiting for message on marduk.replica.fail
+2025-05-19 08:43:06 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 51] Waiting for message on marduk.replica.fail
+2025-05-19 08:43:07 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 52] Waiting for message on marduk.replica.fail
+2025-05-19 08:43:08 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 53] Waiting for message on marduk.replica.fail
+2025-05-19 08:43:09 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 54] Waiting for message on marduk.replica.fail
+2025-05-19 08:43:10 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 55] Waiting for message on marduk.replica.fail
+2025-05-19 08:43:11 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 56] Waiting for message on marduk.replica.fail
+2025-05-19 08:43:12 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 57] Waiting for message on marduk.replica.fail
+2025-05-19 08:43:13 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 58] Waiting for message on marduk.replica.fail
+2025-05-19 08:43:14 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 59] Waiting for message on marduk.replica.fail
+2025-05-19 08:43:15 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 60] Waiting for message on marduk.replica.fail
+2025-05-19 08:43:16 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 61] Waiting for message on marduk.replica.fail
+2025-05-19 08:43:17 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 62] Waiting for message on marduk.replica.fail
+2025-05-19 08:43:18 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 63] Waiting for message on marduk.replica.fail
+2025-05-19 08:43:19 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 63] Waiting for message on marduk.replica.fail
+2025-05-19 08:43:20 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 64] Waiting for message on marduk.replica.fail
+2025-05-19 08:43:21 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 65] Waiting for message on marduk.replica.fail
+2025-05-19 08:43:22 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 66] Waiting for message on marduk.replica.fail
+2025-05-19 08:43:23 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 67] Waiting for message on marduk.replica.fail
+2025-05-19 08:43:24 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 68] Waiting for message on marduk.replica.fail
+2025-05-19 08:43:25 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 69] Waiting for message on marduk.replica.fail
+2025-05-19 08:43:26 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 70] Waiting for message on marduk.replica.fail
+2025-05-19 08:43:27 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 71] Waiting for message on marduk.replica.fail
+2025-05-19 08:43:28 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 72] Waiting for message on marduk.replica.fail
+2025-05-19 08:43:29 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 73] Waiting for message on marduk.replica.fail
+2025-05-19 08:43:30 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 74] Waiting for message on marduk.replica.fail
+2025-05-19 08:43:31 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 75] Waiting for message on marduk.replica.fail
+2025-05-19 08:43:32 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 76] Waiting for message on marduk.replica.fail
+2025-05-19 08:43:33 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 77] Waiting for message on marduk.replica.fail
+2025-05-19 08:43:34 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 78] Waiting for message on marduk.replica.fail
+2025-05-19 08:43:35 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 79] Waiting for message on marduk.replica.fail
+2025-05-19 08:43:36 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 80] Waiting for message on marduk.replica.fail
+2025-05-19 08:43:37 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 81] Waiting for message on marduk.replica.fail
+2025-05-19 08:43:38 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 82] Waiting for message on marduk.replica.fail
+2025-05-19 08:43:39 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 83] Waiting for message on marduk.replica.fail
+2025-05-19 08:43:40 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 84] Waiting for message on marduk.replica.fail
+2025-05-19 08:43:41 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 85] Waiting for message on marduk.replica.fail
+2025-05-19 08:43:42 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 86] Waiting for message on marduk.replica.fail
+2025-05-19 08:43:43 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 87] Waiting for message on marduk.replica.fail
+2025-05-19 08:43:44 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 88] Waiting for message on marduk.replica.fail
+2025-05-19 08:43:45 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 89] Waiting for message on marduk.replica.fail
+2025-05-19 08:43:46 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 90] Waiting for message on marduk.replica.fail
+2025-05-19 08:43:47 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 91] Waiting for message on marduk.replica.fail
+2025-05-19 08:43:48 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 92] Waiting for message on marduk.replica.fail
+2025-05-19 08:43:49 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 93] Waiting for message on marduk.replica.fail
+2025-05-19 08:43:50 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 94] Waiting for message on marduk.replica.fail
+2025-05-19 08:43:51 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 95] Waiting for message on marduk.replica.fail
+2025-05-19 08:43:52 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 96] Waiting for message on marduk.replica.fail
+2025-05-19 08:43:53 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 97] Waiting for message on marduk.replica.fail
+2025-05-19 08:43:54 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 98] Waiting for message on marduk.replica.fail
+2025-05-19 08:43:55 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 99] Waiting for message on marduk.replica.fail
+2025-05-19 08:43:56 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 100] Waiting for message on marduk.replica.fail
+2025-05-19 08:43:57 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 101] Waiting for message on marduk.replica.fail
+2025-05-19 08:43:58 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 102] Waiting for message on marduk.replica.fail
+2025-05-19 08:43:59 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 103] Waiting for message on marduk.replica.fail
+2025-05-19 08:44:00 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 104] Waiting for message on marduk.replica.fail
+2025-05-19 08:44:01 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 105] Waiting for message on marduk.replica.fail
+2025-05-19 08:44:02 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 106] Waiting for message on marduk.replica.fail
+2025-05-19 08:44:03 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 107] Waiting for message on marduk.replica.fail
+2025-05-19 08:44:04 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 108] Waiting for message on marduk.replica.fail
+2025-05-19 08:44:05 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 109] Waiting for message on marduk.replica.fail
+2025-05-19 08:44:06 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 110] Waiting for message on marduk.replica.fail
+2025-05-19 08:44:07 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 111] Waiting for message on marduk.replica.fail
+2025-05-19 08:44:08 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 112] Waiting for message on marduk.replica.fail
+2025-05-19 08:44:09 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 113] Waiting for message on marduk.replica.fail
+2025-05-19 08:44:10 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 114] Waiting for message on marduk.replica.fail
+2025-05-19 08:44:11 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 115] Waiting for message on marduk.replica.fail
+2025-05-19 08:44:12 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 116] Waiting for message on marduk.replica.fail
+2025-05-19 08:44:13 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 117] Waiting for message on marduk.replica.fail
+2025-05-19 08:44:14 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 118] Waiting for message on marduk.replica.fail
+2025-05-19 08:44:15 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 119] Waiting for message on marduk.replica.fail
+2025-05-19 08:44:16 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 120] Waiting for message on marduk.replica.fail
+2025-05-19 08:44:17 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 121] Waiting for message on marduk.replica.fail
+2025-05-19 08:44:18 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 122] Waiting for message on marduk.replica.fail
+2025-05-19 08:44:19 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 123] Waiting for message on marduk.replica.fail
+2025-05-19 08:44:20 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 124] Waiting for message on marduk.replica.fail
+2025-05-19 08:44:21 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 125] Waiting for message on marduk.replica.fail
+2025-05-19 08:44:22 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 126] Waiting for message on marduk.replica.fail
+2025-05-19 08:44:23 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 127] Waiting for message on marduk.replica.fail
+2025-05-19 08:44:24 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 128] Waiting for message on marduk.replica.fail
+2025-05-19 08:44:25 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 129] Waiting for message on marduk.replica.fail
+2025-05-19 08:44:26 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 130] Waiting for message on marduk.replica.fail
+2025-05-19 08:44:27 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 131] Waiting for message on marduk.replica.fail
+2025-05-19 08:44:28 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 131] Waiting for message on marduk.replica.fail
+2025-05-19 08:44:29 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 132] Waiting for message on marduk.replica.fail
+2025-05-19 08:44:30 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 133] Waiting for message on marduk.replica.fail
+2025-05-19 08:44:31 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 134] Waiting for message on marduk.replica.fail
+2025-05-19 08:44:32 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 135] Waiting for message on marduk.replica.fail
+2025-05-19 08:44:33 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 136] Waiting for message on marduk.replica.fail
+2025-05-19 08:44:34 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 137] Waiting for message on marduk.replica.fail
+2025-05-19 08:44:35 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 138] Waiting for message on marduk.replica.fail
+2025-05-19 08:44:36 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 139] Waiting for message on marduk.replica.fail
+2025-05-19 08:44:37 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 140] Waiting for message on marduk.replica.fail
+2025-05-19 08:44:38 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 141] Waiting for message on marduk.replica.fail
+2025-05-19 08:44:39 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 142] Waiting for message on marduk.replica.fail
+2025-05-19 08:44:40 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 143] Waiting for message on marduk.replica.fail
+2025-05-19 08:44:41 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 144] Waiting for message on marduk.replica.fail
+2025-05-19 08:44:42 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 145] Waiting for message on marduk.replica.fail
+2025-05-19 08:44:43 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 146] Waiting for message on marduk.replica.fail
+2025-05-19 08:44:44 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 147] Waiting for message on marduk.replica.fail
+2025-05-19 08:44:45 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 148] Waiting for message on marduk.replica.fail
+2025-05-19 08:44:46 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 149] Waiting for message on marduk.replica.fail
+2025-05-19 08:44:47 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 150] Waiting for message on marduk.replica.fail
+2025-05-19 08:44:48 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 151] Waiting for message on marduk.replica.fail
+2025-05-19 08:44:49 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 152] Waiting for message on marduk.replica.fail
+2025-05-19 08:44:50 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 153] Waiting for message on marduk.replica.fail
+2025-05-19 08:44:51 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 154] Waiting for message on marduk.replica.fail
+2025-05-19 08:44:52 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 155] Waiting for message on marduk.replica.fail
+2025-05-19 08:44:53 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 156] Waiting for message on marduk.replica.fail
+2025-05-19 08:44:54 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 157] Waiting for message on marduk.replica.fail
+2025-05-19 08:44:55 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 158] Waiting for message on marduk.replica.fail
+2025-05-19 08:44:56 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 159] Waiting for message on marduk.replica.fail
+2025-05-19 08:44:57 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 160] Waiting for message on marduk.replica.fail
+2025-05-19 08:44:58 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 161] Waiting for message on marduk.replica.fail
+2025-05-19 08:44:59 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 162] Waiting for message on marduk.replica.fail
+2025-05-19 08:45:00 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 163] Waiting for message on marduk.replica.fail
+2025-05-19 08:45:01 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 164] Waiting for message on marduk.replica.fail
+2025-05-19 08:45:02 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 165] Waiting for message on marduk.replica.fail
+2025-05-19 08:45:03 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 166] Waiting for message on marduk.replica.fail
+2025-05-19 08:45:04 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 167] Waiting for message on marduk.replica.fail
+2025-05-19 08:45:05 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 168] Waiting for message on marduk.replica.fail
+2025-05-19 08:45:06 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 169] Waiting for message on marduk.replica.fail
+2025-05-19 08:45:07 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 170] Waiting for message on marduk.replica.fail
+2025-05-19 08:45:08 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 171] Waiting for message on marduk.replica.fail
+2025-05-19 08:45:09 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 171] Waiting for message on marduk.replica.fail
+2025-05-19 08:45:10 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 171] Waiting for message on marduk.replica.fail
+2025-05-19 08:45:11 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 171] Waiting for message on marduk.replica.fail
+2025-05-19 08:45:12 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 171] Waiting for message on marduk.replica.fail
+2025-05-19 08:45:13 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 171] Waiting for message on marduk.replica.fail
+2025-05-19 08:45:14 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 171] Waiting for message on marduk.replica.fail
+2025-05-19 08:45:15 - manager_marduk - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 171] Waiting for message on marduk.replica.fail
+Stopping Controller
+All subscriptions cleared
+NATS connection closed

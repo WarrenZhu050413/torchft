@@ -1,6 +1,8 @@
 from dataclasses import dataclass
-from torchft.marduk.logging.logger import logger
+from torchft.marduk.logging.logger import setup_logger
 from torchft.marduk.config import Config
+
+logger = setup_logger(name="marduk_constants", log_file=Config.MARDUK_CONSTANTS_LOG_FILE)
 
 NC = "nc"
 JS = "js"

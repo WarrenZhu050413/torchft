@@ -1,5 +1,3 @@
-# Set up torchFT environment, 
-conda activate /srv/apps/danny/miniconda3/envs/warren/torchtitan
 # conda activate torchtitan
 protoc --python_out=. torchft/marduk/marduk.proto
 
@@ -17,4 +15,7 @@ kill_processes() {
 kill_processes "nats-server -c"
 kill_processes "torchft_lighthouse"
 
-rm -r /srv/tmp/jetstream/store # clear jetstream store
+if [ -d "/srv/tmp/jetstream/store" ]; then
+    rm -r /srv/tmp/jetstream/store
+    echo "Cleared jetstream store"
+fi

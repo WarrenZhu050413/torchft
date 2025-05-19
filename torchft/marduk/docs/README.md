@@ -28,22 +28,22 @@ Then, you can set of the environment.
 ```bash
 cd /path/to/torchft # e.g. cd /srv/apps/warren/torchft
 conda activate /path/to/env # e.g. conda activate /srv/apps/danny/miniconda3/envs/warren/torchtitan
-source ./marduk/docs/preamble.sh # Sets up the environment, compiles protobuf, and kills all the existing servers.
+source ./torchft/marduk/scripts/preamble.sh # Sets up the environment, compiles protobuf, and kills all the existing servers.
 ```
 
 1. Start the nats server
 ```
-/srv/apps/warren/torchft/torchft/marduk/nats-server -c /srv/apps/warren/torchft/torchft/marduk/nats.conf
+./torchft/marduk/nats-server -c ./torchft/marduk/nats.conf
 ```
 2. Start the controller
 ```sh
-python /srv/apps/warren/torchft/torchft/marduk/controller.py
+python ./torchft/marduk/controller.py
 ```
 
 3. Start the cli
 
 ```sh
-python /srv/apps/warren/torchft/torchft/marduk/monitor_cli.py
+python ./torchft/marduk/monitor_cli.py
 ```
 
 4. Set up torchFT by starting the lighthouse
@@ -86,7 +86,7 @@ Then, you can go to [tutorial.md](tutorial.md) for detailed testing scenarios an
 ## Documentation
 
 - [Design](design.md): System architecture and concepts
-- [Test](tests.md): Testing procedures and example workflows
+- [Tutorial](tutorial.md): Testing procedures and example workflows
 - [Debugging](debugging.md): Troubleshooting guide for common issues
-- [TODO](TODO.md): Upcoming features and development roadmap
+- [TODO](todo.md): Upcoming features and development roadmap
 - [Shenzhen Cluster FAQ](shenzhen_cluster_FAQ.md): Specific information for development on the Shenzhen cluster

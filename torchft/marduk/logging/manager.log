@@ -12010,3 +12010,472 @@
 2025-05-17 19:35:36 - manager - INFO - Waiting for message on marduk.replica.fail
 2025-05-17 19:35:37 - manager - INFO - Waiting for message on marduk.replica.fail
 2025-05-17 19:35:38 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:08 - manager - INFO - In marduk_start
+2025-05-19 08:25:08 - manager - INFO - Connected to NATS server
+2025-05-19 08:25:08 - manager - INFO - Subscribed to marduk.replica.fail
+2025-05-19 08:25:08 - manager - INFO - Started listening on marduk.replica.fail
+2025-05-19 08:25:08 - manager - INFO - self._nc_timeout: 1
+2025-05-19 08:25:08 - manager - INFO - self._stop_nats.is_set(): False
+2025-05-19 08:25:08 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:08 - manager - INFO - Marduk initialization completed successfully
+2025-05-19 08:25:08 - manager - INFO - Starting asyncio event loop in background
+2025-05-19 08:25:08 - manager - INFO - Asyncio event loop set up in background thread
+2025-05-19 08:25:09 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:10 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:11 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:12 - manager - INFO - In marduk_start
+2025-05-19 08:25:12 - manager - INFO - Connected to NATS server
+2025-05-19 08:25:12 - manager - INFO - Subscribed to marduk.replica.fail
+2025-05-19 08:25:12 - manager - INFO - Started listening on marduk.replica.fail
+2025-05-19 08:25:12 - manager - INFO - self._nc_timeout: 1
+2025-05-19 08:25:12 - manager - INFO - self._stop_nats.is_set(): False
+2025-05-19 08:25:12 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:12 - manager - INFO - Marduk initialization completed successfully
+2025-05-19 08:25:12 - manager - INFO - Starting asyncio event loop in background
+2025-05-19 08:25:12 - manager - INFO - Asyncio event loop set up in background thread
+2025-05-19 08:25:12 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:13 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:13 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:14 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:14 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:15 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:15 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:16 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:16 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:17 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:17 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:18 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:18 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:19 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:19 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:20 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:20 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:21 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:21 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:22 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:22 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:23 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:23 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:24 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:24 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:25 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:25 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:26 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:26 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:27 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:27 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:28 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:28 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:29 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:29 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:30 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:30 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:31 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:31 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:32 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:32 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:33 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:33 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:34 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:34 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:35 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:35 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:36 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:36 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:37 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:37 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:38 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:38 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:39 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:39 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:40 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:40 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:41 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:41 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:42 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:42 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:43 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:43 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:44 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:44 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:45 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:45 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:46 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:46 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:47 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:47 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:48 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:48 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:49 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:49 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:50 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:50 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:51 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:51 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:52 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:52 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:53 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:53 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:54 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:54 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:55 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:55 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:56 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:56 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:57 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:57 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:58 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:58 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:59 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:25:59 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:00 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:00 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:01 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:01 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:02 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:02 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:03 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:03 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:04 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:04 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:05 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:05 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:06 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:06 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:07 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:07 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:08 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:08 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:09 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:09 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:10 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:10 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:11 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:11 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:12 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:12 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:13 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:13 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:14 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:14 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:15 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:15 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:16 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:16 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:17 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:17 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:18 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:18 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:19 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:19 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:20 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:20 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:21 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:21 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:22 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:22 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:23 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:23 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:24 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:24 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:25 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:25 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:26 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:26 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:27 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:27 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:28 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:28 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:29 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:29 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:30 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:30 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:31 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:31 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:32 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:32 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:33 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:33 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:34 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:34 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:35 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:35 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:36 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:36 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:37 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:37 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:38 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:38 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:39 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:39 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:40 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:40 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:41 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:41 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:42 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:42 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:43 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:43 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:44 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:44 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:45 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:45 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:46 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:46 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:47 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:47 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:48 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:48 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:49 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:49 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:50 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:50 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:51 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:51 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:52 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:52 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:53 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:53 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:54 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:54 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:55 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:55 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:56 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:56 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:57 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:57 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:58 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:58 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:59 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:26:59 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:27:00 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:27:00 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:27:01 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:27:01 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:27:02 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:27:02 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:27:03 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:27:03 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:27:04 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:27:04 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:27:05 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:27:05 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:27:06 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:27:06 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:27:07 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:27:07 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:27:08 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:27:08 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:27:09 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:27:09 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:27:10 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:27:10 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:27:11 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:27:11 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:27:12 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:27:12 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:27:13 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:27:13 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:27:14 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:27:14 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:27:15 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:27:15 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:27:16 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:27:16 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:27:17 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:27:17 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:27:18 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:27:18 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:27:19 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:27:19 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:27:20 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:27:20 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:27:21 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:27:21 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:27:22 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:27:22 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:27:23 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:27:23 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:27:24 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:27:24 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:27:25 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:27:25 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:27:26 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:27:26 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:27:27 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:27:27 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:27:28 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:27:28 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:27:29 - manager - INFO - Waiting for message on marduk.replica.fail
+2025-05-19 08:42:13 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 0] reconfiguring for quorum_id=3 store_prefixed_addr='127.0.0.1:29601/torchft/3/0'
+2025-05-19 08:42:14 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 0] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:42:15 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 1] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:42:16 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 2] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:42:17 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 3] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:42:18 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 4] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:42:19 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 5] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:42:20 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 6] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:42:21 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 7] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:42:22 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 8] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:42:23 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 9] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:42:24 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 10] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:42:25 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 11] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:42:26 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 12] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:42:27 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 13] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:42:28 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 14] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:42:30 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 15] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:42:31 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 16] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:42:32 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 17] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:42:33 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 18] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:42:34 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 19] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:42:35 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 20] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:42:36 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 21] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:42:37 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 22] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:42:38 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 23] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:42:39 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 24] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:42:40 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 25] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:42:41 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 26] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:42:42 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 27] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:42:43 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 28] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:42:44 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 29] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:42:45 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 30] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:42:47 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 31] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:42:48 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 32] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:42:49 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 33] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:42:50 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 34] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:42:51 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 35] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:42:52 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 36] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:42:53 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 37] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:42:54 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 38] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:42:55 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 39] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:42:56 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 40] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:42:57 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 41] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:42:58 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 42] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:42:59 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 43] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:43:00 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 44] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:43:01 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 45] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:43:02 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 46] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:43:03 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 47] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:43:04 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 48] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:43:05 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 49] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:43:06 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 50] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:43:07 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 51] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:43:08 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 52] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:43:09 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 53] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:43:10 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 54] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:43:11 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 55] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:43:12 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 56] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:43:13 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 57] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:43:14 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 58] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:43:15 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 59] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:43:16 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 60] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:43:17 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 61] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:43:18 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 62] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:43:19 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 63] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:43:20 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 64] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:43:21 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 65] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:43:22 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 66] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:43:23 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 67] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:43:24 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 68] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:43:25 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 69] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:43:26 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 70] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:43:27 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 71] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:43:28 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 72] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:43:29 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 73] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:43:30 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 74] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:43:31 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 75] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:43:32 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 76] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:43:33 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 77] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:43:34 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 78] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:43:35 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 79] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:43:36 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 80] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:43:37 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 81] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:43:38 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 82] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:43:39 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 83] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:43:40 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 84] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:43:41 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 85] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:43:42 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 86] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:43:43 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 87] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:43:44 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 88] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:43:45 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 89] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:43:47 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 90] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:43:48 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 91] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:43:49 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 92] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:43:50 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 93] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:43:51 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 94] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:43:52 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 95] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:43:53 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 96] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:43:54 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 97] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:43:55 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 98] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:43:56 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 99] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:43:57 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 100] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:43:58 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 101] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:43:59 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 102] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:44:00 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 103] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:44:01 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 104] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:44:02 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 105] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:44:03 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 106] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:44:04 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 107] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:44:05 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 108] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:44:06 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 109] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:44:07 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 110] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:44:08 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 111] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:44:09 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 112] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:44:10 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 113] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:44:11 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 114] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:44:12 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 115] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:44:13 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 116] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:44:14 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 117] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:44:15 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 118] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:44:16 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 119] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:44:17 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 120] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:44:18 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 121] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:44:19 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 122] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:44:20 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 123] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:44:21 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 124] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:44:22 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 125] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:44:23 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 126] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:44:24 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 127] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:44:25 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 128] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:44:26 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 129] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:44:27 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 130] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:44:28 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 131] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:44:29 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 132] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:44:30 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 133] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:44:31 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 134] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:44:32 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 135] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:44:33 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 136] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:44:34 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 137] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:44:35 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 138] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:44:36 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 139] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:44:37 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 140] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:44:38 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 141] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:44:39 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 142] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:44:40 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 143] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:44:41 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 144] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:44:42 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 145] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:44:43 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 146] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:44:44 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 147] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:44:45 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 148] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:44:46 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 149] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:44:47 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 150] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:44:48 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 151] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:44:49 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 152] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:44:51 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 153] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:44:52 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 154] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:44:53 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 155] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:44:54 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 156] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:44:55 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 157] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:44:56 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 158] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:44:57 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 159] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:44:58 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 160] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:44:59 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 161] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:45:00 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 162] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:45:01 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 163] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:45:02 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 164] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:45:03 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 165] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:45:04 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 166] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:45:05 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 167] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:45:06 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 168] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:45:07 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 169] should_commit=True enough_replicas=True, errored=None
+2025-05-19 08:45:08 - torchft.manager - INFO - [train_ddp_1:c376ccec-ef54-47fc-99ff-1c883114d860/0 - step 170] should_commit=True enough_replicas=True, errored=None
