@@ -56,78 +56,7 @@ MANAGER_PORT_ENV: str = "TORCHFT_MANAGER_PORT"
 REPLICA_ID_KEY: str = "replica_id"
 
 T = TypeVar("T")
-
-# Top-level function for the failure listener process
-def _failure_listener_process_main(
-    lighthouse_addr_str: Optional[str],
-    connect_timeout: timedelta,
-    stop_event: multiprocessing.Event, # pytype: disable=not-supported-yet
-    error_pipe: Connection, # pytype: disable=not-supported-yet
-    # ExceptionWithTraceback class for error reporting
-    exception_with_traceback_class,
-    # LighthouseClient class for creating the client
-    lighthouse_client_class,
-):
-    """
-    Monitors lighthouse for failures and reports them via error_pipe.
-    """
-    ExceptionWithTraceback = exception_with_traceback_class
-    LighthouseClient = lighthouse_client_class
-
-    if not lighthouse_addr_str:
-        return
-
-    try:
-        lighthouse_client = LighthouseClient(lighthouse_addr_str, connect_timeout=connect_timeout)
-    except Exception as e:
-        error_pipe.send(ExceptionWithTraceback(e))
-        return
-
-    try:
-        stream = lighthouse_client.subscribe_failures(timeout=timedelta(milliseconds=100))
-
-        while not stop_event.is_set():
-            try:
-                note = next(stream) # This will block until a new item or timeout if stream supports it
-                if note:
-                    if stop_event.is_set():
-                        break
-                    error = Exception(
-                        f"Peer failure detected in listener process: replica {note.replica_id} has failed"
-                    )
-                    error_pipe.send(ExceptionWithTraceback(error))
-                
-                # If next(stream) can return None on timeout (depends on grpc implementation)
-                if note is None and not stop_event.is_set(): # Indicates a timeout, loop and check stop_event
-                    time.sleep(0.01) # Small sleep if stream timeout without item
-                    continue
-            except StopIteration: # Stream ended
-                if not stop_event.is_set():
-                    try:
-                        stream = lighthouse_client.subscribe_failures(timeout=timedelta(seconds=5))
-                    except Exception as e_reconnect:
-                        error_pipe.send(ExceptionWithTraceback(e_reconnect))
-                        if not stop_event.is_set(): time.sleep(5) 
-                else:
-                    break 
-            except Exception as e_stream: # Other errors from stream (like timeout, connection issues)
-                if not stop_event.is_set():
-                    try:
-                        stream = lighthouse_client.subscribe_failures(timeout=timedelta(seconds=5))
-                    except Exception as e_reconnect_critical:
-                        error_pipe.send(ExceptionWithTraceback(e_reconnect_critical))
-                        if not stop_event.is_set(): time.sleep(5) 
-                else:
-                    break 
-            if stop_event.is_set():
-                break
-            time.sleep(0.01)
-    except Exception as e_outer:
-        error_pipe.send(ExceptionWithTraceback(e_outer))  # Report critical errors
-    finally:
-        pass
-
-
+    
 class WorldSizeMode(Enum):
     """
     This controls the numerics for the job when doing allreduces across replicas
@@ -177,6 +106,7 @@ class Manager:
         timeout: timedelta = timedelta(seconds=60),
         quorum_timeout: timedelta = timedelta(seconds=60),
         connect_timeout: timedelta = timedelta(seconds=60),
+        proactive_recovery_subscribe_timeout: timedelta = timedelta(milliseconds=100),
         rank: Optional[int] = None,
         world_size: Optional[int] = None,
         world_size_mode: WorldSizeMode = WorldSizeMode.DYNAMIC,
@@ -190,7 +120,7 @@ class Manager:
         checkpoint_transport: Optional[CheckpointTransport[Dict[str, T]]] = None,
         init_sync: bool = True,
         max_retries: Optional[int] = None,
-        proactive_reconfiguration: bool = False,
+        proactive_recovery: bool = False,
     ) -> None:
         """
         Args:
@@ -241,6 +171,7 @@ class Manager:
         self._timeout = timeout
         self._quorum_timeout = quorum_timeout
         self._connect_timeout = connect_timeout
+        self._proactive_recovery_subscribe_timeout = proactive_recovery_subscribe_timeout
         self._replica_world_size_mode = world_size_mode
         self._init_sync = init_sync
         self._max_retries = max_retries
@@ -284,15 +215,14 @@ class Manager:
         if os.environ.get("TORCHFT_LIGHTHOUSE") is not None:
             lighthouse_addr = lighthouse_addr or os.environ["TORCHFT_LIGHTHOUSE"] # Else error in tests, since TORCHFT_LIGHTHOUSE may not be set
 
-        self._proactive_reconfiguration = proactive_reconfiguration or os.environ.get("TORCHFT_PROACTIVE_RECONFIGURATION", 0)
+        self._proactive_recovery = proactive_recovery or os.environ.get("TORCHFT_PROACTIVE_RECOVERY", 0)
 
-        if lighthouse_addr is not None and self._proactive_reconfiguration:
+        if lighthouse_addr is not None and self._proactive_recovery:
             ctx = multiprocessing.get_context("spawn")
             error_local, error_remote = ctx.Pipe()
             self._error_pipe = _MonitoredPipe(error_local)
             self._failure_listener_stop_event = ctx.Event()
 
-            global _failure_listener_process_main
             self._failure_listener_process = ctx.Process(
                 target=_failure_listener_process_main,
                 args=(
@@ -300,8 +230,7 @@ class Manager:
                     self._connect_timeout,
                     self._failure_listener_stop_event,
                     error_remote,
-                    ExceptionWithTraceback,
-                    LighthouseClient,
+                    self._proactive_recovery_subscribe_timeout,
                 ),
                 daemon=True,
             )
@@ -1006,3 +935,53 @@ class _ManagerLogger:
 
     def exception(self, msg: str) -> None:
         self._logger.exception(f"{self.prefix()} {msg}")
+
+def _failure_listener_process_main(
+    lighthouse_addr_str: Optional[str],
+    connect_timeout: timedelta,
+    stop_event: multiprocessing.Event,
+    error_pipe: Connection,
+    subscribe_timeout: timedelta = timedelta(milliseconds=100),
+):
+    """
+    Background process that monitors lighthouse for failures through gRPC stream (with an iterator interface) and reports them via error_pipe.
+    """
+    if not lighthouse_addr_str:
+        return
+
+    while not stop_event.is_set():
+        try:
+            lighthouse_client = LighthouseClient(lighthouse_addr_str, connect_timeout=connect_timeout)
+            stream = lighthouse_client.subscribe_failures(timeout=subscribe_timeout)
+            while not stop_event.is_set():
+                try:
+                    note = next(stream) # This will block until a new item or timeout if stream supports it
+                    if note:
+                        if stop_event.is_set():
+                            break
+                        error = Exception(
+                            f"Peer failure detected in listener process: replica {note.replica_id} has failed"
+                        )
+                        error_pipe.send(ExceptionWithTraceback(error))
+                    
+                    # If next(stream) can return None on timeout (depends on grpc implementation)
+                    if note is None and not stop_event.is_set(): # Indicates a timeout, loop and check stop_event
+                        time.sleep(0.01) # Small sleep if stream timeout without item
+                        continue # Keep the continue for the timeout case
+                except StopIteration: # Stream ended unexpectedly
+                    if not stop_event.is_set():
+                        import sys
+                        sys.exit(1)
+                    else:
+                        # Stream ended because stop event was set, exit loop gracefully
+                        break
+                except Exception as e_stream: # Other errors from stream (like timeout, connection issues)
+                    if not stop_event.is_set():
+                        stream = lighthouse_client.subscribe_failures(timeout=timedelta(seconds=5))
+                    else:
+                        break 
+                if stop_event.is_set():
+                    break
+                time.sleep(0.01)
+        except Exception as e_outer:
+            pass

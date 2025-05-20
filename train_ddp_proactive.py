@@ -181,7 +181,7 @@ def main() -> None:
 
             # Gradient allreduce overlaps with the backwards pass.
             loss.backward()
-            if manager.current_step() == 10:
+            if manager.current_step() == 3:
                 if REPLICA_GROUP_ID == 0:
                     manager.shutdown()
                     exit(0)

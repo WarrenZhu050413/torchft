@@ -303,10 +303,10 @@ impl Lighthouse {
             loop {
                 match failure_rx_cloned.recv().await {
                     Ok(note) => {
-                        info!("Permanent subscriber received failure notification for {}", note.replica_id);
+                        info!("Healthy replicas received failure notification for {}", note.replica_id);
                     }
                     Err(e) => {
-                        error!("Permanent subscriber error: {}", e);
+                        error!("Healthy replicas error: {}", e);
                         // If the channel is closed (lagged errors are ok), break the loop
                         if matches!(e, tokio::sync::broadcast::error::RecvError::Closed) {
                             break;
