@@ -63,7 +63,9 @@ struct State {
     heartbeats: HashMap<String, Instant>,
 
     // failure information
-    // replica_id -> last failure
+    // replica_id -> time of last detected failure
+    // Once a failure is detected and broadcast, the replica is removed from
+    // `heartbeats` and `participants`. It will be re-added if it rejoins.
     failures: HashMap<String, Instant>,
 
     // failure notification quorum_channel
@@ -423,20 +425,46 @@ impl Lighthouse {
         }
     }
 
+    // Detect replicas with expired heartbeats and broadcast a failure
+    // notification exactly once. After broadcasting, remove the replica
+    // from `heartbeats` and `participants` so it won't trigger again
+    // until it rejoins.
     fn _failure_tick(self: Arc<Self>, state: &mut State) -> Result<()> {
         let now = Instant::now();
         let timeout = Duration::from_millis(self.opt.heartbeat_timeout_ms);
 
         // Check for failed replicas
-        for (replica_id, last_heartbeat) in state.heartbeats.iter() {
-            if now.duration_since(*last_heartbeat) > timeout {
+        let expired: Vec<String> = state
+            .heartbeats
+            .iter()
+            .filter_map(|(replica_id, last_heartbeat)| {
+                if now.duration_since(*last_heartbeat) > timeout {
+                    Some(replica_id.clone())
+                } else {
+                    None
+                }
+            })
+            .collect();
+
+        for replica_id in &expired {
+            if !state.failures.contains_key(replica_id) {
                 state.failures.insert(replica_id.clone(), now);
-                if let Err(e) = state.failure_channel.send(FailureNotification {
-                    replica_id: replica_id.clone(),
-                }) {
+                if let Err(e) = state
+                    .failure_channel
+                    .send(FailureNotification { replica_id: replica_id.clone() })
+                {
                     error!("Failed to send failure notification: {}", e);
                 }
-            } else {
+            }
+        }
+
+        for replica_id in &expired {
+            state.heartbeats.remove(replica_id);
+            state.participants.remove(replica_id);
+        }
+
+        for replica_id in state.heartbeats.keys() {
+            if now.duration_since(*state.heartbeats.get(replica_id).unwrap()) <= timeout {
                 state.failures.remove(replica_id);
             }
         }
@@ -1438,6 +1466,95 @@ mod tests {
         }
 
         lighthouse_task.abort();
+        Ok(())
+    }
+
+    #[tokio::test]
+    async fn test_failure_tick_marks_failures() -> Result<()> {
+        let opt = LighthouseOpt {
+            min_replicas: 1,
+            bind: "[::]:0".to_string(),
+            join_timeout_ms: 0,
+            quorum_tick_ms: 10,
+            heartbeat_timeout_ms: 10,
+            failure_tick_ms: 1000,
+        };
+
+        let lighthouse = Arc::new(Lighthouse {
+            state: Mutex::new(State {
+                quorum_channel: broadcast::channel(16).0,
+                participants: HashMap::new(),
+                prev_quorum: None,
+                quorum_id: 0,
+                heartbeats: HashMap::new(),
+                failures: HashMap::new(),
+                failure_channel: broadcast::channel(16).0,
+            }),
+            opt,
+            listener: Mutex::new(None),
+            local_addr: "[::]:0".parse().unwrap(),
+            change_logger: ChangeLogger::new(),
+        });
+
+        let (failure_tx, _) = broadcast::channel(16);
+        let mut state = State {
+            quorum_channel: broadcast::channel(16).0,
+            participants: HashMap::new(),
+            prev_quorum: None,
+            quorum_id: 0,
+            heartbeats: HashMap::new(),
+            failures: HashMap::new(),
+            failure_channel: failure_tx,
+        };
+
+        let now = Instant::now();
+        state.participants.insert(
+            "expired".to_string(),
+            QuorumMemberDetails {
+                joined: now,
+                member: QuorumMember {
+                    replica_id: "expired".to_string(),
+                    address: "".to_string(),
+                    store_address: "".to_string(),
+                    step: 1,
+                    world_size: 1,
+                    shrink_only: false,
+                    data: String::new(),
+                    commit_failures: 0,
+                },
+            },
+        );
+        state.participants.insert(
+            "ok".to_string(),
+            QuorumMemberDetails {
+                joined: now,
+                member: QuorumMember {
+                    replica_id: "ok".to_string(),
+                    address: "".to_string(),
+                    store_address: "".to_string(),
+                    step: 1,
+                    world_size: 1,
+                    shrink_only: false,
+                    data: String::new(),
+                    commit_failures: 0,
+                },
+            },
+        );
+        state.heartbeats.insert("expired".to_string(), now - Duration::from_millis(100));
+        state.heartbeats.insert("ok".to_string(), now);
+
+        let mut rx = state.failure_channel.subscribe();
+        lighthouse.clone()._failure_tick(&mut state)?;
+        assert!(state.failures.contains_key("expired"));
+        assert!(!state.failures.contains_key("ok"));
+        assert!(!state.participants.contains_key("expired"));
+        assert!(state.participants.contains_key("ok"));
+        assert!(state.heartbeats.get("expired").is_none());
+        assert!(rx.try_recv().unwrap().replica_id == "expired");
+
+        lighthouse.clone()._failure_tick(&mut state)?;
+        assert!(rx.try_recv().is_err());
+
         Ok(())
     }
 }
