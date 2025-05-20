@@ -1,0 +1,8 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+## Rust
+- Rust does not support named parameters
+- Whenever you call an object with a mutable method, you have to make sure that that object is declared mutably.
