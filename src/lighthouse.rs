@@ -57,7 +57,9 @@ struct State {
     // Tracks currently active participants in the process of forming a quorum.
     // Replicas are added upon receiving a `LighthouseQuorumRequest`.
     // Replicas are cleared after a quorum is successfully formed OR
-    // removed by `_failure_tick` if their heartbeat expires.
+    // removed by `_failure_tick` if their heartbeat expires. All
+    // participants are cleared whenever a new failure notification
+    // is successfully broadcast.
     participants: HashMap<String, QuorumMemberDetails>,
     prev_quorum: Option<Quorum>,
     quorum_id: i64,
@@ -434,8 +436,10 @@ impl Lighthouse {
     // If a replica's heartbeat has timed out and it hasn't been marked as failed before:
     //  1. A `FailureNotification` is broadcast on the `failure_channel`.
     //  2. The replica is added to the `failures` map with the current timestamp.
-    //  3. The replica is removed from both `heartbeats` and `participants` maps to prevent 
+    //  3. The replica is removed from both `heartbeats` and `participants` maps to prevent
     //     repeated notifications and to ensure it doesn't partake in current quorum formation attempts.
+    //  4. If any failure notification was sent during this tick, all participants
+    //     are cleared to force a fresh quorum formation attempt.
     // If a replica's heartbeat is current and it was previously in `failures`, it's removed from `failures` (recovered).
     fn _failure_tick(self: Arc<Self>, state: &mut State) -> Result<()> {
         let now = Instant::now();
