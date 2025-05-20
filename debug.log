@@ -1,15 +1,27 @@
-manager: failure_listener
-manager: failure_listener: startingmanager: failure_listener
+train: Script started
+train: Starting main function
+train: REPLICA_GROUP_ID: 0, NUM_REPLICA_GROUPS: 2
+train: Loading CIFAR10 dataset
+train: CIFAR10 dataset loaded
+train: Creating DistributedSampler
+train: Creating StatefulDataLoader
+train: StatefulDataLoader created
+train: Using device: cuda
+train: Creating process group
+train: Process group created
+train: Creating PGTransport
+train: PGTransport created
+train: Creating Manager
 manager: failure_listener: started
-manager: failure_listener: starting
+manager: failure_listener
 manager: manager: starting
+manager: failure_listener: starting
 manager: failure_listener: subscribed stream
 manager: manager: started
-manager: failure_listener: waiting for stream
-manager: failure_listener
-manager: failure_listener: starting
-manager: failure_listener: started
-manager: manager: starting
-manager: failure_listener: subscribed stream
-manager: manager: started
+manager: addr: http://sz-k8s-master:45259
+manager: client created
+manager: initialized
+train: Manager created
+train: Creating model
+train: device: cuda
 manager: failure_listener: waiting for stream

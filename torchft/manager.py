@@ -256,8 +256,9 @@ class Manager:
             self._store.set(REPLICA_ID_KEY, replica_id)
 
         addr = self._store.get(MANAGER_ADDR_KEY).decode("utf-8")
+        dl_manager.write(f"addr: {addr}")
         self._client = ManagerClient(addr, connect_timeout=connect_timeout)
-
+        dl_manager.write("client created")
         replica_id = self._store.get(REPLICA_ID_KEY).decode("utf-8")
         self._logger = _ManagerLogger(
             manager=self, replica_id=replica_id or "", group_rank=group_rank
@@ -273,6 +274,8 @@ class Manager:
         # first step is 1
         self._participating_replica_rank: Optional[int] = None
         self._participating_replica_world_size: int = 0
+
+        dl_manager.write("initialized")
 
     def set_state_dict_fns(
         self, load_state_dict: Callable[[T], None], state_dict: Callable[[], T]
@@ -893,7 +896,7 @@ class Manager:
         Args:
             replica_id: The ID of the failed replica
         """
-        self._logger.info(f"Received failure notification for replica {replica_id}")
+        dl_manager.write(f"Received failure notification for replica {replica_id}")
         
         # Report the failure as an error to abort training
         self.report_error(
