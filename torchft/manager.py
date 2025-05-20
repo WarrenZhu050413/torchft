@@ -221,6 +221,7 @@ class Manager:
             ctx = multiprocessing.get_context("spawn")
             error_local, error_remote = ctx.Pipe()
             self._error_pipe = _MonitoredPipe(error_local)
+            self._error_remote = _MonitoredPipe(error_remote)
             self._failure_listener_stop_event = ctx.Event()
 
             self._failure_listener_process = ctx.Process(
@@ -322,12 +323,7 @@ class Manager:
                 except OSError:
                     break
                 except Exception as e:
-                    self._logger.warn(
-                        f"Error reported from failure listener process (via error_processor_loop): {e}"
-                    )
                     self._error_handler(e)
-                else:
-                    self._logger.warn(f"Unknown item received from failure listener pipe: {item}")
         finally:
             pass
 
@@ -963,25 +959,24 @@ def _failure_listener_process_main(
                             f"Peer failure detected in listener process: replica {note.replica_id} has failed"
                         )
                         error_pipe.send(ExceptionWithTraceback(error))
-                    
-                    # If next(stream) can return None on timeout (depends on grpc implementation)
-                    if note is None and not stop_event.is_set(): # Indicates a timeout, loop and check stop_event
-                        time.sleep(0.01) # Small sleep if stream timeout without item
-                        continue # Keep the continue for the timeout case
-                except StopIteration: # Stream ended unexpectedly
+                except StopIteration:
+                    # Stream has ended, break out to outer loop to reconnect
                     if not stop_event.is_set():
-                        import sys
-                        sys.exit(1)
+                        logging.warning("Failure Listener: Stream ended unexpectedly, attempting to reconnect...")
+                        break  # Break the inner loop to reconnect
                     else:
-                        # Stream ended because stop event was set, exit loop gracefully
                         break
-                except Exception as e_stream: # Other errors from stream (like timeout, connection issues)
+                except Exception as e_stream:
                     if not stop_event.is_set():
+                        logging.warning(f"Failure Listener: Stream error: {e_stream}, recreating stream with longer timeout")
                         stream = lighthouse_client.subscribe_failures(timeout=timedelta(seconds=5))
                     else:
-                        break 
+                        break
                 if stop_event.is_set():
                     break
-                time.sleep(0.01)
+                time.sleep(0.01)  # Prevent CPU thrashing
         except Exception as e_outer:
+            if not stop_event.is_set():
+                logging.warning(f"Failure Listener: Connection error: {e_outer}, retrying in 1 second...")
+                time.sleep(1) 
             pass

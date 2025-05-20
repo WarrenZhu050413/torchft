@@ -21,7 +21,6 @@ use std::thread::available_parallelism;
 use structopt::StructOpt;
 use tokio::runtime::Runtime;
 use tokio::task::JoinHandle;
-use tokio::time::timeout as tokio_timeout;
 use tonic::transport::Channel;
 use tonic::Status;
 use tokio_stream::StreamExt;
@@ -736,6 +735,7 @@ impl LighthouseServer {
     /// inject_failure broadcasts a failure notification for the given replica.
     ///
     /// This helper is intended for testing `subscribe_failures` from Python.
+    #[pyo3(signature = (replica_id))]
     fn inject_failure(&self, py: Python<'_>, replica_id: String) {
         let lighthouse = self.lighthouse.clone();
         let runtime = &self._runtime;
