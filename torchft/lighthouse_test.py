@@ -190,9 +190,27 @@ class TestLighthouse(TestCase):
             lighthouse.shutdown()
             print("lighthouse shutdown")
             start = time.perf_counter()
-            stream = client.subscribe_failures(timeout=timedelta(milliseconds=100))
-            print("stream created")
+            with self.assertRaises(RuntimeError):
+                client.subscribe_failures(timeout=timedelta(milliseconds=100))
             assert time.perf_counter() - start < 0.15
+        finally:
+            lighthouse.shutdown()
+
+    def test_subscribe_failures_notification(self) -> None:
+        """Test that failure notifications are delivered to subscribers."""
+        lighthouse = LighthouseServer(
+            bind="[::]:0",
+            min_replicas=1,
+        )
+        try:
+            client = LighthouseClient(
+                addr=lighthouse.address(),
+                connect_timeout=timedelta(seconds=1),
+            )
+            stream = client.subscribe_failures(timeout=timedelta(seconds=1))
+            lighthouse.inject_failure("nodeX")
+            note = next(stream)
+            assert note.replica_id == "nodeX"
         finally:
             lighthouse.shutdown()
 
