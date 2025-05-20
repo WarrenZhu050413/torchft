@@ -1440,4 +1440,88 @@ mod tests {
         lighthouse_task.abort();
         Ok(())
     }
+
+    #[tokio::test]
+    async fn test_failure_tick_marks_failures() -> Result<()> {
+        let opt = LighthouseOpt {
+            min_replicas: 1,
+            bind: "[::]:0".to_string(),
+            join_timeout_ms: 1000,
+            quorum_tick_ms: 10,
+            heartbeat_timeout_ms: 50,
+            failure_tick_ms: 1000,
+        };
+
+        let lighthouse = Lighthouse::new(opt).await?;
+
+        let mut state = State {
+            quorum_channel: broadcast::channel(16).0,
+            participants: HashMap::new(),
+            prev_quorum: None,
+            quorum_id: 0,
+            heartbeats: HashMap::new(),
+            failures: HashMap::new(),
+            failure_channel: broadcast::channel(16).0,
+        };
+
+        let now = Instant::now();
+        state.heartbeats.insert("expired".to_string(), now - Duration::from_millis(100));
+        state.heartbeats.insert("ok".to_string(), now - Duration::from_millis(10));
+
+        lighthouse._failure_tick(&mut state)?;
+
+        assert!(state.failures.contains_key("expired"));
+        assert!(!state.failures.contains_key("ok"));
+        Ok(())
+    }
+
+    #[tokio::test]
+    async fn test_failure_channel_broadcast() -> Result<()> {
+        let (tx, _) = broadcast::channel(16);
+        let mut rx1 = tx.subscribe();
+        let mut rx2 = tx.subscribe();
+
+        tx.send(FailureNotification { replica_id: "nodeX".into() }).unwrap();
+
+        assert_eq!(rx1.recv().await.unwrap().replica_id, "nodeX");
+        assert_eq!(rx2.recv().await.unwrap().replica_id, "nodeX");
+        Ok(())
+    }
+
+    #[tokio::test]
+    async fn test_subscribe_failures_on_timeout() -> Result<()> {
+        let opt = LighthouseOpt {
+            min_replicas: 1,
+            bind: "[::]:0".to_string(),
+            join_timeout_ms: 0,
+            quorum_tick_ms: 10,
+            heartbeat_timeout_ms: 50,
+            failure_tick_ms: 10,
+        };
+        let lighthouse = Lighthouse::new(opt).await?;
+        let mut client = lighthouse_client_new(lighthouse.address()).await?;
+        let lighthouse_task = tokio::spawn(lighthouse.clone().run());
+
+        // send a heartbeat so the replica is tracked
+        {
+            let req = tonic::Request::new(LighthouseHeartbeatRequest { replica_id: "rep1".into() });
+            client.heartbeat(req).await?;
+        }
+
+        // subscribe to failures before timeout occurs
+        let mut req = tonic::Request::new(SubscribeFailuresRequest {});
+        req.set_timeout(Duration::from_secs(1));
+        let mut stream = client.subscribe_failures(req).await?.into_inner();
+
+        // wait for the heartbeat to expire
+        tokio::time::sleep(Duration::from_millis(70)).await;
+
+        match stream.next().await {
+            Some(Ok(note)) => assert_eq!(note.replica_id, "rep1"),
+            other => panic!("Expected failure notification, got {:?}", other),
+        }
+
+        lighthouse_task.abort();
+        Ok(())
+    }
 }
