@@ -1,0 +1,8 @@
+lighthouse_addr: http://localhost:29510
+lighthouse_client: <builtins.LighthouseClient object at 0x7f462c1a5610>
+failure_listener
+failure_listener_future: <Future at 0x7f462c23edd0 state=finished raised AttributeError>
+test_subscribe_failures: lighthouse
+test_subscribe_failures: client
+test_subscribe_failures: stream
+stream: <builtins.FailureStream object at 0x7f40002d9b30>

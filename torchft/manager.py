@@ -24,6 +24,9 @@ This is designed to work with the standard PyTorch DistributedDataParallel modul
 and Hybrid FSDP.
 
 """
+DEBUG=True
+if DEBUG:
+    from torchft.debug_utils import write_debug_log
 
 import concurrent.futures
 import logging
@@ -53,7 +56,6 @@ MANAGER_PORT_ENV: str = "TORCHFT_MANAGER_PORT"
 REPLICA_ID_KEY: str = "replica_id"
 
 T = TypeVar("T")
-
 
 class WorldSizeMode(Enum):
     """
@@ -189,7 +191,7 @@ class Manager:
             checkpoint_transport
         )
         self._executor = ThreadPoolExecutor(
-            max_workers=1, thread_name_prefix="async_quorum"
+            max_workers=2, thread_name_prefix=""
         )
         self._quorum_future: Optional[concurrent.futures.Future] = None
 
@@ -208,19 +210,22 @@ class Manager:
 
         self._lighthouse_client: Optional[LighthouseClient] = None
         lighthouse_addr = lighthouse_addr or None
+
         if os.environ.get("TORCHFT_LIGHTHOUSE") is not None:
             lighthouse_addr = lighthouse_addr or os.environ["TORCHFT_LIGHTHOUSE"]
-
+        write_debug_log(f"lighthouse_addr: {lighthouse_addr}")
+            
         if lighthouse_addr is not None:
             self._lighthouse_client = LighthouseClient(
                 lighthouse_addr, connect_timeout=connect_timeout
             )
-            
+            write_debug_log(f"lighthouse_client: {self._lighthouse_client}")
             # Set up the failure listener
             self._failure_listener_stop = threading.Event()
             self._failure_listener_future = self._executor.submit(
                 self._failure_listener
             )
+            write_debug_log(f"failure_listener_future: {self._failure_listener_future}")
 
         if self._group_rank == 0:
             if port is None:
@@ -280,7 +285,19 @@ class Manager:
         """
         # Stop the failure listener if it exists
         if hasattr(self, "_failure_listener_stop") and self._failure_listener_stop is not None:
+            self._logger.info("Setting failure listener stop event")
             self._failure_listener_stop.set()
+            if wait and hasattr(self, "_failure_listener_future") and self._failure_listener_future is not None:
+                self._logger.info("Waiting for failure listener to complete")
+                try:
+                    # Wait with a timeout to avoid hanging forever
+                    self._failure_listener_future.result(timeout=10)
+                    self._logger.info("Failure listener shutdown completed")
+                except concurrent.futures.TimeoutError:
+                    self._logger.warn("Timed out waiting for failure listener to complete")
+                except Exception as e:
+                    self._logger.warn(f"Error waiting for failure listener: {e}")
+        
         self._checkpoint_transport.shutdown(wait=wait)
         if self._manager is not None:
             self._manager.shutdown()
@@ -829,20 +846,25 @@ class Manager:
         Background listener that watches the lighthouse failure stream and 
         aborts training if a peer fails.
         """
+        write_debug_log("failure_listener")
         if not self._lighthouse_client:
             self._logger.warn("No lighthouse client available, failure listener not started")
             return
 
         self._logger.info("Starting failure listener")
+        write_debug_log("failure_listener: starting")
         try:
+            self._logger.info("Subscribing to failure notifications stream")
             stream = self._lighthouse_client.subscribe_failures(
                 timeout=timedelta(seconds=5)
             )
+            write_debug_log("failure_listener: subscribed stream")
             
             while not self._failure_listener_stop.is_set():
                 try:
                     for note in stream:
                         if self._failure_listener_stop.is_set():
+                            self._logger.info("Failure listener stop requested, breaking iteration")
                             break
                         self._handle_failure(note.replica_id)
                 except StopIteration:
@@ -861,6 +883,8 @@ class Manager:
                         )
         except Exception as e:
             self._logger.exception(f"Fatal error in failure listener: {e}")
+        
+        self._logger.info("Failure listener thread exiting")
 
     def _handle_failure(self, replica_id: str) -> None:
         """

@@ -292,7 +292,32 @@ impl Lighthouse {
         let listener = tokio::net::TcpListener::bind(&opt.bind).await?;
 
         let (tx, _) = broadcast::channel(16);
-        let (failure_tx, _) = broadcast::channel(16);
+        let (failure_tx, failure_rx) = broadcast::channel(16);
+
+        // Create a task to keep the failure channel open
+        // This handles dropped messages if no other subscribers exist
+        let failure_rx_cloned = failure_rx;
+        tokio::spawn(async move {
+            use tokio::time::{sleep, Duration};
+            info!("Starting permanent failure channel subscriber");
+            loop {
+                match failure_rx_cloned.recv().await {
+                    Ok(note) => {
+                        info!("Permanent subscriber received failure notification for {}", note.replica_id);
+                    }
+                    Err(e) => {
+                        error!("Permanent subscriber error: {}", e);
+                        // If the channel is closed (lagged errors are ok), break the loop
+                        if matches!(e, tokio::sync::broadcast::error::RecvError::Closed) {
+                            break;
+                        }
+                    }
+                }
+                // Sleep briefly to prevent tight loop if there are continuous errors
+                sleep(Duration::from_millis(100)).await;
+            }
+            info!("Permanent failure channel subscriber exiting");
+        });
 
         Ok(Arc::new(Self {
             state: Mutex::new(State {
@@ -373,6 +398,7 @@ impl Lighthouse {
         }
     }
 
+
     pub fn address(&self) -> String {
         // Check for CODX environment variable
         let host = match std::env::var("CODX") {
@@ -447,6 +473,10 @@ impl Lighthouse {
         let now = Instant::now();
         let timeout = Duration::from_millis(self.opt.heartbeat_timeout_ms);
 
+        // Log receiver count at start of failure tick
+        let receiver_count = state.failure_channel.receiver_count();
+        info!("_failure_tick: Starting tick with {} failure channel subscribers", receiver_count);
+
         // Use a temporary list to collect replica IDs to remove from heartbeats
         // to avoid modifying the map while iterating over it.
         let mut failed_replica_ids_to_remove_from_heartbeats = Vec::new();
@@ -464,7 +494,15 @@ impl Lighthouse {
                     if let Err(e) = state.failure_channel.send(FailureNotification {
                         replica_id: replica_id.clone(),
                     }) {
-                        error!("Failed to send failure notification for {}: {}", replica_id, e);
+                        error!("Failed to send failure notification for {}: {} (receiver count: {})",
+                            replica_id, e, state.failure_channel.receiver_count());
+                        
+                        // Re-create the channel if it was closed
+                        if e.to_string().contains("channel closed") {
+                            info!("Recreating failure_channel due to closure");
+                            let (new_tx, _) = broadcast::channel(16);
+                            state.failure_channel = new_tx;
+                        }
                     } else {
                         failure_detected = true; // Set flag if notification sent successfully
                     }
@@ -686,6 +724,11 @@ impl LighthouseService for Arc<Lighthouse> {
         // clone a receiver
         let rx = {
             let state = self.state.lock().await;
+            let receiver_count = state.failure_channel.receiver_count();
+            info!(
+                "subscribe_failures: Creating new subscriber (current count: {})",
+                receiver_count
+            );
             state.failure_channel.subscribe()
         };
 

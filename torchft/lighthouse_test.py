@@ -5,9 +5,9 @@ import threading # Import the threading module
 
 import pytest
 import torch.distributed as dist
-
 from torchft import Manager, ProcessGroupGloo
 from torchft._torchft import LighthouseClient, LighthouseServer, Quorum, QuorumMember
+from torchft.debug_utils import write_debug_log
 
 
 class TestLighthouse(TestCase):
@@ -165,11 +165,15 @@ class TestLighthouse(TestCase):
             min_replicas=1,
         )
         try:
+            write_debug_log("test_subscribe_failures: lighthouse")
             client = LighthouseClient(
                 addr=lighthouse.address(),
                 connect_timeout=timedelta(seconds=1),
             )
+            write_debug_log("test_subscribe_failures: client")
             stream = client.subscribe_failures(timeout=timedelta(milliseconds=100))
+            write_debug_log("test_subscribe_failures: stream")
+            write_debug_log(f"stream: {stream}")
         finally:
             lighthouse.shutdown()
 
@@ -184,7 +188,9 @@ class TestLighthouse(TestCase):
                 addr=lighthouse.address(),
                 connect_timeout=timedelta(seconds=1),
             )
+            write_debug_log("subscribe_failures: client")
             stream = client.subscribe_failures(timeout=timedelta(seconds=1))
+            write_debug_log("subscribe_failures: stream")
             lighthouse.inject_failure("nodeX")
             note = next(stream)
             assert note.replica_id == "nodeX"
