@@ -38,7 +38,7 @@ from datetime import timedelta
 from enum import Enum
 from typing import TYPE_CHECKING, Callable, Dict, List, Optional, TypeVar, cast
 import multiprocessing
-from queue import Empty as QueueEmptyError
+from multiprocessing.connection import Connection
 
 import torch
 from torch.distributed import ReduceOp, TCPStore
@@ -46,6 +46,7 @@ from torch.distributed import ReduceOp, TCPStore
 from torchft._torchft import ManagerClient, ManagerServer, LighthouseClient
 from torchft.checkpointing import CheckpointTransport, HTTPTransport
 from torchft.futures import future_timeout
+from torchft.multiprocessing import _MonitoredPipe
 
 if TYPE_CHECKING:
     from torchft.process_group import ProcessGroup
@@ -61,14 +62,14 @@ def _failure_listener_process_main(
     lighthouse_addr_str: Optional[str],
     connect_timeout: timedelta,
     stop_event: multiprocessing.Event, # pytype: disable=not-supported-yet
-    error_queue: multiprocessing.Queue, # pytype: disable=not-supported-yet
+    error_pipe: Connection, # pytype: disable=not-supported-yet
     # ExceptionWithTraceback class for error reporting
     exception_with_traceback_class,
     # LighthouseClient class for creating the client
     lighthouse_client_class,
 ):
     """
-    Monitors lighthouse for failures and reports them via error_queue.
+    Monitors lighthouse for failures and reports them via error_pipe.
     """
     ExceptionWithTraceback = exception_with_traceback_class
     LighthouseClient = lighthouse_client_class
@@ -79,7 +80,7 @@ def _failure_listener_process_main(
     try:
         lighthouse_client = LighthouseClient(lighthouse_addr_str, connect_timeout=connect_timeout)
     except Exception as e:
-        error_queue.put(ExceptionWithTraceback(e))
+        error_pipe.send(ExceptionWithTraceback(e))
         return
 
     try:
@@ -91,8 +92,10 @@ def _failure_listener_process_main(
                 if note:
                     if stop_event.is_set():
                         break
-                    error = Exception(f"Peer failure detected in listener process: replica {note.replica_id} has failed")
-                    error_queue.put(ExceptionWithTraceback(error))
+                    error = Exception(
+                        f"Peer failure detected in listener process: replica {note.replica_id} has failed"
+                    )
+                    error_pipe.send(ExceptionWithTraceback(error))
                 
                 # If next(stream) can return None on timeout (depends on grpc implementation)
                 if note is None and not stop_event.is_set(): # Indicates a timeout, loop and check stop_event
@@ -103,7 +106,7 @@ def _failure_listener_process_main(
                     try:
                         stream = lighthouse_client.subscribe_failures(timeout=timedelta(seconds=5))
                     except Exception as e_reconnect:
-                        error_queue.put(ExceptionWithTraceback(e_reconnect))
+                        error_pipe.send(ExceptionWithTraceback(e_reconnect))
                         if not stop_event.is_set(): time.sleep(5) 
                 else:
                     break 
@@ -112,7 +115,7 @@ def _failure_listener_process_main(
                     try:
                         stream = lighthouse_client.subscribe_failures(timeout=timedelta(seconds=5))
                     except Exception as e_reconnect_critical:
-                        error_queue.put(ExceptionWithTraceback(e_reconnect_critical))
+                        error_pipe.send(ExceptionWithTraceback(e_reconnect_critical))
                         if not stop_event.is_set(): time.sleep(5) 
                 else:
                     break 
@@ -120,7 +123,7 @@ def _failure_listener_process_main(
                 break
             time.sleep(0.01)
     except Exception as e_outer:
-        error_queue.put(ExceptionWithTraceback(e_outer)) # Report critical errors
+        error_pipe.send(ExceptionWithTraceback(e_outer))  # Report critical errors
     finally:
         pass
 
@@ -284,26 +287,28 @@ class Manager:
         self._proactive_reconfiguration = proactive_reconfiguration or os.environ.get("TORCHFT_PROACTIVE_RECONFIGURATION", 0)
 
         if lighthouse_addr is not None and self._proactive_reconfiguration:
-            self._error_queue = multiprocessing.Queue()
-            self._failure_listener_stop_event = multiprocessing.Event()
-            
+            ctx = multiprocessing.get_context("spawn")
+            error_local, error_remote = ctx.Pipe()
+            self._error_pipe = _MonitoredPipe(error_local)
+            self._failure_listener_stop_event = ctx.Event()
+
             global _failure_listener_process_main
-            self._failure_listener_process = multiprocessing.Process(
+            self._failure_listener_process = ctx.Process(
                 target=_failure_listener_process_main,
                 args=(
                     lighthouse_addr,
                     self._connect_timeout,
                     self._failure_listener_stop_event,
-                    self._error_queue,
+                    error_remote,
                     ExceptionWithTraceback,
                     LighthouseClient,
                 ),
-                daemon=True 
+                daemon=True,
             )
             self._failure_listener_process.start()
         else:
             self._failure_listener_process = None
-            self._error_queue = None
+            self._error_pipe = None
             self._failure_listener_stop_event = None
 
         # Initialize and start the error processing thread if the listener process is active
@@ -375,32 +380,25 @@ class Manager:
         self._pg.abort()
 
     def _error_processor_loop(self) -> None:
-        """Continuously checks the error queue from the listener process and reports errors."""
-        assert self._error_queue is not None, "Error queue must be initialized for error processor loop."
+        """Continuously checks the error pipe from the listener process and reports errors."""
+        assert self._error_pipe is not None, "Error pipe must be initialized for error processor loop."
         assert self._error_processor_stop_event is not None, "Stop event must be initialized for error processor loop."
 
         try:
             while not self._error_processor_stop_event.is_set():
                 try:
-                    # Wait for an item with a timeout to allow checking the stop event periodically
-                    err = self._error_queue.get(timeout=0.1) # Timeout in seconds
-                    if isinstance(err, Exception):  # Expecting Exception objects
-                        self._logger.warn(f"Error reported from failure listener process (via error_processor_loop): {err}")
-                        self._error_handler(err)
-                        # If a critical error is reported that should stop the loop, consider breaking here
-                        # or ensure report_error() sets a state that the loop can check.
-                    else:
-                        self._logger.warn(f"Unknown item received from failure listener queue (via error_processor_loop): {err}")
-                except QueueEmptyError: # Raised by queue.get(timeout=...) if timeout occurs
-                    pass # No error, continue and check stop_event
+                    item = self._error_pipe.recv(0.1)
+                except TimeoutError:
+                    continue
+                except OSError:
+                    break
                 except Exception as e:
-                    # Log unexpected errors in the loop itself
-                    self._logger.exception(f"Unexpected exception in _error_processor_loop: {e}")
-                    # Potentially wait a bit before retrying to avoid tight loop on persistent unknown errors
-                    if not self._error_processor_stop_event.wait(timeout=0.5): # Short wait, also checks stop event
-                        pass # continue if not stopped
-                    else:
-                        break # stop event was set during wait
+                    self._logger.warn(
+                        f"Error reported from failure listener process (via error_processor_loop): {e}"
+                    )
+                    self._error_handler(e)
+                else:
+                    self._logger.warn(f"Unknown item received from failure listener pipe: {item}")
         finally:
             pass
 
@@ -445,16 +443,9 @@ class Manager:
                 except Exception as e: 
                     self._logger.warn(f"Error waiting for/terminating failure listener process: {e}")
             
-            # Clean up queue
-            if hasattr(self, "_error_queue") and self._error_queue is not None:
-                try:
-                    # Drain the queue to allow the queue's feeder thread to shut down
-                    while not self._error_queue.empty():
-                        self._error_queue.get_nowait()
-                except Exception: # nosec
-                    pass # Ignore errors during queue draining on shutdown
-                self._error_queue.close()
-                # self._error_queue.join_thread() # Might hang if process is stuck
+            # Clean up pipe
+            if hasattr(self, "_error_pipe") and self._error_pipe is not None:
+                self._error_pipe.close()
 
         self._checkpoint_transport.shutdown(wait=wait)
         self._executor.shutdown(wait=wait)

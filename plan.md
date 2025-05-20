@@ -134,3 +134,10 @@ This plan outlines the steps to refactor the `test_failure_clears_participants_f
     - `manager_A.shutdown()` (ensure it's idempotent or check if already shut down)
     - `manager_B.shutdown()`
     - Potentially clean up `TCPStore` instances if they require explicit closing (though typically not necessary). 
+## Pipe-based Failure Listener
+- [x] Replace message queue communication in `_failure_listener_process_main` and `Manager` with pipe-based approach similar to `ProcessGroupBaby`.
+- [x] Update `_failure_listener_process_main` to accept a `Connection` and send exceptions using `error_pipe.send`.
+- [x] In `Manager.__init__`, create pipe using `multiprocessing.get_context("spawn")`, store `_error_pipe` wrapped in `_MonitoredPipe`, and start process with remote end.
+- [x] Update `_error_processor_loop` to read from `_error_pipe` using `.recv(timeout)` with `TimeoutError` handling.
+- [x] During shutdown, close the pipe in addition to stopping process and thread.
+
