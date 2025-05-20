@@ -100,7 +100,7 @@ def main() -> None:
         timeout=timedelta(seconds=30),
         checkpoint_transport=transport,
     )
-
+    
     class Net(nn.Module):
         def __init__(self):
             super().__init__()

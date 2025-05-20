@@ -26,7 +26,7 @@ and Hybrid FSDP.
 """
 DEBUG=True
 if DEBUG:
-    from torchft.debug_utils import write_debug_log
+    from torchft.debug_utils import dl_manager
 
 import concurrent.futures
 import logging
@@ -37,6 +37,7 @@ import traceback
 import uuid
 from concurrent.futures import ThreadPoolExecutor
 from contextlib import nullcontext
+import time
 from datetime import timedelta
 from enum import Enum
 from typing import TYPE_CHECKING, Callable, Dict, List, Optional, TypeVar, cast
@@ -213,19 +214,17 @@ class Manager:
 
         if os.environ.get("TORCHFT_LIGHTHOUSE") is not None:
             lighthouse_addr = lighthouse_addr or os.environ["TORCHFT_LIGHTHOUSE"]
-        write_debug_log(f"lighthouse_addr: {lighthouse_addr}")
             
         if lighthouse_addr is not None:
             self._lighthouse_client = LighthouseClient(
                 lighthouse_addr, connect_timeout=connect_timeout
             )
-            write_debug_log(f"lighthouse_client: {self._lighthouse_client}")
             # Set up the failure listener
             self._failure_listener_stop = threading.Event()
             self._failure_listener_future = self._executor.submit(
                 self._failure_listener
             )
-            write_debug_log(f"failure_listener_future: {self._failure_listener_future}")
+            dl_manager.write("failure_listener: started")
 
         if self._group_rank == 0:
             if port is None:
@@ -240,6 +239,8 @@ class Manager:
                 replica_id = new_uuid
             else:
                 replica_id = f"{replica_id}:{new_uuid}"
+
+            dl_manager.write("manager: starting")
             self._manager = ManagerServer(
                 replica_id=replica_id,
                 lighthouse_addr=lighthouse_addr,
@@ -250,7 +251,7 @@ class Manager:
                 heartbeat_interval=heartbeat_interval,
                 connect_timeout=connect_timeout,
             )
-
+            dl_manager.write("manager: started")
             self._store.set(MANAGER_ADDR_KEY, self._manager.address())
             self._store.set(REPLICA_ID_KEY, replica_id)
 
@@ -846,45 +847,44 @@ class Manager:
         Background listener that watches the lighthouse failure stream and 
         aborts training if a peer fails.
         """
-        write_debug_log("failure_listener")
+        dl_manager.write("failure_listener")
         if not self._lighthouse_client:
-            self._logger.warn("No lighthouse client available, failure listener not started")
+            # self._logger.warn("No lighthouse client available, failure listener not started")
             return
 
-        self._logger.info("Starting failure listener")
-        write_debug_log("failure_listener: starting")
+        # self._logger.info("Starting failure listener")
+        dl_manager.write("failure_listener: starting")
         try:
-            self._logger.info("Subscribing to failure notifications stream")
-            stream = self._lighthouse_client.subscribe_failures(
-                timeout=timedelta(seconds=5)
-            )
-            write_debug_log("failure_listener: subscribed stream")
+            # self._logger.info("Subscribing to failure notifications stream")
+            stream = self._lighthouse_client.subscribe_failures(timeout=timedelta(milliseconds=100))
+            dl_manager.write("failure_listener: subscribed stream")
             
             while not self._failure_listener_stop.is_set():
+                time.sleep(0.01)
+                dl_manager.write("failure_listener: waiting for stream")
                 try:
                     for note in stream:
                         if self._failure_listener_stop.is_set():
-                            self._logger.info("Failure listener stop requested, breaking iteration")
+                            dl_manager.write("failure_listener: stop requested")
                             break
                         self._handle_failure(note.replica_id)
                 except StopIteration:
                     # Stream ended, try to reconnect
                     if not self._failure_listener_stop.is_set():
-                        self._logger.info("Failure stream ended, reconnecting...")
+                        # self._logger.info("Failure stream ended, reconnecting...")
+                        dl_manager.write("failure_listener: reconnecting")
                         stream = self._lighthouse_client.subscribe_failures(
                             timeout=timedelta(seconds=5)
                         )
                 except Exception as e:
                     # Catch other errors (like timeout), log and try to reconnect
                     if not self._failure_listener_stop.is_set():
-                        self._logger.warn(f"Error in failure listener: {e}, reconnecting...")
+                        # self._logger.warn(f"Error in failure listener: {e}, reconnecting...")
                         stream = self._lighthouse_client.subscribe_failures(
                             timeout=timedelta(seconds=5)
                         )
         except Exception as e:
-            self._logger.exception(f"Fatal error in failure listener: {e}")
-        
-        self._logger.info("Failure listener thread exiting")
+            dl_manager.write(f"Fatal error in failure listener: {e}")
 
     def _handle_failure(self, replica_id: str) -> None:
         """
