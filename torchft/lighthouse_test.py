@@ -169,16 +169,14 @@ class TestLighthouse(TestCase):
                 connect_timeout=timedelta(seconds=1),
             )
             print("client created")
-            # call = client.subscribe_failures(timeout=timedelta(milliseconds=100))
+            stream = client.subscribe_failures(timeout=timedelta(milliseconds=100))
             print("subscribe_failures called")
-            # start = time.time()
-            # with self.assertRaises(grpc.RpcError) as ctx:
-            #     next(call)                # this blocks until the 100 ms deadline
-            # elapsed = time.time() - start
-            # self.assertLess(elapsed, 0.5)
-            # self.assertGreater(elapsed, 0.05)
-            # self.assertEqual(ctx.exception.code(), grpc.StatusCode.DEADLINE_EXCEEDED)
-            self.assertTrue(True)
+            start = time.time()
+            with self.assertRaises(Exception):
+                next(stream)
+            elapsed = time.time() - start
+            self.assertLess(elapsed, 0.5)
+            self.assertGreater(elapsed, 0.05)
         finally:
             print("lighthouse shutdown")
             lighthouse.shutdown()
@@ -201,18 +199,16 @@ class TestLighthouse(TestCase):
                 connect_timeout=timedelta(seconds=1),
             )
             print("client created")
-            # Test with a very short timeout that should trigger
             start_time = time.time()
+            stream = client.subscribe_failures(timeout=timedelta(milliseconds=100))
             with self.assertRaises(Exception) as context:
-                client.subscribe_failures(timeout=timedelta(milliseconds=100))
+                next(stream)
             end_time = time.time()
             print("subscribe_failures called")
-            # Verify that the operation took approximately the timeout duration
             time_taken = end_time - start_time
-            self.assertLess(time_taken, 0.5)  # Should be close to 100ms but allow some buffer
-            self.assertGreater(time_taken, 0.05)  # Should be at least 50ms
+            self.assertLess(time_taken, 0.5)
+            self.assertGreater(time_taken, 0.05)
             print("subscribe_failures done")
-            # Verify that the error is a timeout error
             self.assertIn("timeout", str(context.exception).lower())
             print("subscribe_failures done")
         finally:
