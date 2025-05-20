@@ -41,6 +41,7 @@ use crate::torchftpb::{
 };
 use pyo3::prelude::*;
 use pyo3::types::{PyDict, PyString};
+use pyo3::{PyRef, PyRefMut};
 
 // Get the number of threads to use for the tokio runtime
 fn num_threads() -> usize {
@@ -291,6 +292,27 @@ struct QuorumResult {
     heal: bool,
 }
 
+#[pyclass]
+struct FailureStream {
+    runtime: Arc<Runtime>,
+    stream: tonic::Streaming<torchftpb::FailureNotification>,
+}
+
+#[pymethods]
+impl FailureStream {
+    fn __iter__(slf: PyRef<'_, Self>) -> PyRef<'_, Self> {
+        slf
+    }
+
+    fn __next__(mut slf: PyRefMut<'_, Self>) -> PyResult<FailureNotification> {
+        match slf.runtime.block_on(slf.stream.next()) {
+            Some(Ok(note)) => Ok(FailureNotification { replica_id: note.replica_id }),
+            Some(Err(status)) => Err(StatusError(status).into()),
+            None => Err(PyStopIteration::new_err(())),
+        }
+    }
+}
+
 #[pymethods]
 impl QuorumResult {
     #[new]
@@ -397,6 +419,12 @@ pub struct Timestamp {
     pub nanos: i32,
 }
 
+#[pyclass(get_all, set_all)]
+#[derive(Clone)]
+struct FailureNotification {
+    replica_id: String,
+}
+
 /// quorum result.
 ///
 /// Args:
@@ -479,7 +507,7 @@ fn convert_quorum(py: Python, q: &torchftpb::Quorum) -> PyResult<Quorum> {
 #[pyclass]
 struct LighthouseClient {
     client: LighthouseServiceClient<Channel>,
-    runtime: Runtime,
+    runtime: Arc<Runtime>,
 }
 
 #[pymethods]
@@ -488,11 +516,11 @@ impl LighthouseClient {
     #[new]
     fn new(py: Python<'_>, addr: String, connect_timeout: Duration) -> PyResult<Self> {
         py.allow_threads(move || {
-            let runtime = tokio::runtime::Builder::new_multi_thread()
+            let runtime = Arc::new(tokio::runtime::Builder::new_multi_thread()
                 .worker_threads(num_threads())
                 .thread_name("torchft-lhclnt")
                 .enable_all()
-                .build()?;
+                .build()?);
             let client = runtime
                 .block_on(manager::lighthouse_client_new(addr, connect_timeout))
                 .map_err(|e| PyRuntimeError::new_err(e.to_string()))?;
@@ -589,44 +617,23 @@ impl LighthouseClient {
     }
 
     #[pyo3(signature = (timeout = Duration::from_secs(5)))]
-    fn subscribe_failures(&self,
+    fn subscribe_failures(
+        &self,
         py: Python<'_>,
-        timeout: Duration
-    ) -> PyResult<()> {
-        // 1) Build the tonic request
-        let mut req = tonic::Request::new(SubscribeFailuresRequest {});
-        req.set_timeout(timeout);
-        println!("subscribe_failures called");
-    
-        // 2) Execute all blocking work outside the GIL
-        let result: PyResult<()> = py.allow_threads(move || {
-            // a) Invoke the streaming RPC
-            println!("invoke streaming RPC");
+        timeout: Duration,
+    ) -> PyResult<FailureStream> {
+        py.allow_threads(move || {
+            let mut req = tonic::Request::new(SubscribeFailuresRequest {});
+            req.set_timeout(timeout);
             let response = self
                 .runtime
                 .block_on(self.client.clone().subscribe_failures(req))
                 .map_err(|e| PyRuntimeError::new_err(e.to_string()))?;
-            // b) Take the inner stream
-            println!("take inner stream");
-            let mut stream = response.into_inner();
-            // c) Pull from the stream asynchronously
-            println!("pull from stream asynchronously");
-            self.runtime
-                .block_on(async move {
-                    while let Some(item) = stream.next().await {
-                        let failure = item?;
-                        // Replace with actual handling (e.g., Python callback)
-                        println!("Received failure: {:?}", failure);
-                    }
-                    Ok::<(), tonic::Status>(())
-                })
-                .map_err(|e| PyRuntimeError::new_err(e.to_string()))?;
-            println!("done");
-            Ok(())
-        });
-    
-        // 3) Convert any errors into PyRuntimeError
-        result.map_err(|e| PyRuntimeError::new_err(e.to_string()))
+            Ok(FailureStream {
+                runtime: self.runtime.clone(),
+                stream: response.into_inner(),
+            })
+        })
     }
 }
 
@@ -795,6 +802,8 @@ fn _torchft(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_class::<LighthouseServer>()?;
     m.add_class::<LighthouseClient>()?;
     m.add_class::<QuorumResult>()?;
+    m.add_class::<FailureNotification>()?;
+    m.add_class::<FailureStream>()?;
     m.add_function(wrap_pyfunction!(lighthouse_main, m)?)?;
 
     Ok(())
