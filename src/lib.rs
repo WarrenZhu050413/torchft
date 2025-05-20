@@ -135,6 +135,22 @@ impl ManagerServer {
             self.handle.abort();
         })
     }
+
+    /// inject_failure sends a failure notification for the given replica.
+    ///
+    /// This is intended for testing subscribe_failures from python.
+    fn inject_failure(&self, py: Python<'_>, replica_id: String) {
+        let lighthouse = self.lighthouse.clone();
+        let runtime = &self._runtime;
+        py.allow_threads(move || {
+            let _ = runtime.block_on(async {
+                let state = lighthouse.state.lock().await;
+                let _ = state
+                    .failure_channel
+                    .send(lighthouse::FailureNotification { replica_id });
+            });
+        });
+    }
 }
 
 /// ManagerClient is a GRPC client to the manager service.
