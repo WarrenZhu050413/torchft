@@ -292,11 +292,11 @@ impl Lighthouse {
         let listener = tokio::net::TcpListener::bind(&opt.bind).await?;
 
         let (tx, _) = broadcast::channel(16);
-        let (failure_tx, failure_rx) = broadcast::channel(16);
+        let (failure_tx, failure_rx) = broadcast::channel::<FailureNotification>(16);
 
         // Create a task to keep the failure channel open
         // This handles dropped messages if no other subscribers exist
-        let failure_rx_cloned = failure_rx;
+        let mut failure_rx_cloned: broadcast::Receiver<FailureNotification> = failure_rx.resubscribe();
         tokio::spawn(async move {
             use tokio::time::{sleep, Duration};
             info!("Starting permanent failure channel subscriber");
@@ -462,29 +462,17 @@ impl Lighthouse {
         }
     }
 
-    // Periodically checks for expired heartbeats.
-    // If a replica's heartbeat has timed out and it hasn't been marked as failed before:
-    //  1. A `FailureNotification` is broadcast on the `failure_channel`.
-    //  2. The replica is added to the `failures` map with the current timestamp.
-    //  3. The replica is removed from both `heartbeats` and `participants` maps to prevent 
-    //     repeated notifications and to ensure it doesn't partake in current quorum formation attempts.
-    // If a replica's heartbeat is current and it was previously in `failures`, it's removed from `failures` (recovered).
     fn _failure_tick(self: Arc<Self>, state: &mut State) -> Result<()> {
         let now = Instant::now();
         let timeout = Duration::from_millis(self.opt.heartbeat_timeout_ms);
 
-        // Log receiver count at start of failure tick
-        let receiver_count = state.failure_channel.receiver_count();
-        info!("_failure_tick: Starting tick with {} failure channel subscribers", receiver_count);
-
         // Use a temporary list to collect replica IDs to remove from heartbeats
         // to avoid modifying the map while iterating over it.
         let mut failed_replica_ids_to_remove_from_heartbeats = Vec::new();
-        let mut failure_detected = false; // Flag to indicate if any new failure was detected
+        let mut failure_detected = false;
 
         for (replica_id, last_heartbeat) in state.heartbeats.iter() {
             if now.duration_since(*last_heartbeat) > timeout {
-                // Check if this is a new failure
                 if !state.failures.contains_key(replica_id) {
                     info!(
                         "Replica {} timed out (last heartbeat: {:?}), sending failure notification.",
@@ -494,9 +482,9 @@ impl Lighthouse {
                     if let Err(e) = state.failure_channel.send(FailureNotification {
                         replica_id: replica_id.clone(),
                     }) {
-                        error!("Failed to send failure notification for {}: {} (receiver count: {})",
+                        info!("Failed to send failure notification for {}: {} (receiver count: {}, either error or last listener left)",
                             replica_id, e, state.failure_channel.receiver_count());
-                        
+
                         // Re-create the channel if it was closed
                         if e.to_string().contains("channel closed") {
                             info!("Recreating failure_channel due to closure");
@@ -506,15 +494,13 @@ impl Lighthouse {
                     } else {
                         failure_detected = true; // Set flag if notification sent successfully
                     }
-                    // Record the failure
+                    // Record failure information
                     state.failures.insert(replica_id.clone(), now);
-                    // Mark for removal from participants as well
                     state.participants.remove(replica_id);
-                    // Mark for removal from heartbeats after iteration
                     failed_replica_ids_to_remove_from_heartbeats.push(replica_id.clone());
                 }
             } else {
-                // Heartbeat is current, so if it was previously marked as failed, remove it from failures.
+                // If the participant sends heartbeat again, remove it from failures.
                 if state.failures.remove(replica_id).is_some() {
                     info!("Replica {} recovered from failure.", replica_id);
                 }
@@ -1624,7 +1610,7 @@ mod tests {
     }
 
     #[tokio::test]
-    async fn test_lighthouse_subscribe_failures() -> Result<()> {
+    async fn test_lighthouse_subscribe_failures_basic() -> Result<()> {
         let opt = LighthouseOpt {
             min_replicas: 1,
             bind: "[::]:0".to_string(),
@@ -1638,8 +1624,7 @@ mod tests {
         let lighthouse_task = tokio::spawn(lighthouse.clone().run());
 
         let mut client = lighthouse_client_new(lighthouse.address()).await?;
-        let mut request = tonic::Request::new(SubscribeFailuresRequest {});
-        request.set_timeout(Duration::from_secs(1));
+        let request = tonic::Request::new(SubscribeFailuresRequest {});
         client.subscribe_failures(request).await?;
 
         lighthouse_task.abort();

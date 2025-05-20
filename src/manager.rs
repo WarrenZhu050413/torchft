@@ -15,6 +15,7 @@ use tokio::sync::broadcast;
 use tokio::sync::Mutex;
 use tokio::task::JoinSet;
 use tokio::time::sleep;
+use tokio::time::timeout as tokio_timeout;
 use tonic::transport::server::TcpIncoming;
 use tonic::transport::Channel;
 use tonic::transport::Server;
@@ -204,7 +205,7 @@ impl Manager {
         });
         lighthouse_request.set_timeout(timeout);
 
-        let response = tokio::time::timeout(timeout, client.quorum(lighthouse_request))
+        let response = tokio_timeout(timeout, client.quorum(lighthouse_request))
             .await
             .unwrap_or_else(|e| {
                 Err(Status::cancelled(format!(

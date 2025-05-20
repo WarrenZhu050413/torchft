@@ -41,6 +41,8 @@ import time
 from datetime import timedelta
 from enum import Enum
 from typing import TYPE_CHECKING, Callable, Dict, List, Optional, TypeVar, cast
+import multiprocessing
+from queue import Empty as QueueEmptyError
 
 import torch
 from torch.distributed import ReduceOp, TCPStore
@@ -57,6 +59,108 @@ MANAGER_PORT_ENV: str = "TORCHFT_MANAGER_PORT"
 REPLICA_ID_KEY: str = "replica_id"
 
 T = TypeVar("T")
+
+# Top-level function for the failure listener process
+def _failure_listener_process_main(
+    lighthouse_addr_str: Optional[str],
+    connect_timeout: timedelta,
+    stop_event: multiprocessing.Event, # pytype: disable=not-supported-yet
+    error_queue: multiprocessing.Queue, # pytype: disable=not-supported-yet
+    # debug_utils for dl_manager
+    debug_dl_manager, 
+    # ExceptionWithTraceback class for error reporting
+    exception_with_traceback_class,
+    # LighthouseClient class for creating the client
+    lighthouse_client_class,
+):
+    """
+    Main function for the failure listener process.
+    Monitors lighthouse for failures and reports them via error_queue.
+    """
+    # Use the passed debug_dl_manager
+    dl_manager = debug_dl_manager
+    ExceptionWithTraceback = exception_with_traceback_class
+    LighthouseClient = lighthouse_client_class
+
+    dl_manager.write(f"failure_listener_process_main: Initializing with lighthouse_addr: {lighthouse_addr_str}")
+
+    if not lighthouse_addr_str:
+        dl_manager.write("failure_listener_process_main: No lighthouse_addr_str, exiting.")
+        return
+
+    try:
+        lighthouse_client = LighthouseClient(lighthouse_addr_str, connect_timeout=connect_timeout)
+        dl_manager.write("failure_listener_process_main: LighthouseClient created.")
+    except Exception as e:
+        dl_manager.write(f"failure_listener_process_main: Failed to create LighthouseClient: {e}")
+        error_queue.put(ExceptionWithTraceback(e))
+        return
+
+    dl_manager.write("failure_listener_process_main: Starting listener loop.")
+    try:
+        # Initial subscription timeout is short, subsequent are longer if needed
+        stream = lighthouse_client.subscribe_failures(timeout=timedelta(milliseconds=100))
+        dl_manager.write("failure_listener_process_main: Subscribed to failure stream.")
+
+        while not stop_event.is_set():
+            # Instead of time.sleep, rely on stream timeout or blocking nature
+            # However, to ensure stop_event is checked reasonably often if stream blocks for long,
+            # a timeout on stream iteration or a very short sleep might be needed.
+            # The original subscribe_failures had a timeout.
+            try:
+                note = next(stream) # This will block until a new item or timeout if stream supports it
+                if note:
+                    if stop_event.is_set():
+                        dl_manager.write("failure_listener_process_main: Stop event set during iteration.")
+                        break
+                    dl_manager.write(f"failure_listener_process_main: Received failure notification for replica {note.replica_id}")
+                    error = Exception(f"Peer failure detected in listener process: replica {note.replica_id} has failed")
+                    error_queue.put(ExceptionWithTraceback(error))
+                
+                # If next(stream) can return None on timeout (depends on grpc implementation)
+                if note is None and not stop_event.is_set(): # Indicates a timeout, loop and check stop_event
+                    time.sleep(0.01) # Small sleep if stream timeout without item
+                    continue
+
+
+            except StopIteration: # Stream ended
+                if not stop_event.is_set():
+                    dl_manager.write("failure_listener_process_main: Failure stream ended, reconnecting...")
+                    try:
+                        stream = lighthouse_client.subscribe_failures(timeout=timedelta(seconds=5))
+                    except Exception as e_reconnect:
+                        dl_manager.write(f"failure_listener_process_main: Error reconnecting to failure stream: {e_reconnect}")
+                        error_queue.put(ExceptionWithTraceback(e_reconnect))
+                        if not stop_event.is_set(): time.sleep(5) 
+                else:
+                    break 
+            except Exception as e_stream: # Other errors from stream (like timeout, connection issues)
+                if not stop_event.is_set():
+                    dl_manager.write(f"failure_listener_process_main: Error in stream processing: {e_stream}, attempting to reconnect/recover.")
+                    # error_queue.put(ExceptionWithTraceback(e_stream)) # Optional: report these if they are critical
+                    try:
+                        stream = lighthouse_client.subscribe_failures(timeout=timedelta(seconds=5))
+                    except Exception as e_reconnect_critical:
+                        dl_manager.write(f"failure_listener_process_main: Critical error reconnecting: {e_reconnect_critical}")
+                        error_queue.put(ExceptionWithTraceback(e_reconnect_critical))
+                        if not stop_event.is_set(): time.sleep(5) 
+                else:
+                    break 
+            if stop_event.is_set():
+                dl_manager.write("failure_listener_process_main: Stop event detected, breaking loop.")
+                break
+            # Yield for other operations, prevent tight loop if stream is misbehaving without blocking
+            time.sleep(0.01)
+
+
+    except Exception as e_outer:
+        dl_manager.write(f"failure_listener_process_main: Fatal error in listener: {e_outer}\n{traceback.format_exc()}")
+        error_queue.put(ExceptionWithTraceback(e_outer))
+    finally:
+        dl_manager.write("failure_listener_process_main: Exiting.")
+        # Note: LighthouseClient might have a close/shutdown method, but original code doesn't call it.
+        # For gRPC clients, channel might be closed on GC or process exit.
+
 
 class WorldSizeMode(Enum):
     """
@@ -210,21 +314,56 @@ class Manager:
         )
 
         self._lighthouse_client: Optional[LighthouseClient] = None
-        lighthouse_addr = lighthouse_addr or None
-
+        # Determine final lighthouse_addr
+        lighthouse_addr: Optional[str] = lighthouse_addr # from args
         if os.environ.get("TORCHFT_LIGHTHOUSE") is not None:
             lighthouse_addr = lighthouse_addr or os.environ["TORCHFT_LIGHTHOUSE"]
             
         if lighthouse_addr is not None:
+            # Main process client
             self._lighthouse_client = LighthouseClient(
                 lighthouse_addr, connect_timeout=connect_timeout
             )
-            # Set up the failure listener
-            self._failure_listener_stop = threading.Event()
-            self._failure_listener_future = self._executor.submit(
-                self._failure_listener
+
+            # Set up the failure listener process
+            self._error_queue = multiprocessing.Queue()
+            self._failure_listener_stop_event = multiprocessing.Event()
+            
+            # Pass dl_manager, ExceptionWithTraceback, LighthouseClient for use in the separate process
+            global _failure_listener_process_main
+            self._failure_listener_process = multiprocessing.Process(
+                target=_failure_listener_process_main,
+                args=(
+                    lighthouse_addr,
+                    self._connect_timeout,
+                    self._failure_listener_stop_event,
+                    self._error_queue,
+                    dl_manager,
+                    ExceptionWithTraceback,
+                    LighthouseClient,
+                ),
+                daemon=True 
             )
-            dl_manager.write("failure_listener: started")
+            self._failure_listener_process.start()
+            dl_manager.write("failure_listener_process: started")
+        else:
+            self._failure_listener_process = None
+            self._error_queue = None
+            self._failure_listener_stop_event = None
+            dl_manager.write("failure_listener_process: not started, no lighthouse_addr.")
+
+        # Initialize and start the error processing thread if the listener process is active
+        self._error_processor_thread: Optional[threading.Thread] = None
+        self._error_processor_stop_event: Optional[threading.Event] = None
+        if self._failure_listener_process is not None:
+            self._error_processor_stop_event = threading.Event()
+            self._error_processor_thread = threading.Thread(
+                target=self._error_processor_loop,
+                name="TorchFTErrorProcessor",
+                daemon=True
+            )
+            self._error_processor_thread.start()
+            dl_manager.write("error_processor_thread: started")
 
         if self._group_rank == 0:
             if port is None:
@@ -283,28 +422,94 @@ class Manager:
         self._load_state_dict = load_state_dict
         self._user_state_dict = state_dict
 
+    def _error_handler(self, err):
+        self.report_error(err)
+        self._pg.abort()
+
+    def _error_processor_loop(self) -> None:
+        """Continuously checks the error queue from the listener process and reports errors."""
+        dl_manager.write("error_processor_loop: starting")
+        assert self._error_queue is not None, "Error queue must be initialized for error processor loop."
+        assert self._error_processor_stop_event is not None, "Stop event must be initialized for error processor loop."
+
+        try:
+            while not self._error_processor_stop_event.is_set():
+                try:
+                    # Wait for an item with a timeout to allow checking the stop event periodically
+                    err = self._error_queue.get(timeout=0.1) # Timeout in seconds
+                    if isinstance(err, Exception):  # Expecting Exception objects
+                        self._logger.warn(f"Error reported from failure listener process (via error_processor_loop): {err}")
+                        self._error_handler(err)
+                        # If a critical error is reported that should stop the loop, consider breaking here
+                        # or ensure report_error() sets a state that the loop can check.
+                    else:
+                        self._logger.warn(f"Unknown item received from failure listener queue (via error_processor_loop): {err}")
+                except QueueEmptyError: # Raised by queue.get(timeout=...) if timeout occurs
+                    pass # No error, continue and check stop_event
+                except Exception as e:
+                    # Log unexpected errors in the loop itself
+                    self._logger.exception(f"Unexpected exception in _error_processor_loop: {e}")
+                    # Potentially wait a bit before retrying to avoid tight loop on persistent unknown errors
+                    if not self._error_processor_stop_event.wait(timeout=0.5): # Short wait, also checks stop event
+                        pass # continue if not stopped
+                    else:
+                        break # stop event was set during wait
+        finally:
+            dl_manager.write("error_processor_loop: stopping")
+
     def shutdown(self, wait: bool = True) -> None:
         """
         Shutdown the manager and checkpoint server.
         """
-        # Stop the failure listener if it exists
-        if hasattr(self, "_failure_listener_stop") and self._failure_listener_stop is not None:
-            self._logger.info("Setting failure listener stop event")
-            self._failure_listener_stop.set()
-            if wait and hasattr(self, "_failure_listener_future") and self._failure_listener_future is not None:
-                self._logger.info("Waiting for failure listener to complete")
-                try:
-                    # Wait with a timeout to avoid hanging forever
-                    self._failure_listener_future.result(timeout=10)
-                    self._logger.info("Failure listener shutdown completed")
-                except concurrent.futures.TimeoutError:
-                    self._logger.warn("Timed out waiting for failure listener to complete")
-                except Exception as e:
-                    self._logger.warn(f"Error waiting for failure listener: {e}")
-        
-        self._checkpoint_transport.shutdown(wait=wait)
         if self._manager is not None:
             self._manager.shutdown()
+
+        # Stop the error processor thread first
+        if self._error_processor_thread is not None and self._error_processor_stop_event is not None:
+            self._logger.info("Setting error processor thread stop event")
+            self._error_processor_stop_event.set()
+            if wait:
+                self._logger.info("Waiting for error processor thread to complete")
+                try:
+                    self._error_processor_thread.join(timeout=5) # Short timeout
+                    if self._error_processor_thread.is_alive():
+                        self._logger.warn("Error processor thread did not terminate in time.")
+                    else:
+                        self._logger.info("Error processor thread shutdown completed.")
+                except Exception as e:
+                    self._logger.warn(f"Error waiting for error processor thread: {e}")
+
+        # Stop the failure listener process if it exists
+        if hasattr(self, "_failure_listener_process") and self._failure_listener_process is not None:
+            self._logger.info("Setting failure listener stop event for process")
+            if hasattr(self, "_failure_listener_stop_event") and self._failure_listener_stop_event is not None:
+                self._failure_listener_stop_event.set()
+            
+            if wait:
+                self._logger.info("Waiting for failure listener process to complete")
+                try:
+                    self._failure_listener_process.join(timeout=10) # Process join
+                    if self._failure_listener_process.is_alive():
+                        self._logger.warn("Failure listener process did not terminate, attempting to terminate.")
+                        self._failure_listener_process.terminate() # Force terminate if join times out
+                        self._failure_listener_process.join(timeout=1) # Wait for terminate
+                    else:
+                        self._logger.info("Failure listener process shutdown completed")
+                except Exception as e: 
+                    self._logger.warn(f"Error waiting for/terminating failure listener process: {e}")
+            
+            # Clean up queue
+            if hasattr(self, "_error_queue") and self._error_queue is not None:
+                try:
+                    # Drain the queue to allow the queue's feeder thread to shut down
+                    while not self._error_queue.empty():
+                        self._error_queue.get_nowait()
+                except Exception: # nosec
+                    pass # Ignore errors during queue draining on shutdown
+                self._error_queue.close()
+                # self._error_queue.join_thread() # Might hang if process is stuck
+
+        self._checkpoint_transport.shutdown(wait=wait)
         self._executor.shutdown(wait=wait)
 
     def allreduce(self, tensor: torch.Tensor) -> torch.futures.Future[torch.Tensor]:
@@ -458,7 +663,7 @@ class Manager:
         # wait for previous quorum to complete
         if self._quorum_future is not None:
             self._quorum_future.result()
-
+        
         self._errored = None
         self._healing = False
 
@@ -844,67 +1049,6 @@ class Manager:
             assert self._use_async_quorum
             return False
         return True
-
-    def _failure_listener(self) -> None:
-        """
-        Background listener that watches the lighthouse failure stream and 
-        aborts training if a peer fails.
-        """
-        dl_manager.write("failure_listener")
-        if not self._lighthouse_client:
-            # self._logger.warn("No lighthouse client available, failure listener not started")
-            return
-
-        # self._logger.info("Starting failure listener")
-        dl_manager.write("failure_listener: starting")
-        try:
-            # self._logger.info("Subscribing to failure notifications stream")
-            stream = self._lighthouse_client.subscribe_failures(timeout=timedelta(milliseconds=100))
-            dl_manager.write("failure_listener: subscribed stream")
-            
-            while not self._failure_listener_stop.is_set():
-                time.sleep(0.01)
-                dl_manager.write("failure_listener: waiting for stream")
-                try:
-                    for note in stream:
-                        if self._failure_listener_stop.is_set():
-                            dl_manager.write("failure_listener: stop requested")
-                            break
-                        self._handle_failure(note.replica_id)
-                except StopIteration:
-                    # Stream ended, try to reconnect
-                    if not self._failure_listener_stop.is_set():
-                        # self._logger.info("Failure stream ended, reconnecting...")
-                        dl_manager.write("failure_listener: reconnecting")
-                        stream = self._lighthouse_client.subscribe_failures(
-                            timeout=timedelta(seconds=5)
-                        )
-                except Exception as e:
-                    # Catch other errors (like timeout), log and try to reconnect
-                    if not self._failure_listener_stop.is_set():
-                        # self._logger.warn(f"Error in failure listener: {e}, reconnecting...")
-                        stream = self._lighthouse_client.subscribe_failures(
-                            timeout=timedelta(seconds=5)
-                        )
-        except Exception as e:
-            dl_manager.write(f"Fatal error in failure listener: {e}")
-
-    def _handle_failure(self, replica_id: str) -> None:
-        """
-        Handle a failure notification from the lighthouse.
-        
-        Args:
-            replica_id: The ID of the failed replica
-        """
-        dl_manager.write(f"Received failure notification for replica {replica_id}")
-        
-        # Report the failure as an error to abort training
-        self.report_error(
-            Exception(f"Peer failure detected: replica {replica_id} has failed")
-        )
-
-        if False:
-            self._pg.abort()
 
 class _ManagerLogger:
     def __init__(self, manager: Manager, replica_id: str, group_rank: int) -> None:

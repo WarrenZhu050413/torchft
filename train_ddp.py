@@ -37,24 +37,19 @@ logging.basicConfig(level=logging.INFO)
 
 @record
 def main() -> None:
-    dl_train.write("Starting main function")
     REPLICA_GROUP_ID = int(os.environ.get("REPLICA_GROUP_ID", 0))
     NUM_REPLICA_GROUPS = int(os.environ.get("NUM_REPLICA_GROUPS", 2))
-    dl_train.write(f"REPLICA_GROUP_ID: {REPLICA_GROUP_ID}, NUM_REPLICA_GROUPS: {NUM_REPLICA_GROUPS}")
 
     transform = transforms.Compose(
         [transforms.ToTensor(), transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))]
     )
-    dl_train.write("Loading CIFAR10 dataset")
     trainset = torchvision.datasets.CIFAR10(
         root="./cifar", train=True, download=True, transform=transform
     )
-    dl_train.write("CIFAR10 dataset loaded")
 
     # This shards the training set across all ranks and replica groups. We manage
     # the dataloaders on a per replica group basis with the assumption that the
     # majority of groups will be available so few batches will be dropped.
-    dl_train.write("Creating DistributedSampler")
     sampler = DistributedSampler(
         trainset,
         replica_group_id=REPLICA_GROUP_ID,
@@ -67,28 +62,21 @@ def main() -> None:
 
     # This uses the torchdata StatefulDataLoader to be able to checkpoint and
     # restore the per worker dataloader position.
-    dl_train.write("Creating StatefulDataLoader")
     trainloader = StatefulDataLoader(
         trainset, batch_size=64, num_workers=2, sampler=sampler
     )
-    dl_train.write("StatefulDataLoader created")
 
     def load_state_dict(state_dict):
-        dl_train.write("Loading state dict")
         m.load_state_dict(state_dict["model"])
         optimizer.load_state_dict(state_dict["optim"])
-        dl_train.write("State dict loaded")
 
     def state_dict():
-        dl_train.write("Creating state dict")
         return {
             "model": m.state_dict(),
             "optim": optimizer.state_dict(),
         }
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
-    dl_train.write(f"Using device: {device}")
-    dl_train.write("Creating process group")
     pg = (
         ProcessGroupNCCL(
             timeout=timedelta(seconds=30),
@@ -96,17 +84,13 @@ def main() -> None:
         if torch.cuda.is_available()
         else ProcessGroupGloo(timeout=timedelta(seconds=5))
     )
-    dl_train.write("Process group created")
 
-    dl_train.write("Creating PGTransport")
     transport = PGTransport(
         pg,
         timeout=timedelta(seconds=10),
         device=("cuda" if torch.cuda.is_available() else "cpu"),
     )
-    dl_train.write("PGTransport created")
 
-    dl_train.write("Creating Manager")
     manager = Manager(
         pg=pg,
         min_replica_size=1,
@@ -116,7 +100,6 @@ def main() -> None:
         timeout=timedelta(seconds=30),
         checkpoint_transport=transport,
     )
-    dl_train.write("Manager created")
     
     class Net(nn.Module):
         def __init__(self):
@@ -152,20 +135,13 @@ def main() -> None:
             x += self.useless.weight[0]
             return x
 
-    dl_train.write("Creating model")
-    dl_train.write(f"device: {device}")
     m = Net().to(device)
-    dl_train.write("Wrapping model with DistributedDataParallel")
     m = DistributedDataParallel(manager, m)
-    dl_train.write("Creating optimizer")
     optimizer = Optimizer(manager, optim.AdamW(m.parameters()))
-    criterion = nn.CrossEntropyLoss()
-    dl_train.write("Model and optimizer setup complete")
 
     print(m)
     num_params = sum(p.numel() for p in m.parameters())
     print(f"Total number of parameters: {num_params}")
-    dl_train.write(f"Total number of parameters: {num_params}")
 
     sort_by_keyword = "self_" + device + "_time_total"
 
@@ -176,11 +152,9 @@ def main() -> None:
         )
         print(output)
         p.export_chrome_trace("/tmp/trace_" + str(p.step_num) + ".json")
-        dl_train.write(f"Exported trace for step {p.step_num}")
 
     # You can use an epoch based training but with faults it's easier to use step
     # based training.
-    dl_train.write("Setting up profiler")
     prof = torch.profiler.profile(
         schedule=torch.profiler.schedule(wait=5, warmup=1, active=10, repeat=2),
         on_trace_ready=trace_handler,
@@ -188,52 +162,38 @@ def main() -> None:
         profile_memory=True,
     )
 
-    dl_train.write("Starting profiler")
     prof.start()
-    dl_train.write("Beginning training loop")
     while True:
-        dl_train.write(f"Starting iteration through dataloader, step {manager.current_step()}")
         for i, (inputs, labels) in enumerate(trainloader):
-            dl_train.write(f"Batch {i}, step {manager.current_step()}")
             prof.step()
-            dl_train.write("Profiler step called")
 
-            dl_train.write("Moving inputs and labels to device")
             inputs = inputs.to(device)
             labels = labels.to(device)
-            dl_train.write("Inputs and labels moved to device")
 
             # must be called at the beginning of each train loop
             # Quorum computation is triggered here but only needed in the backwards pass.
-            dl_train.write("Zeroing gradients")
             optimizer.zero_grad()
-            dl_train.write("Gradients zeroed")
 
-            dl_train.write("Forward pass")
             out = m(inputs)
-            dl_train.write("Forward pass complete")
-            dl_train.write("Computing loss")
+            time.sleep(10)
+            criterion = nn.CrossEntropyLoss()
             loss = criterion(out, labels)
-            dl_train.write(f"Loss computed: {loss.item()}")
-
-            dl_train.write("Starting sleep")
-            time.sleep(5)
-            dl_train.write("Sleep complete")
 
             # Gradient allreduce overlaps with the backwards pass.
-            dl_train.write("Starting backward pass")
             loss.backward()
-            dl_train.write("Backward pass complete")
+
+            if REPLICA_GROUP_ID == 0:
+                manager.shutdown()
+                exit(0)
+            dummy_tensor = torch.tensor([1.0]).to(device)
+            manager.allreduce(dummy_tensor)
 
             # must be called at the end of the train loop
             # This may not actually step the optimizer if an error occured during grad allreduce.
-            dl_train.write("Stepping optimizer")
             optimizer.step()
-            dl_train.write("Optimizer stepped")
 
             if manager.current_step() % 100 == 0:
                 print(f"[{manager.current_step()}] loss = {loss.item()}")
-                dl_train.write(f"[{manager.current_step()}] loss = {loss.item()}")
 
             # TODO (by the user): periodically checkpoint model, optim, manager and dataloader
 
@@ -246,12 +206,8 @@ def main() -> None:
 
             if manager.current_step() >= 10000:
                 # complete training
-                dl_train.write("Training complete, stopping profiler")
                 prof.stop()
-                dl_train.write("Exiting")
                 exit()
 
 if __name__ == "__main__":
-    dl_train.write("Script started")
     main()
-    dl_train.write("Script completed")

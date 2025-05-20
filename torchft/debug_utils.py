@@ -14,8 +14,4 @@ def write_debug_log(msg: str, prefix: str='') -> None:
         f.write(f"{prefix}: {msg}\n")
 
 dl_manager = DebugLog("manager")
-dl_lighthouse = DebugLog("lighthouse")
-dl_lighthouse_client = DebugLog("lighthouse_client")
-dl_failure_listener = DebugLog("failure_listener")
-dl_manager_client = DebugLog("manager_client")
 dl_train = DebugLog("train")
