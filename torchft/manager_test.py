@@ -5,6 +5,8 @@
 # LICENSE file in the root directory of this source tree.
 
 import concurrent
+from dataclasses import dataclass
+import time
 from datetime import timedelta
 from typing import Optional
 from unittest import TestCase
@@ -13,10 +15,10 @@ from unittest.mock import MagicMock, create_autospec, patch
 import torch
 from torch.distributed import TCPStore
 
-from torchft._torchft import QuorumResult
+from torchft._torchft import QuorumResult, FailureStream, LighthouseClient
 from torchft.checkpointing.transport import CheckpointTransport
 from torchft.manager import MANAGER_ADDR_KEY, REPLICA_ID_KEY, Manager, WorldSizeMode
-from torchft.process_group import ProcessGroup, _DummyWork
+from torchft.process_group import ProcessGroup, _DummyWork, ProcessGroupGloo
 
 
 def mock_should_commit(
@@ -773,3 +775,48 @@ class TestManager(TestCase):
         # This should succeed and reset the counter
         self.assertTrue(manager.should_commit())
         self.assertEqual(manager._commit_failures, 0)
+
+    # def test_failure_listener_aborts_training(self) -> None:
+
+    #     @dataclass
+    #     class MockFailureNotification:
+    #         replica_id: str
+
+    #     """Test that the failure listener aborts training when a peer fails."""
+    #     # Create a mock failure stream that will yield a failure notification
+    #     mock_note = MockFailureNotification(replica_id="test-replica")
+    #     mock_stream = MagicMock(spec=FailureStream)
+    #     mock_stream.__iter__.return_value = mock_stream
+    #     mock_stream.__next__.side_effect = [mock_note, StopIteration()]
+        
+    #     # Create a mock lighthouse client
+    #     mock_lighthouse_client = MagicMock(spec=LighthouseClient)
+    #     mock_lighthouse_client.subscribe_failures.return_value = mock_stream
+        
+    #     # Create a mock process group
+    #     mock_pg = MagicMock(spec=ProcessGroupGloo)
+        
+    #     # Create a manager with the mock lighthouse client
+    #     with patch("torchft._torchft.LighthouseClient", return_value=mock_lighthouse_client):
+    #         manager = Manager(
+    #             pg=mock_pg,
+    #             load_state_dict=lambda x: None,
+    #             state_dict=lambda: None,
+    #             min_replica_size=1,
+    #             rank=0,
+    #             world_size=1,
+    #             lighthouse_addr="mock://lighthouse",
+    #             store_addr="localhost",
+    #             store_port=12345,
+    #         )
+            
+    #         # Give the failure listener thread some time to process the notification
+    #         time.sleep(0.5)
+            
+    #         # Verify that an error was reported
+    #         error = manager.errored()
+    #         self.assertIsNotNone(error)
+    #         self.assertIn("test-replica", str(error))
+            
+    #         # Clean up
+    #         manager.shutdown()

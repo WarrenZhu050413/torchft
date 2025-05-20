@@ -1,0 +1,6 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+ALways run conda init bash && source ~/.bashrc && conda activate /srv/apps/danny/miniconda3/envs/warren/torchtitan before executing instructions related to torchft

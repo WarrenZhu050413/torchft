@@ -8,6 +8,7 @@ import logging
 import os
 import sys
 from datetime import timedelta
+import time
 
 REPLICA_GROUP_ID = int(os.environ.get("REPLICA_GROUP_ID", 0))
 os.environ["CUDA_VISIBLE_DEVICES"] = str(REPLICA_GROUP_ID % 4)
@@ -177,6 +178,8 @@ def main() -> None:
             out = m(inputs)
             loss = criterion(out, labels)
 
+            time.sleep(5)
+
             # Gradient allreduce overlaps with the backwards pass.
             loss.backward()
 
@@ -200,7 +203,6 @@ def main() -> None:
                 # complete training
                 prof.stop()
                 exit()
-
 
 if __name__ == "__main__":
     main()

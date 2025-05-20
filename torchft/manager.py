@@ -29,6 +29,7 @@ import concurrent.futures
 import logging
 import os
 import socket
+import threading
 import traceback
 import uuid
 from concurrent.futures import ThreadPoolExecutor
@@ -205,13 +206,20 @@ class Manager:
             torch.cuda.Stream() if torch.cuda.is_available() else None
         )
 
+        self._lighthouse_client: Optional[LighthouseClient] = None
         lighthouse_addr = lighthouse_addr or None
         if os.environ.get("TORCHFT_LIGHTHOUSE") is not None:
             lighthouse_addr = lighthouse_addr or os.environ["TORCHFT_LIGHTHOUSE"]
 
         if lighthouse_addr is not None:
-            self._lighthouse_client: Optional[LighthouseClient] = (
-                LighthouseClient(lighthouse_addr, connect_timeout=connect_timeout)
+            self._lighthouse_client = LighthouseClient(
+                lighthouse_addr, connect_timeout=connect_timeout
+            )
+            
+            # Set up the failure listener
+            self._failure_listener_stop = threading.Event()
+            self._failure_listener_future = self._executor.submit(
+                self._failure_listener
             )
 
         if self._group_rank == 0:
@@ -270,6 +278,9 @@ class Manager:
         """
         Shutdown the manager and checkpoint server.
         """
+        # Stop the failure listener if it exists
+        if hasattr(self, "_failure_listener_stop") and self._failure_listener_stop is not None:
+            self._failure_listener_stop.set()
         self._checkpoint_transport.shutdown(wait=wait)
         if self._manager is not None:
             self._manager.shutdown()
@@ -813,6 +824,60 @@ class Manager:
             return False
         return True
 
+    def _failure_listener(self) -> None:
+        """
+        Background listener that watches the lighthouse failure stream and 
+        aborts training if a peer fails.
+        """
+        if not self._lighthouse_client:
+            self._logger.warn("No lighthouse client available, failure listener not started")
+            return
+
+        self._logger.info("Starting failure listener")
+        try:
+            stream = self._lighthouse_client.subscribe_failures(
+                timeout=timedelta(seconds=5)
+            )
+            
+            while not self._failure_listener_stop.is_set():
+                try:
+                    for note in stream:
+                        if self._failure_listener_stop.is_set():
+                            break
+                        self._handle_failure(note.replica_id)
+                except StopIteration:
+                    # Stream ended, try to reconnect
+                    if not self._failure_listener_stop.is_set():
+                        self._logger.info("Failure stream ended, reconnecting...")
+                        stream = self._lighthouse_client.subscribe_failures(
+                            timeout=timedelta(seconds=5)
+                        )
+                except Exception as e:
+                    # Catch other errors (like timeout), log and try to reconnect
+                    if not self._failure_listener_stop.is_set():
+                        self._logger.warn(f"Error in failure listener: {e}, reconnecting...")
+                        stream = self._lighthouse_client.subscribe_failures(
+                            timeout=timedelta(seconds=5)
+                        )
+        except Exception as e:
+            self._logger.exception(f"Fatal error in failure listener: {e}")
+
+    def _handle_failure(self, replica_id: str) -> None:
+        """
+        Handle a failure notification from the lighthouse.
+        
+        Args:
+            replica_id: The ID of the failed replica
+        """
+        self._logger.info(f"Received failure notification for replica {replica_id}")
+        
+        # Report the failure as an error to abort training
+        self.report_error(
+            Exception(f"Peer failure detected: replica {replica_id} has failed")
+        )
+
+        if False:
+            self._pg.abort()
 
 class _ManagerLogger:
     def __init__(self, manager: Manager, replica_id: str, group_rank: int) -> None:
