@@ -13,7 +13,12 @@ mod timeout;
 use anyhow::Result;
 use atty::Stream;
 use core::time::Duration;
-use pyo3::exceptions::{PyRuntimeError, PyTimeoutError, PyStopIteration};
+use pyo3::exceptions::{
+    PyRuntimeError,
+    PyTimeoutError,
+    PyStopIteration,
+    PyStopAsyncIteration,
+};
 use std::cmp;
 use std::env;
 use std::sync::Arc;
@@ -28,6 +33,7 @@ use tokio_stream::StreamExt;
 use chrono::Local;
 use fern::colors::{Color, ColoredLevelConfig};
 use log::LevelFilter;
+use pyo3_asyncio::tokio;
 
 pub mod torchftpb {
     tonic::include_proto!("torchft");
@@ -312,6 +318,17 @@ impl FailureStream {
             Some(Err(status)) => Err(StatusError(status).into()),
             None => Err(PyStopIteration::new_err(())),
         }
+    }
+
+    fn __anext__<'py>(mut slf: PyRefMut<'py, Self>, py: Python<'py>) -> PyResult<&'py PyAny> {
+        let runtime = slf.runtime.clone();
+        tokio::future_into_py(py, async move {
+            match slf.stream.next().await {
+                Some(Ok(note)) => Ok(FailureNotificationPy { replica_id: note.replica_id }),
+                Some(Err(status)) => Err(StatusError(status).into()),
+                None => Err(PyStopAsyncIteration::new_err(())),
+            }
+        })
     }
 }
 
@@ -633,6 +650,28 @@ impl LighthouseClient {
                 .map_err(|e| PyRuntimeError::new_err(e.to_string()))?;
             Ok(FailureStream {
                 runtime: self.runtime.clone(),
+                stream: response.into_inner(),
+            })
+        })
+    }
+
+    #[pyo3(signature = (timeout = Duration::from_secs(5)))]
+    fn subscribe_failures_async<'py>(
+        &self,
+        py: Python<'py>,
+        timeout: Duration,
+    ) -> PyResult<&'py PyAny> {
+        let client = self.client.clone();
+        let runtime = self.runtime.clone();
+        tokio::future_into_py(py, async move {
+            let mut req = tonic::Request::new(SubscribeFailuresRequest {});
+            req.set_timeout(timeout);
+            let response = client
+                .subscribe_failures(req)
+                .await
+                .map_err(|e| PyRuntimeError::new_err(e.to_string()))?;
+            Ok(FailureStream {
+                runtime,
                 stream: response.into_inner(),
             })
         })

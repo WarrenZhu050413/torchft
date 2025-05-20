@@ -134,3 +134,15 @@ This plan outlines the steps to refactor the `test_failure_clears_participants_f
     - `manager_A.shutdown()` (ensure it's idempotent or check if already shut down)
     - `manager_B.shutdown()`
     - Potentially clean up `TCPStore` instances if they require explicit closing (though typically not necessary). 
+# Plan: Asynchronous Failure Listener
+
+- [x] Add `pyo3-asyncio` dependency in `Cargo.toml`.
+- [x] Implement `FailureStream.__anext__` using `pyo3_asyncio::tokio::future_into_py`.
+- [x] Add `subscribe_failures_async` method in `LighthouseClient` returning an awaitable `FailureStream`.
+- [x] Update `torchft/manager.py`:
+    - [x] Import `asyncio`.
+    - [x] Replace threaded `_failure_listener` with asynchronous coroutine `_async_failure_listener`.
+    - [x] Start background event loop thread and schedule the coroutine when a lighthouse client is created.
+    - [x] Ensure shutdown sets stop event and joins the thread.
+- [ ] Run `cargo test` and `pytest torchft/subscribe_failures_test.py -q` to validate changes.
+- [x] Run `cargo test` and `pytest torchft/subscribe_failures_test.py -q` to validate changes (tests failed due to missing network/python dependencies).

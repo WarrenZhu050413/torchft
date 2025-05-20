@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from datetime import timedelta
-from typing import Hashable, List, Optional
+from typing import Any, Hashable, List, Optional
 
 class ManagerClient:
     def __init__(self, addr: str, connect_timeout: timedelta) -> None: ...
@@ -91,6 +91,7 @@ class FailureNotification:
 class FailureStream:
     def __iter__(self) -> "FailureStream": ...
     def __next__(self) -> FailureNotification: ...
+    def __anext__(self) -> Any: ...
 
 @dataclass
 class LighthouseClient:
@@ -117,3 +118,7 @@ class LighthouseClient:
         self,
         timeout: timedelta = timedelta(seconds=5),
     ) -> FailureStream: ...
+    def subscribe_failures_async(
+        self,
+        timeout: timedelta = timedelta(seconds=5),
+    ) -> Any: ...

@@ -38,6 +38,7 @@ import uuid
 from concurrent.futures import ThreadPoolExecutor
 from contextlib import nullcontext
 import time
+import asyncio
 from datetime import timedelta
 from enum import Enum
 from typing import TYPE_CHECKING, Callable, Dict, List, Optional, TypeVar, cast
@@ -219,10 +220,16 @@ class Manager:
             self._lighthouse_client = LighthouseClient(
                 lighthouse_addr, connect_timeout=connect_timeout
             )
-            # Set up the failure listener
             self._failure_listener_stop = threading.Event()
-            self._failure_listener_future = self._executor.submit(
-                self._failure_listener
+            self._failure_listener_loop = asyncio.new_event_loop()
+            self._failure_listener_thread = threading.Thread(
+                target=self._failure_listener_loop.run_forever,
+                daemon=True,
+                name="FailureListener",
+            )
+            self._failure_listener_thread.start()
+            self._failure_listener_future = asyncio.run_coroutine_threadsafe(
+                self._async_failure_listener(), self._failure_listener_loop
             )
             dl_manager.write("failure_listener: started")
 
@@ -294,13 +301,16 @@ class Manager:
             if wait and hasattr(self, "_failure_listener_future") and self._failure_listener_future is not None:
                 self._logger.info("Waiting for failure listener to complete")
                 try:
-                    # Wait with a timeout to avoid hanging forever
                     self._failure_listener_future.result(timeout=10)
                     self._logger.info("Failure listener shutdown completed")
                 except concurrent.futures.TimeoutError:
                     self._logger.warn("Timed out waiting for failure listener to complete")
                 except Exception as e:
                     self._logger.warn(f"Error waiting for failure listener: {e}")
+            if hasattr(self, "_failure_listener_loop"):
+                self._failure_listener_loop.call_soon_threadsafe(self._failure_listener_loop.stop)
+            if hasattr(self, "_failure_listener_thread"):
+                self._failure_listener_thread.join(timeout=10)
         
         self._checkpoint_transport.shutdown(wait=wait)
         if self._manager is not None:
@@ -845,49 +855,35 @@ class Manager:
             return False
         return True
 
-    def _failure_listener(self) -> None:
+    async def _async_failure_listener(self) -> None:
         """
-        Background listener that watches the lighthouse failure stream and 
+        Background coroutine that watches the lighthouse failure stream and
         aborts training if a peer fails.
         """
         dl_manager.write("failure_listener")
         if not self._lighthouse_client:
-            # self._logger.warn("No lighthouse client available, failure listener not started")
             return
 
-        # self._logger.info("Starting failure listener")
         dl_manager.write("failure_listener: starting")
+        loop = asyncio.get_running_loop()
         try:
-            # self._logger.info("Subscribing to failure notifications stream")
-            stream = self._lighthouse_client.subscribe_failures(timeout=timedelta(milliseconds=100))
+            stream = await self._lighthouse_client.subscribe_failures_async()
             dl_manager.write("failure_listener: subscribed stream")
-            
+
             while not self._failure_listener_stop.is_set():
-                time.sleep(0.01)
-                dl_manager.write("failure_listener: waiting for stream")
                 try:
-                    for note in stream:
-                        if self._failure_listener_stop.is_set():
-                            dl_manager.write("failure_listener: stop requested")
-                            break
-                        self._handle_failure(note.replica_id)
-                except StopIteration:
-                    # Stream ended, try to reconnect
+                    note = await asyncio.wait_for(stream.__anext__(), timeout=0.1)
+                    self._handle_failure(note.replica_id)
+                except asyncio.TimeoutError:
+                    continue
+                except StopAsyncIteration:
                     if not self._failure_listener_stop.is_set():
-                        # self._logger.info("Failure stream ended, reconnecting...")
                         dl_manager.write("failure_listener: reconnecting")
-                        stream = self._lighthouse_client.subscribe_failures(
-                            timeout=timedelta(seconds=5)
-                        )
-                except Exception as e:
-                    # Catch other errors (like timeout), log and try to reconnect
-                    if not self._failure_listener_stop.is_set():
-                        # self._logger.warn(f"Error in failure listener: {e}, reconnecting...")
-                        stream = self._lighthouse_client.subscribe_failures(
-                            timeout=timedelta(seconds=5)
-                        )
+                        stream = await self._lighthouse_client.subscribe_failures_async()
         except Exception as e:
             dl_manager.write(f"Fatal error in failure listener: {e}")
+        finally:
+            loop.call_soon_threadsafe(loop.stop)
 
     def _handle_failure(self, replica_id: str) -> None:
         """

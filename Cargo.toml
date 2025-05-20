@@ -15,6 +15,7 @@ log = "0.4.22"
 prost = "0.13.3"
 prost-types = "0.13.3"
 pyo3 = {version = "0.24", features = ["extension-module"]}
+pyo3-asyncio = {version = "0.24", features = ["tokio-runtime"]}
 rand = "0.8.5"
 slog = "2.7.0"
 slog-stdlog = "4.1.1"
