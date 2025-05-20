@@ -21,7 +21,6 @@ import torchvision.transforms as transforms
 from torch import nn, optim
 from torch.distributed.elastic.multiprocessing.errors import record
 from torchdata.stateful_dataloader import StatefulDataLoader
-from torchft.debug_utils import dl_train
 from torchft import (
     DistributedDataParallel,
     DistributedSampler,
@@ -167,6 +166,8 @@ def main() -> None:
         for i, (inputs, labels) in enumerate(trainloader):
             prof.step()
 
+            time.sleep(0.5) # Else each iteration runs too quickly
+
             inputs = inputs.to(device)
             labels = labels.to(device)
 
@@ -175,18 +176,20 @@ def main() -> None:
             optimizer.zero_grad()
 
             out = m(inputs)
-            time.sleep(10)
             criterion = nn.CrossEntropyLoss()
             loss = criterion(out, labels)
 
             # Gradient allreduce overlaps with the backwards pass.
             loss.backward()
+            if manager.current_step() == 10:
+                if REPLICA_GROUP_ID == 0:
+                    manager.shutdown()
+                    exit(0)
+                # If proactive recovery, then the surviving process will reconfigure
+                # If not proactive recovery, then the surviving process will wait until timeout
 
-            if REPLICA_GROUP_ID == 0:
-                manager.shutdown()
-                exit(0)
-            dummy_tensor = torch.tensor([1.0]).to(device)
-            manager.allreduce(dummy_tensor)
+            test_tensor = torch.tensor([1.0]).to(device)
+            manager.allreduce(test_tensor)
 
             # must be called at the end of the train loop
             # This may not actually step the optimizer if an error occured during grad allreduce.

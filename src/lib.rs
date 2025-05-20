@@ -307,24 +307,19 @@ impl FailureStream {
     fn __iter__(slf: PyRef<'_, Self>) -> PyRef<'_, Self> {
         slf
     }
-
     fn __next__(mut slf: PyRefMut<'_, Self>) -> PyResult<FailureNotification> {
-        let py = slf.py(); // Acquire Pyhton<'_> context
         let runtime = slf.runtime.clone();
-        let timeout_duration = slf.timeout;
-
-        // Release the GIL before calling block_on, as it's a blocking operation.
-        // The future `slf.stream.next()` is awaited.
-        // `tokio_timeout` is assumed to be a wrapper like `tokio::time::timeout`.
-        let result = py.allow_threads(move  || {
-            runtime.block_on(tokio_timeout(timeout_duration, slf.stream.next()))
-        });
-
-        match result {
+        let timeout = slf.timeout;
+        // borrow stream mutably for the whole async block
+        let fut = async {
+            tokio::time::timeout(timeout, slf.stream.next()).await
+        };
+    
+        match runtime.block_on(fut) {
             Ok(Some(Ok(note))) => Ok(FailureNotification { replica_id: note.replica_id }),
-            Ok(Some(Err(status))) => Err(StatusError(status).into()), // status is tonic::Status
-            Ok(None) => Err(PyStopIteration::new_err(())), // Stream terminated
-            Err(_) => Err(PyTimeoutError::new_err("Timeout waiting for failure notification")), // This matches if `crate::timeout::timeout` returns Err on timeout
+            Ok(Some(Err(status))) => Err(StatusError(status).into()),
+            Ok(None)             => Err(PyStopIteration::new_err(())),
+            Err(_)               => Err(PyTimeoutError::new_err("Timeout waiting for failure notification")),
         }
     }
 }
@@ -335,14 +330,114 @@ struct FailureNotification {
     replica_id: String,
 }
 
+#[pymethods]
+impl QuorumResult {
+    #[new]
+    fn new() -> Self {
+        Self {
+            quorum_id: 0,
+            replica_rank: 0,
+            replica_world_size: 1,
+            recover_src_manager_address: "".to_string(),
+            recover_src_replica_rank: None,
+            recover_dst_replica_ranks: Vec::new(),
+            store_address: "".to_string(),
+            max_step: 0,
+            max_replica_rank: None,
+            max_world_size: 1,
+            heal: false,
+        }
+    }
+}
+
+fn reset_python_signals(py: Python<'_>) -> PyResult<()> {
+    // clear python signal handlers
+    // signal.signal(signal.SIGINT, signal.SIG_DFL)
+    let signal = py.import("signal")?;
+    let set_signal = signal.getattr("signal")?;
+    let args = (signal.getattr("SIGINT")?, signal.getattr("SIG_DFL")?);
+    set_signal.call1(args)?;
+
+    Ok(())
+}
+
+#[pyfunction]
+fn lighthouse_main(py: Python<'_>) -> PyResult<()> {
+    reset_python_signals(py)?;
+
+    let mut args = env::args();
+    args.next(); // discard binary arg
+    let opt = lighthouse::LighthouseOpt::from_iter(args);
+    let rt = tokio::runtime::Builder::new_multi_thread()
+        .thread_name("torchft-lighths")
+        .worker_threads(num_threads())
+        .enable_all()
+        .build()?;
+    rt.block_on(lighthouse_main_async(opt))
+        .map_err(|e| PyRuntimeError::new_err(e.to_string()))?;
+    Ok(())
+}
+
+async fn lighthouse_main_async(opt: lighthouse::LighthouseOpt) -> Result<()> {
+    let lighthouse = lighthouse::Lighthouse::new(opt).await?;
+
+    lighthouse.run().await?;
+
+    Ok(())
+}
+
+/// quorum member of one quorum.
+///
+/// Args:
+///     replica_id (str): The string id of the replica calling quorum.
+///     address (str): The address of the replica calling quorum.
+///     store_address (str): The address of the store.
+///     step (int): The step of the replica calling quorum.
+///     world_size (int): The world size of the replica calling quorum.
+///     shrink_only (bool): Whether the quorum is for shrinking only.
+///     timeout (timedelta): The timeout for quorum.
+///     data (dict or None): The data to be passed with quorum.
+#[pyclass(get_all, set_all)]
+pub struct QuorumMember {
+    replica_id: String,
+    address: String,
+    store_address: String,
+    step: i64,
+    world_size: u64,
+    shrink_only: bool,
+    data: Option<Py<PyDict>>,
+}
+
+impl QuorumMember {
+    // PyDict has not implemeted Clone, so we need to implement it manually
+    pub fn clone_with_py(&self, py: Python) -> Self {
+        QuorumMember {
+            replica_id: self.replica_id.clone(),
+            address: self.address.clone(),
+            store_address: self.store_address.clone(),
+            step: self.step,
+            world_size: self.world_size,
+            shrink_only: self.shrink_only,
+            data: self.data.as_ref().map(|d| d.clone_ref(py)),
+        }
+    }
+}
+
+impl Clone for QuorumMember {
+    fn clone(&self) -> Self {
+        Python::with_gil(|py| self.clone_with_py(py))
+    }
+}
+
 #[pyclass(get_all, set_all)]
 #[derive(Clone)]
-struct Timestamp {
+pub struct Timestamp {
     pub seconds: i64,
     pub nanos: i32,
 }
 
 #[pyclass(get_all, set_all)]
+#[derive(Clone)]
 struct FailureNotificationPy {
     replica_id: String,
 }

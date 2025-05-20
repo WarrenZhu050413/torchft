@@ -53211,3 +53211,2327 @@ manager: failure_listener_process_main: Subscribed to failure stream.
 manager: failure_listener_process_main: Exiting.
 manager: client created
 manager: initialized
+manager: failure_listener_process: started
+manager: error_processor_thread: started
+manager: error_processor_loop: starting
+manager: manager: starting
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:42901
+manager: manager: started
+manager: addr: http://sz-k8s-master:33589
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: client created
+manager: failure_listener_process_main: Exiting.
+manager: initialized
+manager: error_processor_loop: stopping
+manager: failure_listener_process: started
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:46603
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: failure_listener_process_main: Exiting.
+manager: failure_listener_process: started
+manager: error_processor_thread: started
+manager: error_processor_loop: starting
+manager: error_processor_loop: starting
+manager: manager: starting
+manager: error_processor_thread: started
+manager: manager: starting
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:46603
+manager: manager: started
+manager: addr: http://sz-k8s-master:19531
+manager: manager: started
+manager: addr: http://sz-k8s-master:19530
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: failure_listener_process_main: Exiting.
+manager: client created
+manager: initialized
+manager: client created
+manager: initialized
+manager: error_processor_loop: stopping
+manager: error_processor_loop: stopping
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:35791
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: failure_listener_process: started
+manager: failure_listener_process_main: Exiting.
+manager: failure_listener_process: started
+manager: error_processor_thread: started
+manager: error_processor_loop: starting
+manager: error_processor_loop: starting
+manager: error_processor_thread: started
+manager: manager: starting
+manager: manager: starting
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:35791
+manager: manager: started
+manager: addr: http://sz-k8s-master:19531
+manager: manager: started
+manager: addr: http://sz-k8s-master:19530
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: failure_listener_process_main: Exiting.
+manager: client created
+manager: initialized
+manager: client created
+manager: initialized
+manager: error_processor_loop: stopping
+manager: failure_listener_process: started
+manager: error_processor_thread: started
+manager: error_processor_loop: starting
+manager: manager: starting
+manager: manager: started
+manager: addr: http://sz-k8s-master:19531
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:35791
+manager: client created
+manager: initialized
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: failure_listener_process_main: Exiting.
+manager: error_processor_loop: stopping
+manager: error_processor_loop: stopping
+manager: failure_listener_process: started
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:32911
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: failure_listener_process_main: Exiting.
+manager: error_processor_loop: starting
+manager: failure_listener_process: started
+manager: error_processor_thread: started
+manager: error_processor_loop: starting
+manager: manager: starting
+manager: error_processor_thread: started
+manager: manager: starting
+manager: manager: started
+manager: addr: http://sz-k8s-master:19530
+manager: manager: started
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:32911
+manager: addr: http://sz-k8s-master:19531
+manager: client created
+manager: initialized
+manager: client created
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: failure_listener_process_main: Exiting.
+manager: initialized
+manager: failure_listener_process: started
+manager: error_processor_thread: started
+manager: error_processor_loop: starting
+manager: manager: starting
+manager: manager: started
+manager: addr: http://sz-k8s-master:19531
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:32911
+manager: client created
+manager: initialized
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: failure_listener_process_main: Exiting.
+manager: error_processor_loop: stopping
+manager: error_processor_loop: stopping
+manager: error_processor_loop: stopping
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:33517
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: failure_listener_process_main: Exiting.
+manager: failure_listener_process: started
+manager: error_processor_loop: starting
+manager: failure_listener_process: started
+manager: error_processor_thread: started
+manager: error_processor_loop: starting
+manager: error_processor_thread: started
+manager: manager: starting
+manager: manager: starting
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:33517
+manager: manager: started
+manager: manager: started
+manager: addr: http://sz-k8s-master:19531
+manager: addr: http://sz-k8s-master:19530
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: failure_listener_process_main: Exiting.
+manager: client created
+manager: client created
+manager: initialized
+manager: initialized
+manager: failure_listener_process: started
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:33977
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: error_processor_loop: starting
+manager: failure_listener_process_main: Exiting.
+manager: error_processor_thread: started
+manager: failure_listener_process: started
+manager: manager: starting
+manager: error_processor_loop: starting
+manager: error_processor_thread: started
+manager: manager: starting
+manager: manager: started
+manager: addr: http://sz-k8s-master:19530
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:33977
+manager: manager: started
+manager: addr: http://sz-k8s-master:19531
+manager: client created
+manager: initialized
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: client created
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: initialized
+manager: failure_listener_process_main: Exiting.
+manager: error_processor_loop: stopping
+manager: error_processor_loop: stopping
+manager: failure_listener_process: started
+manager: error_processor_thread: started
+manager: manager: starting
+manager: error_processor_loop: starting
+manager: manager: started
+manager: addr: http://sz-k8s-master:19531
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:33977
+manager: client created
+manager: initialized
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: failure_listener_process_main: Exiting.
+manager: error_processor_loop: stopping
+manager: error_processor_loop: stopping
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:44351
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: failure_listener_process_main: Exiting.
+manager: failure_listener_process: started
+manager: failure_listener_process: started
+manager: error_processor_loop: starting
+manager: error_processor_loop: starting
+manager: error_processor_thread: started
+manager: error_processor_thread: started
+manager: manager: starting
+manager: manager: starting
+manager: manager: started
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:44351
+manager: addr: http://sz-k8s-master:19531
+manager: manager: started
+manager: addr: http://sz-k8s-master:19530
+manager: client created
+manager: initialized
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: client created
+manager: failure_listener_process_main: Exiting.
+manager: initialized
+manager: error_processor_loop: stopping
+manager: failure_listener_process: started
+manager: error_processor_thread: started
+manager: error_processor_loop: starting
+manager: manager: starting
+manager: manager: started
+manager: addr: http://sz-k8s-master:19531
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:44351
+manager: client created
+manager: initialized
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: failure_listener_process_main: Exiting.
+manager: error_processor_loop: stopping
+manager: failure_listener_process: started
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:46847
+manager: error_processor_loop: stopping
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:46847
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: failure_listener_process_main: Exiting.
+manager: failure_listener_process: started
+manager: failure_listener_process: started
+manager: error_processor_thread: started
+manager: error_processor_thread: started
+manager: error_processor_loop: starting
+manager: error_processor_loop: starting
+manager: error_processor_loop: starting
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:46847
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: failure_listener_process_main: Exiting.
+manager: manager: starting
+manager: error_processor_thread: started
+manager: manager: starting
+manager: failure_listener_process: started
+manager: error_processor_loop: starting
+manager: error_processor_thread: started
+manager: manager: started
+manager: addr: http://sz-k8s-master:19530
+manager: addr: http://sz-k8s-master:19530
+manager: manager: started
+manager: addr: http://sz-k8s-master:19531
+manager: addr: http://sz-k8s-master:19531
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:46847
+manager: client created
+manager: client created
+manager: initialized
+manager: initialized
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: client created
+manager: client created
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: failure_listener_process_main: Exiting.
+manager: initialized
+manager: initialized
+manager: error_processor_loop: stopping
+manager: error_processor_loop: stopping
+manager: error_processor_loop: stopping
+manager: failure_listener_process: started
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:46847
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: failure_listener_process_main: Exiting.
+manager: error_processor_thread: started
+manager: failure_listener_process: started
+manager: manager: starting
+manager: error_processor_loop: starting
+manager: error_processor_loop: starting
+manager: error_processor_thread: started
+manager: manager: started
+manager: addr: http://sz-k8s-master:19531
+manager: addr: http://sz-k8s-master:19531
+manager: client created
+manager: initialized
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:46847
+manager: client created
+manager: initialized
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: failure_listener_process_main: Exiting.
+manager: failure_listener_process: started
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:34441
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: error_processor_loop: starting
+manager: failure_listener_process_main: Exiting.
+manager: failure_listener_process: started
+manager: error_processor_thread: started
+manager: error_processor_loop: starting
+manager: manager: starting
+manager: error_processor_thread: started
+manager: manager: starting
+manager: manager: started
+manager: addr: http://sz-k8s-master:19530
+manager: manager: started
+manager: addr: http://sz-k8s-master:19531
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:34441
+manager: client created
+manager: initialized
+manager: client created
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: failure_listener_process_main: Exiting.
+manager: initialized
+manager: error_processor_loop: stopping
+manager: error_processor_loop: stopping
+manager: error_processor_loop: stopping
+manager: error_processor_loop: stopping
+manager: failure_listener_process: started
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:41983
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: failure_listener_process_main: Exiting.
+manager: error_processor_loop: starting
+manager: failure_listener_process: started
+manager: error_processor_thread: started
+manager: manager: starting
+manager: error_processor_thread: started
+manager: error_processor_loop: starting
+manager: manager: starting
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:41983
+manager: manager: started
+manager: addr: http://sz-k8s-master:19530
+manager: manager: started
+manager: addr: http://sz-k8s-master:19531
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: client created
+manager: initialized
+manager: failure_listener_process_main: Exiting.
+manager: error_processor_loop: stopping
+manager: client created
+manager: error_processor_loop: stopping
+manager: initialized
+manager: error_processor_loop: stopping
+manager: error_processor_loop: stopping
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:40723
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: failure_listener_process: started
+manager: failure_listener_process_main: Exiting.
+manager: failure_listener_process: started
+manager: error_processor_loop: starting
+manager: error_processor_loop: starting
+manager: error_processor_thread: started
+manager: error_processor_thread: started
+manager: manager: starting
+manager: manager: starting
+manager: manager: started
+manager: manager: started
+manager: addr: http://sz-k8s-master:19530
+manager: addr: http://sz-k8s-master:19531
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:40723
+manager: client created
+manager: initialized
+manager: client created
+manager: initialized
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: failure_listener_process_main: Exiting.
+manager: failure_listener_process: started
+manager: error_processor_loop: starting
+manager: error_processor_thread: started
+manager: manager: starting
+manager: manager: started
+manager: addr: http://sz-k8s-master:19530
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:39095
+manager: client created
+manager: initialized
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: failure_listener_process_main: Exiting.
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: error_processor_loop: stopping
+manager: error_processor_loop: stopping
+manager: error_processor_loop: stopping
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: started
+manager: error_processor_thread: started
+manager: error_processor_loop: starting
+manager: manager: starting
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:34909
+manager: manager: started
+manager: addr: http://sz-k8s-master:41375
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: failure_listener_process_main: Exiting.
+manager: client created
+manager: initialized
+manager: error_processor_loop: stopping
+manager: failure_listener_process: started
+manager: error_processor_thread: started
+manager: error_processor_loop: starting
+manager: manager: starting
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:37899
+manager: manager: started
+manager: addr: http://sz-k8s-master:37261
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: client created
+manager: initialized
+manager: error_processor_loop: stopping
+manager: failure_listener_process_main: Exiting.
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:44851
+manager: failure_listener_process: started
+manager: failure_listener_process: started
+manager: error_processor_loop: starting
+manager: error_processor_thread: started
+manager: error_processor_thread: started
+manager: error_processor_loop: starting
+manager: manager: starting
+manager: manager: starting
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:44851
+manager: manager: started
+manager: manager: started
+manager: addr: http://sz-k8s-master:19531
+manager: addr: http://sz-k8s-master:19530
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: client created
+manager: initialized
+manager: client created
+manager: initialized
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: error_processor_loop: stopping
+manager: error_processor_loop: stopping
+manager: failure_listener_process_main: Exiting.
+manager: failure_listener_process_main: Exiting.
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:39451
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process: started
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: failure_listener_process: started
+manager: error_processor_loop: starting
+manager: error_processor_thread: started
+manager: manager: starting
+manager: error_processor_thread: started
+manager: error_processor_loop: starting
+manager: manager: starting
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:39451
+manager: manager: started
+manager: addr: http://sz-k8s-master:19530
+manager: manager: started
+manager: addr: http://sz-k8s-master:19531
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: client created
+manager: initialized
+manager: client created
+manager: initialized
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: error_processor_loop: stopping
+manager: failure_listener_process_main: Exiting.
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: failure_listener_process_main: Received failure notification for replica 1:739574bf-c601-4b78-abc5-b5a0651ef4e5
+manager: error_processor_loop: stopping
+manager: failure_listener_process: started
+manager: error_processor_thread: started
+manager: error_processor_loop: starting
+manager: manager: starting
+manager: manager: started
+manager: addr: http://sz-k8s-master:19531
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:39451
+manager: client created
+manager: initialized
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: failure_listener_process_main: Exiting.
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: failure_listener_process_main: Received failure notification for replica 0:cce7217a-266f-4fae-b750-d760c9ef0256
+manager: error_processor_loop: stopping
+manager: failure_listener_process_main: Exiting.
+manager: failure_listener_process: started
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:39329
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: failure_listener_process: started
+manager: error_processor_loop: starting
+manager: error_processor_thread: started
+manager: error_processor_thread: started
+manager: error_processor_loop: starting
+manager: manager: starting
+manager: manager: starting
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:39329
+manager: manager: started
+manager: addr: http://sz-k8s-master:19531
+manager: manager: started
+manager: addr: http://sz-k8s-master:19530
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: client created
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: initialized
+manager: client created
+manager: initialized
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: failure_listener_process: started
+manager: error_processor_thread: started
+manager: manager: starting
+manager: error_processor_loop: starting
+manager: manager: started
+manager: addr: http://sz-k8s-master:19531
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:39329
+manager: client created
+manager: initialized
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: failure_listener_process_main: Exiting.
+manager: error_processor_loop: stopping
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: failure_listener_process_main: Exiting.
+manager: failure_listener_process_main: Exiting.
+manager: error_processor_loop: stopping
+manager: error_processor_loop: stopping
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:42865
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: failure_listener_process: started
+manager: error_processor_thread: started
+manager: failure_listener_process: started
+manager: error_processor_loop: starting
+manager: manager: starting
+manager: error_processor_thread: started
+manager: error_processor_loop: starting
+manager: manager: starting
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:42865
+manager: manager: started
+manager: addr: http://sz-k8s-master:19531
+manager: manager: started
+manager: addr: http://sz-k8s-master:19530
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: client created
+manager: initialized
+manager: client created
+manager: initialized
+manager: failure_listener_process_main: Exiting.
+manager: failure_listener_process_main: Exiting.
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:34079
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: failure_listener_process: started
+manager: error_processor_loop: stopping
+manager: error_processor_loop: starting
+manager: failure_listener_process: started
+manager: error_processor_thread: started
+manager: error_processor_loop: stopping
+manager: error_processor_thread: started
+manager: error_processor_loop: starting
+manager: manager: starting
+manager: manager: starting
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:34079
+manager: manager: started
+manager: manager: started
+manager: addr: http://sz-k8s-master:19530
+manager: addr: http://sz-k8s-master:19531
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: client created
+manager: client created
+manager: initialized
+manager: initialized
+manager: failure_listener_process: started
+manager: error_processor_thread: started
+manager: error_processor_loop: starting
+manager: manager: starting
+manager: manager: started
+manager: addr: http://sz-k8s-master:19531
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:34079
+manager: client created
+manager: initialized
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: error_processor_loop: stopping
+manager: failure_listener_process_main: Exiting.
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: failure_listener_process_main: Exiting.
+manager: failure_listener_process_main: Exiting.
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:34321
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: failure_listener_process: started
+manager: error_processor_loop: starting
+manager: error_processor_thread: started
+manager: failure_listener_process: started
+manager: manager: starting
+manager: error_processor_loop: starting
+manager: error_processor_thread: started
+manager: manager: starting
+manager: manager: started
+manager: addr: http://sz-k8s-master:19531
+manager: manager: started
+manager: addr: http://sz-k8s-master:19530
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:34321
+manager: client created
+manager: initialized
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: client created
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: initialized
+manager: error_processor_loop: stopping
+manager: failure_listener_process: started
+manager: error_processor_loop: stopping
+manager: error_processor_loop: starting
+manager: error_processor_thread: started
+manager: manager: starting
+manager: manager: started
+manager: addr: http://sz-k8s-master:19531
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:34321
+manager: client created
+manager: initialized
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: error_processor_loop: stopping
+manager: failure_listener_process_main: Exiting.
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: failure_listener_process_main: Exiting.
+manager: error_processor_loop: stopping
+manager: failure_listener_process_main: Exiting.
+manager: failure_listener_process: started
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:42557
+manager: error_processor_thread: started
+manager: error_processor_loop: starting
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:42557
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: failure_listener_process: started
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:42557
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: manager: starting
+manager: failure_listener_process: started
+manager: error_processor_loop: starting
+manager: failure_listener_process: started
+manager: error_processor_loop: stopping
+manager: error_processor_loop: starting
+manager: error_processor_loop: starting
+manager: error_processor_thread: started
+manager: error_processor_thread: started
+manager: manager: starting
+manager: error_processor_thread: started
+manager: manager: started
+manager: addr: http://sz-k8s-master:19530
+manager: addr: http://sz-k8s-master:19530
+manager: manager: started
+manager: addr: http://sz-k8s-master:19531
+manager: addr: http://sz-k8s-master:19531
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:42557
+manager: client created
+manager: initialized
+manager: client created
+manager: initialized
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: client created
+manager: client created
+manager: initialized
+manager: initialized
+manager: failure_listener_process: started
+manager: error_processor_loop: starting
+manager: error_processor_thread: started
+manager: manager: starting
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:42557
+manager: failure_listener_process_main: Exiting.
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: failure_listener_process: started
+manager: failure_listener_process_main: Exiting.
+manager: error_processor_loop: stopping
+manager: error_processor_loop: starting
+manager: manager: started
+manager: error_processor_loop: stopping
+manager: error_processor_thread: started
+manager: addr: http://sz-k8s-master:19531
+manager: addr: http://sz-k8s-master:19531
+manager: client created
+manager: initialized
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:42557
+manager: client created
+manager: initialized
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: failure_listener_process_main: Exiting.
+manager: failure_listener_process_main: Exiting.
+manager: failure_listener_process_main: Exiting.
+manager: failure_listener_process: started
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:36463
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: error_processor_loop: starting
+manager: error_processor_thread: started
+manager: failure_listener_process: started
+manager: manager: starting
+manager: error_processor_loop: starting
+manager: error_processor_thread: started
+manager: manager: starting
+manager: error_processor_loop: stopping
+manager: manager: started
+manager: addr: http://sz-k8s-master:19530
+manager: manager: started
+manager: addr: http://sz-k8s-master:19531
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:36463
+manager: client created
+manager: initialized
+manager: client created
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: initialized
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: error_processor_loop: stopping
+manager: error_processor_loop: stopping
+manager: error_processor_loop: stopping
+manager: failure_listener_process_main: Exiting.
+manager: failure_listener_process_main: Exiting.
+manager: failure_listener_process: started
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:43817
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: error_processor_loop: starting
+manager: failure_listener_process: started
+manager: error_processor_thread: started
+manager: manager: starting
+manager: error_processor_thread: started
+manager: error_processor_loop: starting
+manager: manager: starting
+manager: manager: started
+manager: addr: http://sz-k8s-master:19531
+manager: manager: started
+manager: addr: http://sz-k8s-master:19530
+manager: client created
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:43817
+manager: initialized
+manager: client created
+manager: initialized
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: error_processor_loop: stopping
+manager: error_processor_loop: stopping
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: error_processor_loop: stopping
+manager: error_processor_loop: stopping
+manager: failure_listener_process_main: Exiting.
+manager: failure_listener_process_main: Exiting.
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:38343
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: failure_listener_process: started
+manager: failure_listener_process: started
+manager: error_processor_thread: started
+manager: error_processor_thread: started
+manager: error_processor_loop: starting
+manager: error_processor_loop: starting
+manager: manager: starting
+manager: manager: starting
+manager: manager: started
+manager: manager: started
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:38343
+manager: addr: http://sz-k8s-master:19531
+manager: addr: http://sz-k8s-master:19530
+manager: client created
+manager: initialized
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: client created
+manager: initialized
+manager: failure_listener_process_main: Exiting.
+manager: failure_listener_process_main: Exiting.
+manager: failure_listener_process: started
+manager: error_processor_loop: starting
+manager: error_processor_thread: started
+manager: manager: starting
+manager: manager: started
+manager: addr: http://sz-k8s-master:19530
+manager: client created
+manager: initialized
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:42515
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: failure_listener_process_main: Exiting.
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: error_processor_loop: stopping
+manager: error_processor_loop: stopping
+manager: error_processor_loop: stopping
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:38159
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process: started
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: error_processor_thread: started
+manager: failure_listener_process: started
+manager: error_processor_loop: starting
+manager: manager: starting
+manager: error_processor_loop: starting
+manager: error_processor_thread: started
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:38159
+manager: manager: starting
+manager: manager: started
+manager: addr: http://sz-k8s-master:19530
+manager: manager: started
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: addr: http://sz-k8s-master:19531
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: client created
+manager: initialized
+manager: client created
+manager: initialized
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: error_processor_loop: stopping
+manager: error_processor_loop: stopping
+manager: failure_listener_process_main: Exiting.
+manager: failure_listener_process_main: Exiting.
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:35289
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process: started
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: failure_listener_process: started
+manager: error_processor_loop: starting
+manager: error_processor_thread: started
+manager: error_processor_loop: starting
+manager: error_processor_thread: started
+manager: manager: starting
+manager: manager: starting
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:35289
+manager: manager: started
+manager: addr: http://sz-k8s-master:19530
+manager: manager: started
+manager: addr: http://sz-k8s-master:19531
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: client created
+manager: initialized
+manager: client created
+manager: initialized
+manager: error_processor_loop: stopping
+manager: failure_listener_process_main: Exiting.
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: failure_listener_process: started
+manager: error_processor_thread: started
+manager: error_processor_loop: starting
+manager: manager: starting
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:35289
+manager: manager: started
+manager: addr: http://sz-k8s-master:19531
+manager: client created
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: initialized
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: error_processor_loop: stopping
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: error_processor_loop: stopping
+manager: failure_listener_process_main: Exiting.
+manager: failure_listener_process_main: Exiting.
+manager: failure_listener_process: started
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:45975
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: failure_listener_process: started
+manager: error_processor_loop: starting
+manager: error_processor_thread: started
+manager: error_processor_loop: starting
+manager: manager: starting
+manager: error_processor_thread: started
+manager: manager: starting
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:45975
+manager: manager: started
+manager: addr: http://sz-k8s-master:19530
+manager: manager: started
+manager: addr: http://sz-k8s-master:19531
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: client created
+manager: initialized
+manager: client created
+manager: initialized
+manager: failure_listener_process: started
+manager: error_processor_loop: starting
+manager: error_processor_thread: started
+manager: manager: starting
+manager: manager: started
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:45975
+manager: addr: http://sz-k8s-master:19531
+manager: client created
+manager: initialized
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: error_processor_loop: stopping
+manager: failure_listener_process_main: Exiting.
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: failure_listener_process_main: Exiting.
+manager: failure_listener_process_main: Exiting.
+manager: error_processor_loop: stopping
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: started
+manager: error_processor_loop: starting
+manager: error_processor_thread: started
+manager: manager: starting
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://localhost:29510
+manager: manager: started
+manager: addr: http://sz-k8s-master:36047
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: client created
+manager: initialized
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: failure_listener_process: started
+manager: error_processor_thread: started
+manager: error_processor_loop: starting
+manager: manager: starting
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://localhost:29510
+manager: manager: started
+manager: addr: http://sz-k8s-master:46849
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: client created
+manager: initialized
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:39343
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: failure_listener_process: started
+manager: failure_listener_process: started
+manager: error_processor_thread: started
+manager: error_processor_loop: starting
+manager: error_processor_loop: starting
+manager: manager: starting
+manager: error_processor_thread: started
+manager: manager: starting
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:39343
+manager: manager: started
+manager: addr: http://sz-k8s-master:19531
+manager: manager: started
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: addr: http://sz-k8s-master:19530
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: client created
+manager: initialized
+manager: client created
+manager: initialized
+manager: failure_listener_process_main: Exiting.
+manager: error_processor_loop: stopping
+manager: error_processor_loop: stopping
+manager: failure_listener_process_main: Exiting.
+manager: failure_listener_process: started
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:44929
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: error_processor_loop: starting
+manager: failure_listener_process: started
+manager: error_processor_thread: started
+manager: error_processor_loop: starting
+manager: error_processor_thread: started
+manager: manager: starting
+manager: manager: starting
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:44929
+manager: manager: started
+manager: addr: http://sz-k8s-master:19531
+manager: manager: started
+manager: addr: http://sz-k8s-master:19530
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: client created
+manager: initialized
+manager: client created
+manager: initialized
+manager: failure_listener_process: started
+manager: error_processor_thread: started
+manager: error_processor_loop: starting
+manager: manager: starting
+manager: manager: started
+manager: addr: http://sz-k8s-master:19531
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:44929
+manager: client created
+manager: initialized
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: error_processor_loop: stopping
+manager: failure_listener_process_main: Exiting.
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: failure_listener_process_main: Exiting.
+manager: failure_listener_process_main: Exiting.
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:38555
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process: started
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: failure_listener_process: started
+manager: error_processor_loop: starting
+manager: error_processor_thread: started
+manager: error_processor_loop: starting
+manager: manager: starting
+manager: error_processor_thread: started
+manager: manager: starting
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:38555
+manager: error_processor_loop: stopping
+manager: manager: started
+manager: manager: started
+manager: addr: http://sz-k8s-master:19530
+manager: addr: http://sz-k8s-master:19531
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: client created
+manager: initialized
+manager: client created
+manager: initialized
+manager: error_processor_loop: stopping
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: failure_listener_process: started
+manager: error_processor_loop: starting
+manager: error_processor_thread: started
+manager: manager: starting
+manager: manager: started
+manager: addr: http://sz-k8s-master:19531
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:38555
+manager: client created
+manager: initialized
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: error_processor_loop: stopping
+manager: failure_listener_process_main: Exiting.
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: failure_listener_process_main: Exiting.
+manager: failure_listener_process_main: Exiting.
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:33571
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: failure_listener_process: started
+manager: error_processor_loop: stopping
+manager: error_processor_loop: starting
+manager: error_processor_thread: started
+manager: manager: starting
+manager: failure_listener_process: started
+manager: error_processor_thread: started
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:33571
+manager: error_processor_loop: starting
+manager: manager: starting
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: manager: started
+manager: manager: started
+manager: failure_listener_process: started
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:33571
+manager: addr: http://sz-k8s-master:19530
+manager: failure_listener_process: started
+manager: error_processor_loop: starting
+manager: error_processor_loop: starting
+manager: error_processor_thread: started
+manager: addr: http://sz-k8s-master:19531
+manager: error_processor_thread: started
+manager: addr: http://sz-k8s-master:19531
+manager: addr: http://sz-k8s-master:19530
+manager: client created
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:33571
+manager: initialized
+manager: client created
+manager: client created
+manager: initialized
+manager: client created
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: initialized
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: initialized
+manager: error_processor_loop: stopping
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: error_processor_loop: stopping
+manager: failure_listener_process_main: Exiting.
+manager: failure_listener_process: started
+manager: error_processor_loop: starting
+manager: error_processor_thread: started
+manager: manager: starting
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:33571
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: failure_listener_process: started
+manager: error_processor_loop: stopping
+manager: error_processor_loop: starting
+manager: error_processor_thread: started
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:33571
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: failure_listener_process_main: Exiting.
+manager: failure_listener_process_main: Exiting.
+manager: failure_listener_process_main: Exiting.
+manager: failure_listener_process_main: Exiting.
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:38717
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: failure_listener_process: started
+manager: failure_listener_process: started
+manager: error_processor_thread: started
+manager: error_processor_loop: starting
+manager: error_processor_loop: starting
+manager: manager: starting
+manager: error_processor_thread: started
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:38717
+manager: manager: starting
+manager: manager: started
+manager: addr: http://sz-k8s-master:19531
+manager: failure_listener_process_main: LighthouseClient created.
+manager: manager: started
+manager: failure_listener_process_main: Starting listener loop.
+manager: addr: http://sz-k8s-master:19530
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: client created
+manager: initialized
+manager: client created
+manager: initialized
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: error_processor_loop: stopping
+manager: error_processor_loop: stopping
+manager: failure_listener_process_main: Exiting.
+manager: failure_listener_process_main: Exiting.
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:36099
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process: started
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: failure_listener_process: started
+manager: error_processor_thread: started
+manager: error_processor_loop: starting
+manager: error_processor_loop: starting
+manager: manager: starting
+manager: error_processor_thread: started
+manager: manager: starting
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:36099
+manager: manager: started
+manager: addr: http://sz-k8s-master:19531
+manager: manager: started
+manager: addr: http://sz-k8s-master:19530
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: client created
+manager: initialized
+manager: client created
+manager: initialized
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: error_processor_loop: stopping
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: failure_listener_process_main: Exiting.
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: failure_listener_process: started
+manager: error_processor_thread: started
+manager: error_processor_loop: starting
+manager: manager: starting
+manager: manager: started
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:36099
+manager: addr: http://sz-k8s-master:19531
+manager: client created
+manager: initialized
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: error_processor_loop: stopping
+manager: error_processor_loop: stopping
+manager: failure_listener_process_main: Exiting.
+manager: failure_listener_process_main: Exiting.
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:40731
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process: started
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: failure_listener_process: started
+manager: error_processor_thread: started
+manager: error_processor_loop: starting
+manager: error_processor_loop: starting
+manager: manager: starting
+manager: error_processor_thread: started
+manager: manager: starting
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:40731
+manager: manager: started
+manager: addr: http://sz-k8s-master:19530
+manager: manager: started
+manager: addr: http://sz-k8s-master:19531
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: client created
+manager: initialized
+manager: client created
+manager: initialized
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: failure_listener_process: started
+manager: error_processor_thread: started
+manager: error_processor_loop: starting
+manager: manager: starting
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:40731
+manager: manager: started
+manager: addr: http://sz-k8s-master:19531
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: client created
+manager: initialized
+manager: error_processor_loop: stopping
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: failure_listener_process_main: Exiting.
+manager: failure_listener_process_main: Exiting.
+manager: failure_listener_process_main: Exiting.
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:33003
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process: started
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: error_processor_thread: started
+manager: error_processor_loop: starting
+manager: manager: starting
+manager: failure_listener_process: started
+manager: error_processor_thread: started
+manager: error_processor_loop: starting
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:33003
+manager: manager: starting
+manager: manager: started
+manager: addr: http://sz-k8s-master:19530
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: manager: started
+manager: addr: http://sz-k8s-master:19531
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: client created
+manager: initialized
+manager: client created
+manager: initialized
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: error_processor_loop: stopping
+manager: failure_listener_process_main: Stop event detected, breaking loop.
+manager: failure_listener_process_main: Exiting.
+manager: error_processor_loop: stopping
+manager: failure_listener_process_main: Exiting.
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:40765
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: failure_listener_process: started
+manager: failure_listener_process: started
+manager: error_processor_loop: starting
+manager: error_processor_thread: started
+manager: error_processor_loop: starting
+manager: manager: starting
+manager: error_processor_thread: started
+manager: manager: starting
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:40765
+manager: manager: started
+manager: addr: http://sz-k8s-master:19531
+manager: manager: started
+manager: addr: http://sz-k8s-master:19530
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: client created
+manager: initialized
+manager: client created
+manager: initialized
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: error_processor_loop: stopping
+manager: failure_listener_process_main: Exiting.
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: failure_listener_process_main: Received failure notification for replica 1:7e999188-d6d4-4048-86ce-2673359239da
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: error_processor_loop: stopping
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: failure_listener_process: started
+manager: error_processor_thread: started
+manager: error_processor_loop: starting
+manager: manager: starting
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:40765
+manager: manager: started
+manager: addr: http://sz-k8s-master:19531
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: client created
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: initialized
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: failure_listener_process_main: Exiting.
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: failure_listener_process_main: Received failure notification for replica 0:4622e6aa-9c5a-4fe6-87bf-abd39de22f9d
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: error_processor_loop: stopping
+manager: failure_listener_process_main: Exiting.
+manager: failure_listener_process: started
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:37673
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: error_processor_loop: starting
+manager: failure_listener_process: started
+manager: error_processor_thread: started
+manager: manager: starting
+manager: error_processor_thread: started
+manager: error_processor_loop: starting
+manager: manager: starting
+manager: manager: started
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:37673
+manager: addr: http://sz-k8s-master:19530
+manager: manager: started
+manager: addr: http://sz-k8s-master:19531
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: client created
+manager: initialized
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: client created
+manager: initialized
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: failure_listener_process: started
+manager: error_processor_loop: stopping
+manager: error_processor_thread: started
+manager: manager: starting
+manager: error_processor_loop: starting
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:37673
+manager: manager: started
+manager: addr: http://sz-k8s-master:19531
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: client created
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: initialized
+manager: failure_listener_process_main: Exiting.
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: failure_listener_process_main: Exiting.
+manager: failure_listener_process_main: Exiting.
+manager: error_processor_loop: stopping
+manager: error_processor_loop: stopping
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: failure_listener_process_main: Error in stream processing: status: Unknown, message: "h2 protocol error: error reading a body from connection", details: [], metadata: MetadataMap { headers: {} }, attempting to reconnect/recover.
+manager: failure_listener_process_main: Critical error reconnecting: status: Unavailable, message: "tcp connect error: Connection refused (os error 111)", details: [], metadata: MetadataMap { headers: {} }
+manager: failure_listener_process: started
+manager: error_processor_loop: starting
+manager: error_processor_thread: started
+manager: manager: starting
+manager: manager: started
+manager: addr: http://sz-k8s-master:35661
+manager: client created
+manager: initialized
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:40707
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: failure_listener_process: started
+manager: error_processor_loop: starting
+manager: error_processor_thread: started
+manager: manager: starting
+manager: manager: started
+manager: addr: http://sz-k8s-master:41919
+manager: client created
+manager: initialized
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://sz-k8s-master:40707
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: error_processor_loop: stopping
+manager: failure_listener_process_main: Exiting.
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: failure_listener_process_main: Received failure notification for replica repA:01abe4ec-07b8-4148-a5dd-24f71da5f3f6
+manager: error_processor_loop: stopping
+manager: failure_listener_process_main: Exiting.
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: addr: dummy
+manager: client created
+manager: initialized
+manager: failure_listener_process: started
+manager: error_processor_thread: started
+manager: error_processor_loop: starting
+manager: manager: starting
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://localhost:29510
+manager: manager: started
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: addr: http://sz-k8s-master:33431
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: client created
+manager: initialized
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: failure_listener_process: started
+manager: error_processor_thread: started
+manager: error_processor_loop: starting
+manager: manager: starting
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://localhost:29510
+manager: manager: started
+manager: failure_listener_process_main: LighthouseClient created.
+manager: addr: http://sz-k8s-master:41985
+manager: failure_listener_process_main: Starting listener loop.
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: client created
+manager: initialized
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: error_processor_loop: stopping
+manager: failure_listener_process_main: Exiting.
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: failure_listener_process_main: Received failure notification for replica train_ddp_0:f77f92cd-6fae-4958-b46f-3814d76a0d99
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: failure_listener_process: started
+manager: error_processor_loop: starting
+manager: error_processor_thread: started
+manager: manager: starting
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://localhost:29510
+manager: manager: started
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: addr: http://sz-k8s-master:34731
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: client created
+manager: initialized
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: failure_listener_process: started
+manager: error_processor_thread: started
+manager: error_processor_loop: starting
+manager: manager: starting
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://localhost:29510
+manager: manager: started
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: addr: http://sz-k8s-master:45265
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: client created
+manager: initialized
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: error_processor_loop: stopping
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: failure_listener_process_main: Exiting.
+manager: failure_listener_process_main: Received failure notification for replica train_ddp_0:87818afa-4af1-477f-a53c-791b225eb768
+manager: failure_listener_process: started
+manager: error_processor_thread: started
+manager: error_processor_loop: starting
+manager: manager: starting
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://localhost:29510
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: manager: started
+manager: addr: http://sz-k8s-master:44277
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: client created
+manager: initialized
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: failure_listener_process: started
+manager: error_processor_thread: started
+manager: error_processor_loop: starting
+manager: manager: starting
+manager: failure_listener_process_main: Initializing with lighthouse_addr: http://localhost:29510
+manager: manager: started
+manager: failure_listener_process_main: LighthouseClient created.
+manager: failure_listener_process_main: Starting listener loop.
+manager: addr: http://sz-k8s-master:43821
+manager: failure_listener_process_main: Subscribed to failure stream.
+manager: client created
+manager: initialized
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: error_processor_loop: stopping
+manager: failure_listener_process_main: Error in stream processing: Timeout waiting for failure notification, attempting to reconnect/recover.
+manager: failure_listener_process_main: Exiting.
+manager: failure_listener_process_main: Received failure notification for replica train_ddp_0:53be7077-8320-48c0-a8ef-cc274f3ecc82
+manager: failure_listener_process: started
+manager: error_processor_thread: started
+manager: error_processor_loop: starting
+manager: manager: starting
+manager: manager: started
+manager: addr: http://sz-k8s-master:43783
+manager: client created
+manager: initialized
+manager: failure_listener_process: started
+manager: error_processor_thread: started
+manager: error_processor_loop: starting
+manager: manager: starting
+manager: manager: started
+manager: addr: http://sz-k8s-master:43323
+manager: client created
+manager: initialized
+manager: error_processor_loop: stopping
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: manager: starting
+manager: manager: started
+manager: addr: http://sz-k8s-master:41891
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: manager: starting
+manager: manager: started
+manager: addr: http://sz-k8s-master:44251
+manager: client created
+manager: initialized
+manager: failure_listener_process: started
+manager: error_processor_thread: started
+manager: error_processor_loop: starting
+manager: manager: starting
+manager: manager: started
+manager: addr: http://sz-k8s-master:38019
+manager: client created
+manager: initialized
+manager: failure_listener_process: started
+manager: error_processor_thread: started
+manager: error_processor_loop: starting
+manager: manager: starting
+manager: manager: started
+manager: addr: http://sz-k8s-master:36919
+manager: client created
+manager: initialized
+manager: error_processor_loop: stopping
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: manager: starting
+manager: manager: started
+manager: addr: http://sz-k8s-master:42961
+manager: client created
+manager: initialized
+manager: failure_listener_process: not started, no lighthouse_addr.
+manager: manager: starting
+manager: manager: started
+manager: addr: http://sz-k8s-master:36937
+manager: client created
+manager: initialized
+manager: failure_listener_process: started
+manager: error_processor_thread: started
+manager: error_processor_loop: starting
+manager: manager: starting
+manager: failure_listener_process: started
+manager: error_processor_loop: starting
+manager: error_processor_thread: started
+manager: manager: starting
+manager: manager: started
+manager: addr: http://sz-k8s-master:35001
+manager: client created
+manager: initialized
+manager: manager: started
+manager: addr: http://sz-k8s-master:39141
+manager: client created
+manager: initialized
+manager: error_processor_loop: stopping

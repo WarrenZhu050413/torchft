@@ -12,6 +12,3 @@ def write_debug_log(msg: str, prefix: str='') -> None:
     """
     with open("debug.log", "a") as f:
         f.write(f"{prefix}: {msg}\n")
-
-dl_manager = DebugLog("manager")
-dl_train = DebugLog("train")
