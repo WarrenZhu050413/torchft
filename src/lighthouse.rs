@@ -374,9 +374,15 @@ impl Lighthouse {
     }
 
     pub fn address(&self) -> String {
+        // Check for CODX environment variable
+        let host = match std::env::var("CODX") {
+            Ok(val) if val == "True" => "localhost".to_string(),
+            _ => gethostname().into_string().unwrap(),
+        };
+        
         format!(
             "http://{}:{}",
-            gethostname().into_string().unwrap(),
+            host,
             self.local_addr.port()
         )
     }

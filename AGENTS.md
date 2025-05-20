@@ -26,3 +26,21 @@ Language Specific
 - Rust does not support named parameters
 - Whenever you call an object with a mutable method, you have to make sure that that object is declared mutably.
 <EOF>
+
+<repo specific instructions>
+- You do not have DNS lookup. Therefore we implement special logic to directly return localhost when the CODX environment variable is set.
+
+pub fn address(&self) -> String {
+    // Check for CODX environment variable
+    let host = match std::env::var("CODX") {
+        Ok(val) if val == "True" => "localhost".to_string(),
+        _ => gethostname().into_string().unwrap(),
+    };
+    
+    format!(
+        "http://{}:{}",
+        host,
+        self.local_addr.port()
+    )
+}
+</EOF>
