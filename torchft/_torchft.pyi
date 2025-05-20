@@ -35,7 +35,6 @@ class QuorumResult:
     max_replica_rank: Optional[int]
     max_world_size: int
     heal: bool
-    commit_failures: int
 
 class ManagerServer:
     def __init__(
@@ -86,6 +85,14 @@ class Quorum:
     created: Timestamp
 
 @dataclass
+class FailureNotification:
+    replica_id: str
+
+class FailureStream:
+    def __iter__(self) -> "FailureStream": ...
+    def __next__(self) -> FailureNotification: ...
+
+@dataclass
 class LighthouseClient:
     addr: str
     connect_timeout: timedelta
@@ -106,3 +113,7 @@ class LighthouseClient:
         replica_id: str,
         timeout: timedelta = timedelta(seconds=5),
     ) -> None: ...
+    def subscribe_failures(
+        self,
+        timeout: timedelta = timedelta(seconds=5),
+    ) -> FailureStream: ...
