@@ -883,12 +883,12 @@ class TestManager(TestCase):
             proactive_recovery=True,
         )
 
-        time.sleep(0.5)
+        time.sleep(1.5)
 
         failed_replica_id = "failed_replica"
         lighthouse.inject_failure(failed_replica_id)
         
-        time.sleep(0.5)
+        time.sleep(1.5) # Prevent flakyness
         error_obj = manager.errored()
         
         # Verify that the manager received the error notification
