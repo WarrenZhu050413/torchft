@@ -14,7 +14,6 @@ os.environ["CUDA_VISIBLE_DEVICES"] = str(REPLICA_GROUP_ID % 4)
 os.environ["NCCL_HOSTID"] = str(REPLICA_GROUP_ID)
 
 import torch
-import torch.nn.functional as F
 import torchvision
 import torchvision.transforms as transforms
 from torch import nn, optim
@@ -22,14 +21,12 @@ from torch.distributed.elastic.multiprocessing.errors import record
 from torchdata.stateful_dataloader import StatefulDataLoader
 import time
 from torchft import (
-    DistributedDataParallel,
     DistributedSampler,
     Manager,
-    Optimizer,
     ProcessGroupGloo,
     ProcessGroupNCCL,
 )
-from torchft.local_sgd import LocalSGD
+from torchft.local_sgd import DiLoCo
 from torchft.checkpointing.pg_transport import PGTransport
 
 logging.basicConfig(level=logging.INFO)
@@ -66,15 +63,6 @@ def main() -> None:
         trainset, batch_size=64, num_workers=2, sampler=sampler
     )
 
-    def load_state_dict(state_dict):
-        m.load_state_dict(state_dict["model"])
-        optimizer.load_state_dict(state_dict["optim"])
-
-    def state_dict():
-        return {
-            "model": m.state_dict(),
-            "optim": optimizer.state_dict(),
-        }
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
     pg = (
@@ -89,16 +77,6 @@ def main() -> None:
         pg,
         timeout=timedelta(seconds=10),
         device=("cuda" if torch.cuda.is_available() else "cpu"),
-    )
-
-    manager = Manager(
-        pg=pg,
-        min_replica_size=1,
-        load_state_dict=load_state_dict,
-        state_dict=state_dict,
-        replica_id=f"train_ddp_{REPLICA_GROUP_ID}",
-        timeout=timedelta(seconds=30),
-        checkpoint_transport=transport,
     )
 
     class Net(nn.Module):
@@ -136,9 +114,42 @@ def main() -> None:
             return x
 
     m = Net().to(device)
-    m = Net().to(device)
-    optimizer = optim.Adam(m.parameters())
+    inner_optimizer = optim.AdamW(
+        m.parameters(), lr=4e-4, weight_decay=0.1, betas=(0.9, 0.95)
+    )
+    outer_optimizer = optim.SGD(
+        m.parameters(), lr=0.7, momentum=0.9, nesterov=True
+    )
     criterion = nn.CrossEntropyLoss()
+
+    def load_state_dict(state_dict):
+        m.load_state_dict(state_dict["model"])
+        m.to(device)
+        diloco.original_parameters = state_dict["original_params"]
+        for name in diloco.original_parameters.keys():
+            diloco.original_parameters[name] = diloco.original_parameters[name].to(
+                device
+            )
+        inner_optimizer.load_state_dict(state_dict["inner_optim"])
+        outer_optimizer.load_state_dict(state_dict["outer_optim"])
+
+    def state_dict():
+        return {
+            "model": m.state_dict(),
+            "original_params": diloco.original_parameters,
+            "inner_optim": inner_optimizer.state_dict(),
+            "outer_optim": outer_optimizer.state_dict(),
+        }
+
+    manager = Manager(
+        pg=pg,
+        min_replica_size=1,
+        load_state_dict=load_state_dict,
+        state_dict=state_dict,
+        replica_id=f"train_ddp_{REPLICA_GROUP_ID}",
+        timeout=timedelta(seconds=30),
+        checkpoint_transport=transport,
+    )
 
     print(m)
     num_params = sum(p.numel() for p in m.parameters())
@@ -166,7 +177,14 @@ def main() -> None:
     prof.start()
 
     num_local_steps = 0
-    with LocalSGD(manager, m, optimizer, sync_every=100):
+    with DiLoCo(
+        manager,
+        m,
+        inner_optimizer,
+        outer_optimizer,
+        backup_device=device,
+        sync_every=100,
+    ) as diloco:
         while True:
             for i, (inputs, labels) in enumerate(trainloader):
                 prof.step()
@@ -176,7 +194,7 @@ def main() -> None:
 
                 # must be called at the beginning of each train loop
                 # Quorum computation is triggered here but only needed in the backwards pass.
-                optimizer.zero_grad()
+                inner_optimizer.zero_grad()
 
                 out = m(inputs)
                 loss = criterion(out, labels)
@@ -186,7 +204,7 @@ def main() -> None:
 
                 # must be called at the end of the train loop
                 # This may not actually step the optimizer if an error occured during grad allreduce.
-                optimizer.step()
+                inner_optimizer.step()
                 num_local_steps += 1
 
                 if manager.current_step() % 100 == 0:
