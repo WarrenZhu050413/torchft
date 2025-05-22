@@ -13,7 +13,7 @@ def hsdp(
     replicas: int = 2,
     workers_per_replica: int = 1,
     max_restarts: int = 10,
-    script: str = "train_ddp.py",
+    script: str = "examples/ddp/train_ddp.py",
     env: Optional[Dict[str, str]] = None,
     image: str = "",
     h: Optional[str] = None,

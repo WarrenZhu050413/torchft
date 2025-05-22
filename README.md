@@ -77,7 +77,7 @@ See [torchtitan's documentation for end to end usage](https://github.com/pytorch
 
 We have a minimal DDP train loop that highlights all of the key components in torchft.
 
-See [train_ddp.py](./train_ddp.py) for more info.
+See [train_ddp.py](./examples/ddp/train_ddp.py) for more info.
 
 
 ### DiLoCo
@@ -172,12 +172,12 @@ RUST_BACKTRACE=1 torchft_lighthouse --min_replicas 1 --quorum_tick_ms 100 --join
 
 ### Example Training Loop (DDP)
 
-See [train_ddp.py](./train_ddp.py) for the full example.
+See [train_ddp.py](./examples/ddp/train_ddp.py) for the full example.
 
 Invoke with:
 
 ```sh
-TORCHFT_LIGHTHOUSE=http://localhost:29510 torchrun --master_port 29501 --nnodes 1 --nproc_per_node 1 train_ddp.py
+TORCHFT_LIGHTHOUSE=http://localhost:29510 torchrun --master_port 29501 --nnodes 1 --nproc_per_node 1 examples/ddp/train_ddp.py
 ```
 
 train.py:
@@ -226,14 +226,14 @@ See [.torchxconfig](.torchxconfig), [torchx.py](./torchft/torchx.py) and the [to
 
 `torchx.py` could also launch HSDP jobs when `workers_per_replica` is set > 1, if the training script supports it. For an example HSDP training implementation with torchFT enabled, see [torchtitan](https://github.com/pytorch/torchtitan).
 
-Alternatively, to test on a node with two GPUs, you can launch two replica groups running  [train_ddp.py](./train_ddp.py) by:
+Alternatively, to test on a node with two GPUs, you can launch two replica groups running  [train_ddp.py](./examples/ddp/train_ddp.py) by:
 
 On shell 1 (one replica groups starts initial training):
 ```sh
 export REPLICA_GROUP_ID=0
 export NUM_REPLICA_GROUPS=2
 
-CUDA_VISIBLE_DEVICES=0 TORCHFT_LIGHTHOUSE=http://localhost:29510 torchrun --master_port=29600 --nnodes=1 --nproc_per_node=1 -- train_ddp.py
+CUDA_VISIBLE_DEVICES=0 TORCHFT_LIGHTHOUSE=http://localhost:29510 torchrun --master_port=29600 --nnodes=1 --nproc_per_node=1 -- examples/ddp/train_ddp.py
 ```
 
 On shell 2 (a second replica group joins):
@@ -241,7 +241,7 @@ On shell 2 (a second replica group joins):
 export REPLICA_GROUP_ID=1
 export NUM_REPLICA_GROUPS=2
 
-CUDA_VISIBLE_DEVICES=1 TORCHFT_LIGHTHOUSE=http://localhost:29510 torchrun --master_port=29601 --nnodes=1 --nproc_per_node=1 -- train_ddp.py
+CUDA_VISIBLE_DEVICES=1 TORCHFT_LIGHTHOUSE=http://localhost:29510 torchrun --master_port=29601 --nnodes=1 --nproc_per_node=1 -- examples/ddp/train_ddp.py
 ```
 
 By observing the outputs from both shells, you should observe process group reconfiguration and live checkpoint recovery.
@@ -256,7 +256,7 @@ export TORCHFT_PROACTIVE_RECOVERY=1
 
 With this enabled, the manager will listen to the Lighthouse server for heartbeat failures of other replica groups and break from a hanging allreduce.
 
-You can test this out by running `train_ddp_proactive.py`
+You can test this out by running `examples/ddp_proactive/train_ddp_proactive.py`
 
 On shell 1 (one replica groups starts initial training):
 ```sh
@@ -264,7 +264,7 @@ export REPLICA_GROUP_ID=0
 export NUM_REPLICA_GROUPS=2
 export TORCHFT_PROACTIVE_RECOVERY=1
 
-CUDA_VISIBLE_DEVICES=0 TORCHFT_LIGHTHOUSE=http://localhost:29510 torchrun --master_port=29600 --nnodes=1 --nproc_per_node=1 -- train_ddp_proactive.py
+CUDA_VISIBLE_DEVICES=0 TORCHFT_LIGHTHOUSE=http://localhost:29510 torchrun --master_port=29600 --nnodes=1 --nproc_per_node=1 -- examples/ddp_proactive/train_ddp_proactive.py
 ```
 
 On shell 2 (a second replica group joins):
@@ -273,7 +273,7 @@ export REPLICA_GROUP_ID=1
 export NUM_REPLICA_GROUPS=2
 export TORCHFT_PROACTIVE_RECOVERY=1
 
-CUDA_VISIBLE_DEVICES=1 TORCHFT_LIGHTHOUSE=http://localhost:29510 torchrun --master_port=29601 --nnodes=1 --nproc_per_node=1 -- train_ddp_proactive.py
+CUDA_VISIBLE_DEVICES=1 TORCHFT_LIGHTHOUSE=http://localhost:29510 torchrun --master_port=29601 --nnodes=1 --nproc_per_node=1 -- examples/ddp_proactive/train_ddp_proactive.py
 ```
 
 You should observe that the process with replica group id 1 will exit early, and the process with replica group id 0 will quickly resume training. If the same script is ran with after setting `export TORCHFT_PROACTIVE_RECOVERY=0`, you should observe that the process with replica group id 1 will hang for dozens of seconds before continuing.

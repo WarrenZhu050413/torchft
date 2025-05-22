@@ -100,7 +100,7 @@ The page will be automatically re-built as long as the process is kept running.
 
 We use torchx to run multiple worker local test jobs. You need to run the
 lighthouse first and then you can use torchx to launch as many replica groups as
-you want. This uses the [train_ddp.py](./train_ddp.py) script.
+you want. This uses the [train_ddp.py](./examples/ddp/train_ddp.py) script.
 
 ```sh
 $ torchft_lighthouse --min_replicas 2 --join_timeout_ms 10000 &
