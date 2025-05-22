@@ -1,0 +1,3 @@
+[cli:run]
+component=../../torchft/torchx.py:hsdp --script train_diloco.py
+scheduler=local_cwd
