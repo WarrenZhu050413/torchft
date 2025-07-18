@@ -37,8 +37,8 @@ use crate::torchftpb::lighthouse_service_client::LighthouseServiceClient;
 use crate::torchftpb::manager_service_client::ManagerServiceClient;
 use crate::torchftpb::{
     CheckpointMetadataRequest, FailureNotification as ProtoFailureNotification,
-    LighthouseConfigRequest, LighthouseHeartbeatRequest, LighthouseQuorumRequest,
-    ManagerQuorumRequest, ShouldCommitRequest, SubscribeFailuresRequest,
+    InjectFailureRequest, LighthouseConfigRequest, LighthouseHeartbeatRequest, 
+    LighthouseQuorumRequest, ManagerQuorumRequest, ShouldCommitRequest, SubscribeFailuresRequest,
 };
 use pyo3::prelude::*;
 use pyo3::types::{PyDict, PyString};
@@ -666,6 +666,29 @@ impl LighthouseClient {
             let response = self.runtime.block_on(self.client.clone().get_config(req))?;
             let config_data = response.into_inner().config_data;
             Ok(config_data)
+        })
+    }
+
+    /// Inject a failure for a specific replica.
+    ///
+    /// This method sends a failure notification for the given replica to all
+    /// subscribers monitoring for failures.
+    ///
+    /// Args:
+    ///     replica_id (str): The ID of the replica to inject failure for.
+    ///     timeout (timedelta, optional): Per-RPC deadline. Default = 5 s.
+    #[pyo3(signature = (replica_id, timeout = Duration::from_secs(5)))]
+    fn inject_failure(
+        &self,
+        py: Python<'_>,
+        replica_id: String,
+        timeout: Duration,
+    ) -> Result<(), StatusError> {
+        py.allow_threads(move || {
+            let mut req = tonic::Request::new(InjectFailureRequest { replica_id });
+            req.set_timeout(timeout);
+            let _response = self.runtime.block_on(self.client.clone().inject_failure(req))?;
+            Ok(())
         })
     }
 }

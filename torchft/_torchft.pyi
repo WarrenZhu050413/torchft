@@ -61,6 +61,7 @@ class LighthouseServer:
         quorum_tick_ms: Optional[int] = None,
         heartbeat_timeout_ms: Optional[int] = None,
         failure_tick_ms: Optional[int] = None,
+        lighthouse_config: Optional[str] = None,
     ) -> None: ...
     def address(self) -> str: ...
     def shutdown(self) -> None: ...
@@ -121,3 +122,12 @@ class LighthouseClient:
         self,
         timeout: timedelta = timedelta(seconds=5),
     ) -> FailureStream: ...
+    def inject_failure(
+        self,
+        replica_id: str,
+        timeout: timedelta = timedelta(seconds=5),
+    ) -> None: ...
+    def get_config(
+        self,
+        timeout: timedelta = timedelta(seconds=5),
+    ) -> dict[str, str]: ...

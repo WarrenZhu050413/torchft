@@ -7,6 +7,7 @@
 import logging
 import os
 import sys
+from time import sleep
 from datetime import timedelta
 
 REPLICA_GROUP_ID = int(os.environ.get("REPLICA_GROUP_ID", 0))
@@ -166,6 +167,7 @@ def main() -> None:
     while True:
         for i, (inputs, labels) in enumerate(trainloader):
             prof.step()
+            sleep(1)
 
             inputs = inputs.to(device)
             labels = labels.to(device)

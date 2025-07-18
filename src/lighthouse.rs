@@ -47,7 +47,8 @@ use std::pin::Pin;
 use crate::manager::manager_client_new;
 use crate::torchftpb::{
     lighthouse_service_server::{LighthouseService, LighthouseServiceServer},
-    KillRequest, LighthouseConfigRequest, LighthouseConfigResponse, LighthouseHeartbeatRequest,
+    InjectFailureRequest, InjectFailureResponse, KillRequest, LighthouseConfigRequest, 
+    LighthouseConfigResponse, LighthouseHeartbeatRequest,
     LighthouseHeartbeatResponse, LighthouseQuorumRequest, LighthouseQuorumResponse, Quorum,
     QuorumMember, SubscribeFailuresRequest,
 };
@@ -899,6 +900,21 @@ impl LighthouseService for Arc<Lighthouse> {
 
         let reply = LighthouseConfigResponse { config_data };
         Ok(Response::new(reply))
+    }
+
+    async fn inject_failure(
+        &self,
+        request: Request<InjectFailureRequest>,
+    ) -> Result<Response<InjectFailureResponse>, Status> {
+        let req = request.into_inner();
+        let replica_id = req.replica_id;
+        
+        self.clone()
+            .inject_failure(replica_id)
+            .await
+            .map_err(|e| Status::internal(format!("Failed to inject failure: {}", e)))?;
+        
+        Ok(Response::new(InjectFailureResponse {}))
     }
 }
 

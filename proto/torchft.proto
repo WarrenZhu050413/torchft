@@ -80,11 +80,18 @@ message LighthouseConfigResponse {
     map<string, string> config_data = 1;
 }
 
+message InjectFailureRequest {
+    string replica_id = 1;
+}
+
+message InjectFailureResponse {}
+
 service LighthouseService {
     rpc Quorum (LighthouseQuorumRequest) returns (LighthouseQuorumResponse);
     rpc Heartbeat (LighthouseHeartbeatRequest) returns (LighthouseHeartbeatResponse);
     rpc SubscribeFailures (SubscribeFailuresRequest) returns (stream FailureNotification);
     rpc GetConfig (LighthouseConfigRequest) returns (LighthouseConfigResponse);
+    rpc InjectFailure (InjectFailureRequest) returns (InjectFailureResponse);
 }
 
 message ManagerQuorumRequest {

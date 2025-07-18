@@ -203,10 +203,10 @@ class TestLighthouse(TestCase):
         client = LighthouseClient(server.address(), timedelta(seconds=5))
         failure_stream = client.subscribe_failures(timedelta(seconds=5))
 
-        # Inject a failure
+        # Inject a failure using the client method
         replica_id = "test_replica"
         print(f"Injecting failure for replica: {replica_id}")
-        server.inject_failure(replica_id)
+        client.inject_failure(replica_id)
 
         # Wait a bit for the notification to be processed
         time.sleep(1)
@@ -224,6 +224,42 @@ class TestLighthouse(TestCase):
 
         # Clean up
         server.shutdown()
+
+    def test_inject_failure_grpc(self) -> None:
+        """Test that inject_failure gRPC call works correctly"""
+        # Start a lighthouse server
+        server = LighthouseServer(
+            bind="[::]:0",
+            min_replicas=1,
+            join_timeout_ms=100,
+        )
+        
+        try:
+            # Create two clients - one to inject, one to subscribe
+            client1 = LighthouseClient(server.address(), timedelta(seconds=5))
+            client2 = LighthouseClient(server.address(), timedelta(seconds=5))
+            
+            # Subscribe to failures on client2
+            failure_stream = client2.subscribe_failures(timedelta(seconds=5))
+            
+            # Inject a failure using client1
+            replica_id = "test_replica_grpc"
+            client1.inject_failure(replica_id, timedelta(seconds=2))
+            
+            # Try to get the failure notification
+            notification = next(failure_stream)
+            assert notification.replica_id == replica_id, f"Expected {replica_id}, got {notification.replica_id}"
+            
+            # Test with custom timeout
+            replica_id2 = "test_replica_grpc_2"
+            client1.inject_failure(replica_id2, timedelta(milliseconds=500))
+            
+            notification2 = next(failure_stream)
+            assert notification2.replica_id == replica_id2, f"Expected {replica_id2}, got {notification2.replica_id}"
+            
+        finally:
+            # Clean up
+            server.shutdown()
 
     def test_get_config_rpc(self) -> None:
         """Test that get_config RPC returns configuration data."""
